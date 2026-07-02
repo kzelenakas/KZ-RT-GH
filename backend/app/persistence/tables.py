@@ -66,6 +66,36 @@ class RuleErrorRow(Base):
     detail: Mapped[str] = mapped_column(Text)
 
 
+class RuleRow(Base):
+    __tablename__ = "rules"
+    # Rules are data (admin-managed). Soft-delete only (archived flag).
+    rule_id: Mapped[str] = mapped_column(String(100), primary_key=True)
+    definition_json: Mapped[dict] = mapped_column(JSON)
+    enabled: Mapped[bool] = mapped_column(default=True)
+    archived: Mapped[bool] = mapped_column(default=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class RulesetVersionRow(Base):
+    __tablename__ = "ruleset_versions"
+    # Frozen snapshot per change; every run records the snapshot it ran against.
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    hash: Mapped[str] = mapped_column(String(64), index=True)
+    snapshot_json: Mapped[list] = mapped_column(JSON)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class ProfileRow(Base):
+    __tablename__ = "ruleset_profiles"
+    # Client-based customization: a profile disables specific rules.
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(200), unique=True)
+    description: Mapped[str] = mapped_column(Text, default="")
+    disabled_rule_ids: Mapped[list] = mapped_column(JSON, default=list)
+    archived: Mapped[bool] = mapped_column(default=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
 class AuditLogRow(Base):
     __tablename__ = "audit_log"
     # Append-only: reviewer/appraiser actions with timestamps (spec: audit trail).

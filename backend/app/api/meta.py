@@ -8,8 +8,11 @@ router = APIRouter(prefix="/api")
 @router.get("/meta")
 def meta(request: Request) -> dict:
     state = request.app.state
+    rules, ruleset_version = state.rules_repo.active_rules()
     return {
         "schema_version": state.adapter.schema_version,
-        "ruleset_version": state.ruleset_version,
-        "rule_count": len(state.rules),
+        "ruleset_version": ruleset_version,
+        "rule_count": len(state.rules_repo.list_rules("all")),
+        "active_rule_count": len(rules),
+        "profiles": [p["name"] for p in state.rules_repo.list_profiles()],
     }

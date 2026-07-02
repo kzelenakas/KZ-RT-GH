@@ -1,7 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
+import { AdminPanel } from "./AdminPanel";
 import { checkFinding, getRun, listRuns, reviewFinding, signOff, uploadReport } from "./api";
 import { FindingCard, SEVERITY_LABEL, SEVERITY_ORDER, SEVERITY_STYLE } from "./FindingCard";
 import type { Finding, Mode, Run, RunSummary, Severity } from "./types";
+
+type AppMode = Mode | "admin";
+const MODE_LABEL: Record<AppMode, string> = {
+  appraiser: "Appraiser",
+  reviewer: "QD Reviewer",
+  admin: "Admin",
+};
 
 const SIGN_OFF_LABEL: Record<string, string> = {
   in_review: "In review",
@@ -11,7 +19,8 @@ const SIGN_OFF_LABEL: Record<string, string> = {
 
 export default function App() {
   const [run, setRun] = useState<Run | null>(null);
-  const [mode, setMode] = useState<Mode>("appraiser");
+  const [appMode, setAppMode] = useState<AppMode>("appraiser");
+  const mode: Mode = appMode === "admin" ? "reviewer" : appMode;
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<RunSummary[]>([]);
@@ -88,13 +97,13 @@ export default function App() {
         <div className="mx-auto flex max-w-4xl items-center justify-between">
           <h1 className="text-lg font-semibold text-gray-900">UAD 3.6 QC</h1>
           <div className="flex rounded-lg border border-gray-300 text-sm">
-            {(["appraiser", "reviewer"] as Mode[]).map((m) => (
+            {(["appraiser", "reviewer", "admin"] as AppMode[]).map((m) => (
               <button
                 key={m}
-                onClick={() => setMode(m)}
-                className={`px-3 py-1.5 first:rounded-l-lg last:rounded-r-lg ${mode === m ? "bg-gray-900 text-white" : "bg-white text-gray-700"}`}
+                onClick={() => setAppMode(m)}
+                className={`px-3 py-1.5 first:rounded-l-lg last:rounded-r-lg ${appMode === m ? "bg-gray-900 text-white" : "bg-white text-gray-700"}`}
               >
-                {m === "appraiser" ? "Appraiser" : "QD Reviewer"}
+                {MODE_LABEL[m]}
               </button>
             ))}
           </div>
@@ -102,6 +111,9 @@ export default function App() {
       </header>
 
       <main className="mx-auto max-w-4xl space-y-6 px-6 py-8">
+        {appMode === "admin" && <AdminPanel />}
+        {appMode !== "admin" && (
+        <>
         <section className="rounded-lg border-2 border-dashed border-gray-300 bg-white p-8 text-center">
           <p className="text-sm text-gray-600">Upload a UAD 3.6 delivery (.zip) or report (.xml)</p>
           <input
@@ -273,6 +285,8 @@ export default function App() {
               ))}
             </ul>
           </section>
+        )}
+        </>
         )}
       </main>
     </div>

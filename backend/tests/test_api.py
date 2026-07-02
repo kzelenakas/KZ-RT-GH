@@ -28,7 +28,7 @@ def test_upload_sample_zip_end_to_end(client):
     assert response.status_code == 200, response.text
     payload = response.json()
     assert payload["schema_version"] == "GSE_UAD_3.6.0_v1.3"
-    assert payload["ruleset_version"].startswith("H1-v1.4-")
+    assert payload["ruleset_version"].startswith("db-v")  # DB snapshot version
     assert set(payload["counts"]) == {"HardStop", "Warning", "Advisory"}
     # SF1 is a complete official sample: all executable Fatal (HardStop) rules pass.
     # Warning-level findings (e.g. optional geocoding fields) are legitimate output.

@@ -11,7 +11,7 @@ router = APIRouter(prefix="/api")
 
 
 @router.post("/runs")
-async def create_run(file: UploadFile, request: Request) -> dict:
+async def create_run(file: UploadFile, request: Request, profile: str | None = None) -> dict:
     state = request.app.state
     data = await file.read()
     try:
@@ -21,12 +21,13 @@ async def create_run(file: UploadFile, request: Request) -> dict:
     adapter = state.adapter
     structural_errors = adapter.validate(raw)
     normalized = adapter.normalize(raw)
-    result = evaluate(normalized, state.rules)
+    rules, ruleset_version = state.rules_repo.active_rules(profile)
+    result = evaluate(normalized, rules)
     run_id = state.repo.save_run(
         filename=file.filename or "upload",
         file_hash=hashlib.sha256(data).hexdigest(),
         schema_version=adapter.schema_version,
-        ruleset_version=state.ruleset_version,
+        ruleset_version=ruleset_version,
         structural_errors=structural_errors,
         result=result,
     )
