@@ -1,0 +1,58 @@
+{
+  "name": "H1-seed-phase1",
+  "source": "UAD 3.6 Appendix H-1 Compliance Rules v1.4 (4 of 729 rules, hand-encoded for Phase 1)",
+  "rules": [
+    {
+      "rule_id": "UAD1001",
+      "category": "Subject Property",
+      "description": "Subject property physical address line must be provided.",
+      "severity": "HardStop",
+      "enabled": true,
+      "logic": { "type": "field_present", "field": "subject.AddressLineText" },
+      "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0007, Message ID UAD1001",
+      "messages": {
+        "reviewer": "Provide the address line for the subject property physical address."
+      }
+    },
+    {
+      "rule_id": "UAD1002",
+      "category": "Subject Property",
+      "description": "Subject property city name must be provided.",
+      "severity": "HardStop",
+      "enabled": true,
+      "logic": { "type": "field_present", "field": "subject.CityName" },
+      "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0009, Message ID UAD1002",
+      "messages": {
+        "reviewer": "Provide the city name for the subject property physical address."
+      }
+    },
+    {
+      "rule_id": "UAD1005",
+      "category": "Subject Property",
+      "description": "Subject property ZIP code must be 5 digits or ZIP+4.",
+      "severity": "HardStop",
+      "enabled": true,
+      "logic": { "type": "regex_match", "field": "subject.PostalCode", "pattern": "\\d{5}(-\\d{4})?" },
+      "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0011, Message ID UAD1005",
+      "messages": {
+        "reviewer": "The ZIP code for the subject property physical address must be either 5 digits, or 5 digits, a hyphen, and 4 digits (ZIP+4)."
+      }
+    },
+    {
+      "rule_id": "UAD1007",
+      "category": "Subject Property",
+      "description": "Subject property state code must be a valid 2-character US State or Territory Code.",
+      "severity": "HardStop",
+      "enabled": true,
+      "logic": {
+        "type": "field_in_set",
+        "field": "subject.StateCode",
+        "allowed": ["AL","AK","AS","AZ","AR","CA","CO","CT","DE","DC","FL","GA","GU","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MP","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","PR","RI","SC","SD","TN","TX","UT","VT","VA","VI","WA","WV","WI","WY"]
+      },
+      "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0012, Message ID UAD1007",
+      "messages": {
+        "reviewer": "The state code for the subject property physical address must be a valid 2-character US State or Territory Code."
+      }
+    }
+  ]
+}
