@@ -125,9 +125,23 @@ export default function App() {
                   {" · schema "}{run.schema_version}
                   {" · rules "}{run.ruleset_version}
                 </div>
-                <span className="whitespace-nowrap rounded bg-gray-100 px-2 py-1 font-medium text-gray-800">
-                  {SIGN_OFF_LABEL[run.sign_off_state] ?? run.sign_off_state}
-                  {run.reviewer_name ? ` · ${run.reviewer_name}` : ""}
+                <span className="flex items-center gap-2 whitespace-nowrap">
+                  <a
+                    href={`/api/runs/${run.id}/export?format=pdf&mode=${mode}`}
+                    className="rounded border border-gray-300 px-2 py-1 font-medium text-gray-700 hover:bg-gray-50"
+                  >
+                    PDF
+                  </a>
+                  <a
+                    href={`/api/runs/${run.id}/export?format=csv&mode=${mode}`}
+                    className="rounded border border-gray-300 px-2 py-1 font-medium text-gray-700 hover:bg-gray-50"
+                  >
+                    CSV
+                  </a>
+                  <span className="rounded bg-gray-100 px-2 py-1 font-medium text-gray-800">
+                    {SIGN_OFF_LABEL[run.sign_off_state] ?? run.sign_off_state}
+                    {run.reviewer_name ? ` · ${run.reviewer_name}` : ""}
+                  </span>
                 </span>
               </div>
             </section>

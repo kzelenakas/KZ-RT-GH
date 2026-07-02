@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app import config
-from app.api import meta, reviews, runs
+from app.api import exports, meta, reviews, runs
 from app.persistence import RunRepository, init_db
 from app.rules import load_ruleset
 from app.schema_adapters import get_default_adapter
@@ -27,6 +27,7 @@ def create_app() -> FastAPI:
 
     app.include_router(runs.router)
     app.include_router(reviews.router)
+    app.include_router(exports.router)
     app.include_router(meta.router)
 
     if config.FRONTEND_DIST.exists():
