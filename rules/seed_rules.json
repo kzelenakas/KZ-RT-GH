@@ -8,7 +8,7 @@
       "description": "Subject property physical address line must be provided.",
       "severity": "HardStop",
       "enabled": true,
-      "logic": { "type": "field_present", "field": "subject.AddressLineText" },
+      "logic": { "type": "field_present", "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/ADDRESS/AddressLineText" },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0007, Message ID UAD1001",
       "messages": {
         "reviewer": "Provide the address line for the subject property physical address."
@@ -20,7 +20,7 @@
       "description": "Subject property city name must be provided.",
       "severity": "HardStop",
       "enabled": true,
-      "logic": { "type": "field_present", "field": "subject.CityName" },
+      "logic": { "type": "field_present", "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/ADDRESS/CityName" },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0009, Message ID UAD1002",
       "messages": {
         "reviewer": "Provide the city name for the subject property physical address."
@@ -32,7 +32,7 @@
       "description": "Subject property ZIP code must be 5 digits or ZIP+4.",
       "severity": "HardStop",
       "enabled": true,
-      "logic": { "type": "regex_match", "field": "subject.PostalCode", "pattern": "\\d{5}(-\\d{4})?" },
+      "logic": { "type": "regex_match", "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/ADDRESS/PostalCode", "pattern": "\\d{5}(-\\d{4})?" },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0011, Message ID UAD1005",
       "messages": {
         "reviewer": "The ZIP code for the subject property physical address must be either 5 digits, or 5 digits, a hyphen, and 4 digits (ZIP+4)."
@@ -46,7 +46,7 @@
       "enabled": true,
       "logic": {
         "type": "field_in_set",
-        "field": "subject.StateCode",
+        "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/ADDRESS/StateCode",
         "allowed": ["AL","AK","AS","AZ","AR","CA","CO","CT","DE","DC","FL","GA","GU","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MP","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","PR","RI","SC","SD","TN","TX","UT","VT","VA","VI","WA","WV","WI","WY"]
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0012, Message ID UAD1007",
@@ -56,3 +56,4 @@
     }
   ]
 }
+

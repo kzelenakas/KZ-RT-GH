@@ -11,6 +11,8 @@ sys.path.insert(0, str(BACKEND_DIR))
 REPO_ROOT = BACKEND_DIR.parent
 SAMPLES_DIR = REPO_ROOT / "Sample reports"
 XSD_PATH = REPO_ROOT / "GSE_UAD_3.6.0_v1.3_schema" / "Combined" / "GSE_UAD_3.6.0_v1.3.xsd"
+MANIFEST_PATH = REPO_ROOT / "schemas" / "uad36_field_manifest.json"
+SUBJECT_ADDRESS = "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/ADDRESS"
 
 TINY_XML = b'<?xml version="1.0" encoding="UTF-8"?><MESSAGE xmlns="http://www.mismo.org/residential/2009/schemas"></MESSAGE>'
 

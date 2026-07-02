@@ -44,8 +44,22 @@ def field_in_set(logic: dict, report: NormalizedReport) -> OperatorResult:
     return OperatorResult(triggered=str(value) not in allowed, values={logic["field"]: value})
 
 
+def numeric_range(logic: dict, report: NormalizedReport) -> OperatorResult:
+    value = _value(report, logic["field"])
+    if value is None or str(value).strip() == "":
+        return OperatorResult(triggered=False)
+    try:
+        number = float(str(value).replace(",", ""))
+    except ValueError:
+        return OperatorResult(triggered=True, values={logic["field"]: value})
+    low, high = logic.get("min"), logic.get("max")
+    out_of_range = (low is not None and number < low) or (high is not None and number > high)
+    return OperatorResult(triggered=out_of_range, values={logic["field"]: value})
+
+
 OPERATORS: dict[str, OperatorFn] = {
     "field_present": field_present,
     "regex_match": regex_match,
     "field_in_set": field_in_set,
+    "numeric_range": numeric_range,
 }

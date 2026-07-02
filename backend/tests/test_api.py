@@ -28,10 +28,13 @@ def test_upload_sample_zip_end_to_end(client):
     assert response.status_code == 200, response.text
     payload = response.json()
     assert payload["schema_version"] == "GSE_UAD_3.6.0_v1.3"
-    assert payload["ruleset_version"].startswith("H1-seed-phase1-")
+    assert payload["ruleset_version"].startswith("H1-v1.4-")
     assert set(payload["counts"]) == {"HardStop", "Warning", "Advisory"}
-    # SF1 subject address is complete and valid -> the 4 seed rules pass
-    assert payload["findings"] == []
+    # SF1 is a complete official sample: all executable Fatal (HardStop) rules pass.
+    # Warning-level findings (e.g. optional geocoding fields) are legitimate output.
+    assert payload["counts"]["HardStop"] == 0, [
+        f["rule_id"] for f in payload["findings"] if f["severity"] == "HardStop"
+    ]
     assert payload["rule_errors"] == []
     assert len(payload["file_hash"]) == 64  # sha256 hex
 
@@ -49,8 +52,8 @@ def test_upload_broken_report_produces_findings(client):
     ns = {"m": "http://www.mismo.org/residential/2009/schemas"}
     doc = etree.fromstring(xml_bytes)
     address = doc.xpath("//m:VALUATION_ANALYSIS/m:PROPERTIES/m:PROPERTY[1]/m:ADDRESS", namespaces=ns)[0]
-    address.find("m:CityName", ns).text = ""
-    address.find("m:PostalCode", ns).text = "1234"
+    address.find("m:CityName", ns).text = ""  # fires UAD1002 (field_present)
+    address.find("m:PostalCode", ns).text = "1234"  # fires UAD1005 (zip format)
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w") as zf:
         zf.writestr("broken.xml", etree.tostring(doc))
@@ -59,9 +62,8 @@ def test_upload_broken_report_produces_findings(client):
     response = client.post("/api/runs", files={"file": ("broken.zip", buf, "application/zip")})
     assert response.status_code == 200
     payload = response.json()
-    fired = {f["rule_id"] for f in payload["findings"]}
-    assert fired == {"UAD1002", "UAD1005"}
-    assert payload["counts"]["HardStop"] == 2
+    fired = {f["rule_id"] for f in payload["findings"] if f["severity"] == "HardStop"}
+    assert {"UAD1002", "UAD1005"} <= fired
     city = next(f for f in payload["findings"] if f["rule_id"] == "UAD1002")
     assert city["severity"] == "HardStop"
     assert city["citation"].startswith("UAD 3.6 Appendix H-1")
@@ -80,7 +82,7 @@ def test_run_history_and_detail(client):
     listing = client.get("/api/runs").json()
     assert listing[0]["id"] == run_id
     detail = client.get(f"/api/runs/{run_id}").json()
-    assert detail["findings"] == []
+    assert detail["counts"]["HardStop"] == 0
     assert client.get("/api/runs/does-not-exist").status_code == 404
 
 
@@ -88,4 +90,4 @@ def test_run_history_and_detail(client):
 def test_meta(client):
     meta = client.get("/api/meta").json()
     assert meta["schema_version"] == "GSE_UAD_3.6.0_v1.3"
-    assert meta["rule_count"] == 4
+    assert meta["rule_count"] == 729
