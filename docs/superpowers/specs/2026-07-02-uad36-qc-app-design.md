@@ -15,6 +15,27 @@
 | Sample file | Kevin will provide one real UAD 3.6 delivery zip | Dropped in `samples/`, PII-scrubbed. Build starts on fabricated samples; ingest re-validated against the real file when it arrives. |
 | GCP shape | **Cloud Run + Cloud SQL (Postgres) + Cloud Storage** | ⚠️ ASSUMED (user was away when asked). Scales to zero when idle (~$12–20/mo, mostly the database). Swappable before build if Kevin prefers a single VM. |
 
+## UPDATE (same day): Deferred Inputs Have Arrived
+
+The README's "deferred inputs — do not invent them" constraint is now largely satisfied. Kevin dropped the official GSE artifacts into the repo:
+
+| Artifact | Location | What it gives us |
+|----------|----------|------------------|
+| **UAD 3.6 XSD schema v1.3** | `GSE_UAD_3.6.0_v1.3_schema/Combined/GSE_UAD_3.6.0_v1.3.xsd` (+ Individual variants) | Real structural validation — validate any UAD 3.6 XML directly against the official XSD (lxml). No placeholder schema validation needed. |
+| **Appendix A-1 URAR Delivery Specification** | `GSE_UAD_3.6.0_v1.3_schema/appendix-a-1-urar-delivery-specification.xlsx` | Field dictionary / XPath mapping — the source for the Schema Adapter's normalized field paths, labels, and report-section references. |
+| **Appendix H-1 UAD Compliance Rules v1.4** | `QC_rules/Appendix H-1 - Compliance Rules - UAD Compliance Rules v1.4.csv` | **729 real GSE rules** (597 Fatal, 132 Warning) with Unique ID, Message ID/Text, natural-language Rule Logic, Severity, Report Section/Subsection, XPath, format constraints. This becomes the seed ruleset. |
+| **3 official sample reports** | `Sample reports/SF1_… SF3_… Condo2_Appraisal_v1.4.zip` | Real delivery zips (XML + PDF + `Images/` — structure matches the README's assumption exactly). Test fixtures for ingest + end-to-end. GSE-published samples, no real borrower PII. |
+| Reference PDFs (Appendix C-1, E, E-1, F-1, G-1) | `GSE_UAD_3.6.0_v1.3_schema/` | Human-readable reference for report locations, display labels, and codes. |
+
+**Impact on this design (architecture unchanged — contracts absorb the real inputs as intended):**
+
+- **Structural validation** = XSD validation against the official schema. `schema_version` recorded as `GSE_UAD_3.6.0_v1.3`.
+- **Schema Adapter** `UAD36v13Adapter` is built for real, driven by the A-1 spec. The `PlaceholderAdapter` survives only as a test fixture proving the contract is pluggable.
+- **Seed ruleset** = H-1 import pipeline (CSV → rule JSON → DB), ruleset version `H-1 v1.4`. Severity mapping: Fatal → HardStop, Warning → Warning (Advisory tier stays available for future/custom rules).
+- **H-1 Rule Logic is natural language.** Conversion strategy: auto-convert the mechanical majority ("X is not provided" → `field_present`, format text + Date/Number Format columns → `regex_match`/`numeric_range`, valid-code checks → `field_in_set` from the XSD enumerations); rules whose logic can't be auto-converted are imported with logic type `needs_encoding` — they appear in Admin flagged as not-yet-executable and get encoded in batches during build. Nothing is silently dropped or fabricated.
+- **Messages:** H-1 supplies one message text per rule → used for both variants (per the contract). Coaching variants can be authored later in Admin, and may be AI-assist-drafted for human review.
+- **Sample file question is moot** — three official samples already in `samples/` scope.
+
 ## Architecture Overview
 
 ```
@@ -169,12 +190,13 @@ React + Vite + TypeScript + Tailwind. Pages: **Upload**, **Run detail** (mode sw
 
 ## Build Phases (roadmap summary — full checklist in docs/ROADMAP.md at build time)
 
-1. **Skeleton end-to-end (local):** contracts, engine, placeholder adapter + 3–4 placeholder rules, ingest, minimal UI. Sample zip flows upload → findings.
-2. **Both modes:** findings UI, fix-it checklist, reviewer verification + sign-off.
-3. **Admin mode:** rules CRUD, on/off, profiles, import/export, ruleset versioning.
-4. **Exports + history:** PDF, CSV, run history with filter/search, audit log.
-5. **AI rule type:** backend interface, stub + Gemini + Vertex implementations, 1–2 live demo rules.
-6. **GCP deploy:** Docker, Cloud Run, Cloud SQL, Cloud Storage, IAP — with step-by-step instructions written for a non-developer, plus master checklist.
+1. **Skeleton end-to-end (local):** contracts, pure engine, ingest (zip → XML/PDF/Images), **real XSD structural validation**, minimal adapter + handful of rules, minimal UI. Official GSE sample zip flows upload → findings.
+2. **Real schema + ruleset:** `UAD36v13Adapter` from Appendix A-1, H-1 import pipeline (729 rules; auto-convert mechanical logic, flag the rest `needs_encoding`), engine runs seed ruleset against all three sample reports.
+3. **Both modes:** findings UI, fix-it checklist, reviewer verification + sign-off.
+4. **Admin mode:** rules CRUD, on/off, profiles, import/export, ruleset versioning, `needs_encoding` queue.
+5. **Exports + history:** PDF, CSV, run history with filter/search, audit log.
+6. **AI rule type:** backend interface, stub + Gemini + Vertex implementations, 1–2 live demo rules (e.g. boilerplate-commentary flag).
+7. **GCP deploy:** Docker, Cloud Run, Cloud SQL, Cloud Storage, IAP — with step-by-step instructions written for a non-developer, plus master checklist.
 
 Budget check: idle cost ~$12–20/mo → $300 covers the beta period comfortably, AI demo rules cost cents per run.
 
