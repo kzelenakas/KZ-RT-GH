@@ -17,3 +17,13 @@ MANIFEST_PATH = Path(os.environ.get(
 DATA_DIR = Path(os.environ.get("QC_DATA_DIR", str(BACKEND_DIR / "data")))
 DB_URL = f"sqlite:///{DATA_DIR / 'qc.sqlite3'}"
 FRONTEND_DIST = REPO_ROOT / "frontend" / "dist"
+
+# --- AI rule processing -----------------------------------------------------
+# QC_AI_BACKEND: stub (default, offline) | gemini (dev key, SAMPLE DATA ONLY) | vertex
+# QC_DATA_CLASS: sample (default) | real  -- GLBA guardrail: 'real' blocks gemini.
+AI_BACKEND = os.environ.get("QC_AI_BACKEND", "stub")
+DATA_CLASS = os.environ.get("QC_DATA_CLASS", "sample")
+GEMINI_API_KEY = os.environ.get("QC_GEMINI_API_KEY", "")
+VERTEX_PROJECT = os.environ.get("QC_VERTEX_PROJECT", "")
+VERTEX_LOCATION = os.environ.get("QC_VERTEX_LOCATION", "us-central1")
+AI_MODEL = os.environ.get("QC_AI_MODEL", "gemini-2.0-flash")

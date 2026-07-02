@@ -7,6 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from app import config
 from app.api import admin, exports, meta, reviews, runs
 from app.persistence import RulesRepository, RunRepository, init_db
+from app.rules.ai_backends import build_backend
 from app.schema_adapters import get_default_adapter
 
 
@@ -18,6 +19,20 @@ def create_app() -> FastAPI:
     app.state.rules_repo = RulesRepository(sessions)
     # First boot: seed the rules DB from the external ruleset file (H-1 import).
     app.state.rules_repo.seed_from_file(config.RULES_PATH)
+
+    # GLBA guardrail: the Gemini developer-key backend never sees real reports.
+    if config.DATA_CLASS == "real" and config.AI_BACKEND == "gemini":
+        raise RuntimeError(
+            "QC_DATA_CLASS=real with QC_AI_BACKEND=gemini is blocked: developer-key "
+            "Gemini may use inputs for training (GLBA risk). Use vertex or stub."
+        )
+    app.state.ai_backend = build_backend(
+        config.AI_BACKEND,
+        gemini_api_key=config.GEMINI_API_KEY,
+        vertex_project=config.VERTEX_PROJECT,
+        vertex_location=config.VERTEX_LOCATION,
+        model=config.AI_MODEL,
+    )
 
     # Dev convenience: allow the Vite dev server origin.
     app.add_middleware(

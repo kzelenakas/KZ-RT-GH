@@ -22,7 +22,7 @@ async def create_run(file: UploadFile, request: Request, profile: str | None = N
     structural_errors = adapter.validate(raw)
     normalized = adapter.normalize(raw)
     rules, ruleset_version = state.rules_repo.active_rules(profile)
-    result = evaluate(normalized, rules)
+    result = evaluate(normalized, rules, ai_backend=state.ai_backend)
     run_id = state.repo.save_run(
         filename=file.filename or "upload",
         file_hash=hashlib.sha256(data).hexdigest(),
