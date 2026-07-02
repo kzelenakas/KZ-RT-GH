@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns="http://www.mismo.org/residential/2009/schemas" xmlns:mismo="http://www.mismo.org/residential/2009/schemas" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.mismo.org/residential/2009/schemas" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xsd:annotation>
+		<xsd:documentation>Version: GSE 3.6.0 Build: v1.3 Date: 2024-08-05</xsd:documentation>
+		<xsd:documentation>GSE Subschema and Related Documentation © 2024 Fannie Mae and Freddie Mac. Subject to the UCDP Terms and Conditions published by Fannie Mae and Freddie Mac and as amended from time to time.</xsd:documentation>
+		<xsd:documentation>IMPORTANT NOTICE: The GSE Subschema and Related Documentation are based upon and/or incorporate elements of the XML Schema 3.6 (MISMO Components), which Schema is a MISMO Product as defined in version 2.0 of the Intellectual Property Rights Policy of the Mortgage Industry Standards Maintenance Organization, Inc. ("MISMO") (available for reference at http://www.mismo.org). Fannie Mae and Freddie Mac are licensed to distribute the MISMO Components pursuant to the then-current MISMO Distributor License, also published at http://www.mismo.org. </xsd:documentation>
+		<xsd:documentation>MISMO Products are encouraged to register with MISMO as a MISMO Product user (use https://www.mismo.org/get-involved/register-as-a-mismo-product-user). </xsd:documentation>
+	</xsd:annotation>
+	<xsd:include schemaLocation="GSE_UAD_3.6.0_ComplexTypes_v1.3.xsd"/>
+	<xsd:import namespace="http://www.w3.org/1999/xlink" schemaLocation="GSE_UAD_3.6.0_xlink_v1.3.xsd"/>
+	<xsd:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+	<xsd:element name="MESSAGE" type="MESSAGE">
+		<xsd:annotation>
+			<xsd:documentation>MESSAGE is the root node for V3. It represents the message payload of any SOAP or REST transaction. In SOAP MESSAGE is the content of &amp;gt;soap:body&amp;lt;. In REST MESSAGE is the document that is in the PUT, GET or DELETE HTTP protocol methods.</xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+</xsd:schema>

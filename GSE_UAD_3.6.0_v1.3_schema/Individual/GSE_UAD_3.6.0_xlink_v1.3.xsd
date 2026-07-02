@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.w3.org/1999/xlink" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation>Version: GSE 3.6.0 Build: v1.3 Date: 2024-08-05</xs:documentation>
+		<xs:documentation>GSE Subschema and Related Documentation © 2024 Fannie Mae and Freddie Mac. Subject to the UCDP Terms and Conditions published by Fannie Mae and Freddie Mac and as amended from time to time.</xs:documentation>
+		<xs:documentation>IMPORTANT NOTICE: The GSE Subschema and Related Documentation are based upon and/or incorporate elements of the XML Schema 3.6 (MISMO Components), which Schema is a MISMO Product as defined in version 2.0 of the Intellectual Property Rights Policy of the Mortgage Industry Standards Maintenance Organization, Inc. ("MISMO") (available for reference at http://www.mismo.org). Fannie Mae and Freddie Mac are licensed to distribute the MISMO Components pursuant to the then-current MISMO Distributor License, also published at http://www.mismo.org. </xs:documentation>
+		<xs:documentation>MISMO Products are encouraged to register with MISMO as a MISMO Product user (use https://www.mismo.org/get-involved/register-as-a-mismo-product-user). </xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="xlink.xsd"/>
+	<xs:annotation>
+		<xs:documentation>The included xlink.xsd file should match the one defined by the W3C and found at http://www.w3.org/1999/xlink.xsd with the exception that the import for the XML namespace (http://www.w3.org/XML/1998/namespace) uses a relative file path for the schemaLocation (xml.xsd) instead of the fully qualified web based location. Other versions that include toplevel definitions of the standard xlink attributes required by MISMO (label, from, to) could be used as well. The arcrole attribute is only restricted when it is used in the MISMOarcLink group allowing the standard definition to be used elsewhere.</xs:documentation>
+	</xs:annotation>
+	<xs:simpleType name="ArcroleBase">
+		<xs:annotation>
+			<xs:documentation>The base set of arcroles defined by MISMO; the uri MUST have the initial version of the LDD (/mismo_n_n_n_0) that included  the definition. Once an LDD version is assigned, it never changes even when a new major version is built.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:anyURI">
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/DATA_SOURCE_IsDataSourceFor_AccessoryDwellingUnitLegallyRentableIndicator">
+				<xs:annotation>
+					<xs:documentation>Link DATA_SOURCE to the item that needs a source of information identified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/DATA_SOURCE_IsDataSourceFor_COST_APPROACH">
+				<xs:annotation>
+					<xs:documentation>Link DATA_SOURCE to the item that needs a source of information identified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/DATA_SOURCE_IsDataSourceFor_LISTING_INFORMATION_SUMMARY">
+				<xs:annotation>
+					<xs:documentation>Link DATA_SOURCE to the item that needs a source of information identified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/DATA_SOURCE_IsDataSourceFor_MARKET_TREND">
+				<xs:annotation>
+					<xs:documentation>Link DATA_SOURCE to the item that needs a source of information identified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/DATA_SOURCE_IsDataSourceFor_PriorSalesOrTransfersIndicator">
+				<xs:annotation>
+					<xs:documentation>Link DATA_SOURCE to the item that needs a source of information identified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/DATA_SOURCE_IsDataSourceFor_PROJECT">
+				<xs:annotation>
+					<xs:documentation>Link DATA_SOURCE to the item that needs a source of information identified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/DATA_SOURCE_IsDataSourceFor_PROPERTY">
+				<xs:annotation>
+					<xs:documentation>Link DATA_SOURCE to the item that needs a source of information identified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/DATA_SOURCE_IsDataSourceFor_SALES_HISTORY">
+				<xs:annotation>
+					<xs:documentation>Link DATA_SOURCE to the item that needs a source of information identified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/DATA_SOURCE_IsDataSourceFor_PROPERTY_UNIT_AREA">
+				<xs:annotation>
+					<xs:documentation>Link DATA_SOURCE to the item that needs a source of information identified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/DEFECT_ContainsDefectOf_AMENITY">
+				<xs:annotation>
+					<xs:documentation>Link DEFECT container to the container where the defect has been identified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/DEFECT_ContainsDefectOf_CAR_STORAGE">
+				<xs:annotation>
+					<xs:documentation>Link DEFECT container to the container where the defect has been identified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/DEFECT_ContainsDefectOf_IMPROVEMENT">
+				<xs:annotation>
+					<xs:documentation>Link DEFECT container to the container where the defect has been identified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/DEFECT_ContainsDefectOf_PROPERTY_UNIT">
+				<xs:annotation>
+					<xs:documentation>Link DEFECT container to the container where the defect has been identified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/DEFECT_ContainsDefectOf_SITE">
+				<xs:annotation>
+					<xs:documentation>Link DEFECT container to the container where the defect has been identified.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/IMPROVEMENT_COST_AND_DEPRECIATED_VALUE_IsAssociatedWith_IMPROVEMENT">
+				<xs:annotation>
+					<xs:documentation>The IMPROVEMENT_COST_AND_DEPRECIATED_VALUE is associated with IMPROVEMENT.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/INSPECTION_CompletedBy_ROLE">
+				<xs:annotation>
+					<xs:documentation>Link INSPECTION container to the person who completed the inspection.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/PROPERTY_UNIT_IsComparableFor_PROPERTY_UNIT">
+				<xs:annotation>
+					<xs:documentation>Link container instance that is used for comparison from the comparable property to subject property.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/RENTAL_INFORMATION_IsComparableFor_RENTAL_INFORMATION">
+				<xs:annotation>
+					<xs:documentation>Link container instance that is used for comparison from the comparable property to subject property.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="urn:fdc:mismo.org:2009:residential/SIGNATORY_IsAssociatedWith_ROLE">
+				<xs:annotation>
+					<xs:documentation>The signature is associated with ROLE.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:attributeGroup name="MISMOarcLink">
+		<xs:annotation>
+			<xs:documentation>An xlink set of attributes that identifies two end points and the kind of relationship they have to each other.</xs:documentation>
+			<xs:documentation>term: Arc Link</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="arcrole" type="xlink:ArcroleBase" use="required"/>
+		<xs:attribute ref="xlink:from" use="required"/>
+		<xs:attribute ref="xlink:to" use="required"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="MISMOresourceLink">
+		<xs:annotation>
+			<xs:documentation>An xlink attribute group for defining the end point of a relationship.</xs:documentation>
+			<xs:documentation>term: Resource Endpoint</xs:documentation>
+		</xs:annotation>
+		<xs:attribute ref="xlink:label"/>
+	</xs:attributeGroup>
+</xs:schema>
