@@ -23,6 +23,9 @@ class RunRow(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
     schema_version: Mapped[str] = mapped_column(String(100))
     ruleset_version: Mapped[str] = mapped_column(String(200))
+    sign_off_state: Mapped[str] = mapped_column(String(20), default="in_review")
+    reviewer_name: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    signed_off_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
 class StructuralErrorRow(Base):
@@ -48,6 +51,10 @@ class FindingRow(Base):
     section: Mapped[str | None] = mapped_column(String(200), nullable=True)
     values_json: Mapped[dict] = mapped_column(JSON, default=dict)
     citation: Mapped[str | None] = mapped_column(Text, nullable=True)
+    appraiser_checked: Mapped[bool] = mapped_column(default=False)
+    reviewer_status: Mapped[str] = mapped_column(String(30), default="pending")
+    reviewer_note: Mapped[str | None] = mapped_column(Text, nullable=True)
+    reviewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
 
 class RuleErrorRow(Base):
@@ -57,3 +64,14 @@ class RuleErrorRow(Base):
     rule_id: Mapped[str] = mapped_column(String(100))
     error_type: Mapped[str] = mapped_column(String(50))
     detail: Mapped[str] = mapped_column(Text)
+
+
+class AuditLogRow(Base):
+    __tablename__ = "audit_log"
+    # Append-only: reviewer/appraiser actions with timestamps (spec: audit trail).
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    run_id: Mapped[str] = mapped_column(ForeignKey("runs.id"), index=True)
+    actor_role: Mapped[str] = mapped_column(String(20))
+    action: Mapped[str] = mapped_column(String(50))
+    detail: Mapped[str] = mapped_column(Text, default="")
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
