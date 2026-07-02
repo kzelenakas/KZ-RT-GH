@@ -58,6 +58,16 @@ def test_uad_adapter_extracts_all_manifest_fields():
 
 
 @needs_official_files
+def test_uad_adapter_reads_xml_attributes():
+    # H-1 references some data points as XML attributes, e.g.
+    # MESSAGE/@MISMOReferenceModelIdentifier. SF1 carries "3.6.0366".
+    report = make_adapter().normalize(sf1_raw())
+    key = "doc:MESSAGE/@MISMOReferenceModelIdentifier"
+    if key in report.fields:  # present only if the manifest includes it
+        assert report.fields[key].value == "3.6.0366"
+
+
+@needs_official_files
 def test_uad_adapter_handles_missing_content_gracefully():
     raw = RawReport(
         source_filename="t.xml",

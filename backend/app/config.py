@@ -15,7 +15,12 @@ MANIFEST_PATH = Path(os.environ.get(
     "QC_MANIFEST_PATH", str(REPO_ROOT / "schemas" / "uad36_field_manifest.json"),
 ))
 DATA_DIR = Path(os.environ.get("QC_DATA_DIR", str(BACKEND_DIR / "data")))
-DB_URL = f"sqlite:///{DATA_DIR / 'qc.sqlite3'}"
+# Postgres in production (Cloud SQL): postgresql+psycopg://user:pass@host/db
+# or unix socket: postgresql+psycopg://user:pass@/db?host=/cloudsql/PROJECT:REGION:INSTANCE
+DB_URL = os.environ.get("QC_DB_URL", f"sqlite:///{DATA_DIR / 'qc.sqlite3'}")
+# Originals of uploaded reports are retained here (mount a GCS bucket via
+# Cloud Storage FUSE volume on Cloud Run to make this durable in production).
+FILES_DIR = Path(os.environ.get("QC_FILES_DIR", str(DATA_DIR / "files")))
 FRONTEND_DIST = REPO_ROOT / "frontend" / "dist"
 
 # --- AI rule processing -----------------------------------------------------

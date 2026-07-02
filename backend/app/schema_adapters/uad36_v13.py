@@ -60,9 +60,7 @@ class UAD36v13Adapter:
         for entry in self._fields:
             value = None
             if doc is not None:
-                element = self._resolve(doc, subject, entry)
-                if element is not None and element.text is not None:
-                    value = element.text
+                value = self._resolve_value(doc, subject, entry)
             fields[entry["key"]] = NormalizedField(
                 value=value,
                 xpath=f"{entry['xpath_dir']}{entry['element']}",
@@ -79,14 +77,40 @@ class UAD36v13Adapter:
         return nodes[0] if nodes else None
 
     @staticmethod
-    def _resolve(doc, subject, entry: dict):
+    def _split_attribute(steps: list[str]) -> tuple[list[str], str | None]:
+        """H-1 xpaths address XML attributes as '.../@' + name (e.g.
+        MESSAGE/@MISMOReferenceModelIdentifier). Split node steps from the
+        attribute name."""
+        node_steps: list[str] = []
+        for i, step in enumerate(steps):
+            if step == "@":
+                return node_steps, (steps[i + 1] if i + 1 < len(steps) else None)
+            if step.startswith("@"):
+                return node_steps, step[1:]
+            node_steps.append(step)
+        return node_steps, None
+
+    @classmethod
+    def _resolve_value(cls, doc, subject, entry: dict) -> str | None:
         steps = _local_steps(entry["xpath_dir"]) + [entry["element"]]
-        if entry["scope"] == "subject" and "PROPERTY" in steps:
+        node_steps, attribute = cls._split_attribute(steps)
+        if entry["scope"] == "subject" and "PROPERTY" in node_steps:
             if subject is None:
                 return None
-            rel = steps[steps.index("PROPERTY") + 1:]
-            return _find_first(subject, rel)
-        # doc scope (or subject-scoped paths outside PROPERTY): first match anywhere
-        xpath = "//" + "/".join(f"*[local-name()='{s}']" for s in steps)
-        found = doc.xpath(xpath)
-        return found[0] if found else None
+            rel = node_steps[node_steps.index("PROPERTY") + 1:]
+            node = _find_first(subject, rel)
+        elif node_steps:
+            # doc scope (or subject-scoped paths outside PROPERTY): first match
+            # anywhere. The document root itself (e.g. MESSAGE) is matched too.
+            xpath = "//" + "/".join(f"*[local-name()='{s}']" for s in node_steps)
+            found = doc.xpath(xpath)
+            node = found[0] if found else None
+            if node is None and etree.QName(doc).localname == node_steps[0]:
+                node = _find_first(doc, node_steps[1:]) if len(node_steps) > 1 else doc
+        else:
+            node = doc
+        if node is None:
+            return None
+        if attribute:
+            return node.get(attribute)
+        return node.text

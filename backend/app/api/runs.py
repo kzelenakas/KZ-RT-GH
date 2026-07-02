@@ -4,10 +4,20 @@ import hashlib
 
 from fastapi import APIRouter, HTTPException, Request, UploadFile
 
+from app import config
 from app.ingest import IngestError, extract
 from app.rules import evaluate
 
 router = APIRouter(prefix="/api")
+
+
+def _retain_original(run_id: str, filename: str, data: bytes) -> None:
+    """Keep the uploaded original (spec: full retention). Filesystem-backed so a
+    GCS FUSE volume makes it durable on Cloud Run without code changes."""
+    safe_name = filename.replace("/", "_").replace("\\", "_")
+    target_dir = config.FILES_DIR / run_id
+    target_dir.mkdir(parents=True, exist_ok=True)
+    (target_dir / safe_name).write_bytes(data)
 
 
 @router.post("/runs")
@@ -31,6 +41,7 @@ async def create_run(file: UploadFile, request: Request, profile: str | None = N
         structural_errors=structural_errors,
         result=result,
     )
+    _retain_original(run_id, file.filename or "upload", data)
     return state.repo.get_run(run_id)
 
 

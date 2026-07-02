@@ -1,0 +1,16 @@
+backend/.venv/
+backend/data/
+backend/tests/
+frontend/node_modules/
+frontend/dist/
+Sample reports/
+QC_rules/
+GSE_UAD_3.6.0_v1.3_schema/*.pdf
+GSE_UAD_3.6.0_v1.3_schema/*.xlsx
+GSE_UAD_3.6.0_v1.3_schema/*.zip
+GSE_UAD_3.6.0_v1.3_schema/Individual/
+docs/
+.git/
+.claude/
+__pycache__/
+*.pyc

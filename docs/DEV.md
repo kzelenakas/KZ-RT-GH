@@ -18,6 +18,13 @@ Upload `Sample reports\SF1_Appraisal_v1.4.zip`. You should see:
 
 Toggle Appraiser / QD Reviewer — reviewer mode shows citations and rule errors.
 
+## If the app errors after an update
+
+The local dev database (`backend\data\qc.sqlite3`) doesn't auto-upgrade when the
+data model changes. It's disposable dev data — delete `backend\data` and restart;
+it rebuilds itself (rules re-seed automatically). Production uses Postgres with
+managed migrations instead.
+
 ## Tests
 `backend\.venv\Scripts\python.exe -m pytest backend/tests -v`
 
