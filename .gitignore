@@ -5,3 +5,6 @@ __pycache__/
 .pytest_cache/
 frontend/node_modules/
 frontend/dist/
+
+.claude-flow/
+KZ-RT-GH/
