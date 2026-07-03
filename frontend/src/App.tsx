@@ -25,6 +25,7 @@ export default function App() {
   const [error, setError] = useState<string | null>(null);
   const [history, setHistory] = useState<RunSummary[]>([]);
   const [reviewerName, setReviewerName] = useState("");
+  const [dragOver, setDragOver] = useState(false);
 
   async function refreshHistory() {
     try {
@@ -114,8 +115,22 @@ export default function App() {
         {appMode === "admin" && <AdminPanel />}
         {appMode !== "admin" && (
         <>
-        <section className="rounded-lg border-2 border-dashed border-gray-300 bg-white p-8 text-center">
-          <p className="text-sm text-gray-600">Upload a UAD 3.6 delivery (.zip) or report (.xml)</p>
+        <section
+          onDragOver={(e) => {
+            e.preventDefault();
+            if (!busy) setDragOver(true);
+          }}
+          onDragLeave={() => setDragOver(false)}
+          onDrop={(e) => {
+            e.preventDefault();
+            setDragOver(false);
+            if (!busy) onFile(e.dataTransfer.files?.[0]);
+          }}
+          className={`rounded-lg border-2 border-dashed p-8 text-center transition-colors ${dragOver ? "border-gray-900 bg-gray-100" : "border-gray-300 bg-white"}`}
+        >
+          <p className="text-sm text-gray-600">
+            Drag &amp; drop a UAD 3.6 delivery (.zip) or report (.xml) here, or choose a file
+          </p>
           <input
             type="file"
             accept=".zip,.xml"
