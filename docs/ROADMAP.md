@@ -31,7 +31,7 @@ All commands run in **PowerShell**, from the project folder:
   - **Appraiser** — coaching view; findings have checkboxes (fix-it checklist).
   - **QD Reviewer** — same findings with citations, verdict buttons, note field,
     sign-off bar (Sign off / Return to appraiser), rule-error panel.
-  - **Admin** — 729 rules; tabs All / Enabled / **Needs encoding** (the 653 waiting for logic);
+  - **Admin** — 729 rules; tabs All / Enabled / **Needs encoding** (the 566 waiting for logic);
     search box; ON/OFF toggles; Edit forms; **Client profiles** tab; Export/Import rules buttons.
 - [ ] **A6. Export.** With a run open, click **PDF** and **CSV** in the metadata bar. Open both —
   metadata (file, hash, timestamp, schema version, ruleset version, mode, reviewer, counts) is on every export.
@@ -51,7 +51,9 @@ the local dev database rebuilds itself (rules re-seed automatically). Nothing im
   bad ZIP code — ask me to generate `samples\SF1_broken_demo.zip` for you).
 - [ ] **B3. Talking points that matter to executives:**
   - Runs the **official GSE rule set** (Appendix H-1, 729 rules) against the **official UAD 3.6 schema** — not homemade rules.
-  - **76 rules live today; 653 queued** with GSE's exact wording preserved — the growth path is data entry + review, not a rebuild.
+  - **163 rules live today; 566 queued** with GSE's exact wording preserved — the growth path is data entry + review, not a rebuild.
+    (2026-07-03: added a `conditional` logic type — "if FieldA = X, require FieldB present" — which auto-encoded 83
+    more rules plus 4 simple numeric-bound rules, up from the original 76.)
   - One codebase, three audiences (appraiser self-check / QD audit / admin) — the appraiser fixes issues **before** delivery.
   - Client-specific rulesets (profiles) already work — lender customization is a selling point.
   - Every run records the exact schema + ruleset version — **reproducible and audit-defensible**.
@@ -185,14 +187,14 @@ gcloud iap web add-iam-policy-binding --resource-type=cloud-run --service=uad36-
 
 ## STAGE F — Grow the rule set (ongoing; this is where the product value compounds)
 
-**Goal:** work the 653-rule "Needs encoding" queue down, add coaching messages, build client profiles.
+**Goal:** work the 566-rule "Needs encoding" queue down, add coaching messages, build client profiles.
 
 - [ ] **F1. Weekly encoding session (suggest: your 12–3p deep-work block).**
   Admin → **Needs encoding** tab → pick 10–20 rules → for each:
   1. Read the preserved GSE logic text (it's in the Description).
   2. Edit → change `logic` from `needs_encoding` to a real type
-     (`field_present` / `regex_match` / `field_in_set` / `numeric_range` / `ai` — cheat sheet
-     in `docs\INTEGRATION.md`).
+     (`field_present` / `regex_match` / `field_in_set` / `numeric_range` / `conditional` / `ai` —
+     cheat sheet in `docs\INTEGRATION.md`).
   3. Save (auto-freezes a new ruleset version) → toggle ON → verify against a sample upload.
   *Shortcut: paste a batch of rule IDs to me and I'll draft the logic conversions for your review.*
 - [ ] **F2. Author appraiser-coaching messages.** H-1 ships one audit-tone message per rule;

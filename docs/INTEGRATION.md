@@ -74,16 +74,44 @@ Logic types implemented (`backend/app/rules/operators.py` + engine):
 | `regex_match` | present AND not fullmatch | `field`, `pattern` |
 | `field_in_set` | present AND value not allowed | `field`, `allowed` |
 | `numeric_range` | present AND non-numeric or out of bounds | `field`, `min?`, `max?` |
+| `conditional` | at least one `if_any` AND-group is true, AND the `then` operator triggers | `if_any` (list of AND-groups of `{field, equals\|not_equals\|in}`), `then` (nested operator dict, e.g. `{"type":"field_present","field":...}`) |
 | `ai` | AI backend says triggered | `prompt`, `fields` |
 | `needs_encoding` | never (rule stays disabled) | `source_logic` (original H-1 text) |
 
 Unknown `logic.type` on an enabled rule → recorded as a `rule_error`, run continues.
 
-**The needs_encoding queue:** 653 of the 729 H-1 rules have compound natural-language
-logic not yet auto-convertible. They're imported disabled with the exact source text
-preserved (Admin → "Needs encoding" tab). Encode them by editing the rule's logic to
-one of the implemented types (or `ai`), then enabling it. Each save freezes a new
-ruleset snapshot; every run records the snapshot version it ran under.
+**`conditional` example** (H-1 UAD1021 — "if not in a project, or the project is a
+condo, Property Rights Appraised is required"):
+```json
+{
+  "type": "conditional",
+  "if_any": [
+    [{"field": "subject:.../PropertyInProjectIndicator", "equals": "false"}],
+    [{"field": "subject:.../ProjectLegalStructureType", "equals": "Condominium"}]
+  ],
+  "then": {"type": "field_present", "field": "subject:.../PropertyEstateType"}
+}
+```
+A missing condition field is treated as not-equal (never raises). `if_any` is OR
+between groups, each group is AND between its conditions — this covers every
+condition shape H-1 actually uses (single condition, AND chain, OR chain, one level
+of parenthesized mixed AND/OR, and the "Field = "V1" or "V2"" same-field shorthand).
+
+**The needs_encoding queue:** 566 of the 729 H-1 rules still have logic that isn't
+auto-convertible as of 2026-07-03 (down from 653 — see `backend/app/rules/h1_import.py`
+for the exact conversion rules, including the new `numeric_range`/`conditional`
+patterns). They're imported disabled with the exact source text preserved
+(Admin → "Needs encoding" tab). What's left mostly needs capability the engine
+doesn't have yet: comparable-scoped rules (~139, need per-instance iteration —
+Stage H1), cross-field/date-relative comparisons ("X < TodaysDate", "X > OtherField"),
+uniqueness-across-array checks, count-matching, and arithmetic-sum checks. A few
+individual rules were deliberately left disabled because a referenced condition
+field is itself never a Primary Data Element anywhere in H-1 (no xPath to resolve
+it from — e.g. `SiteValueIndicator` in UAD1229/UAD1231) or is ambiguous (used with
+two different xPaths elsewhere, e.g. `SaleType` in UAD1136) — these are not guessed
+at. Encode remaining rules by editing the rule's logic to one of the implemented
+types (or `ai`), then enabling it. Each save freezes a new ruleset snapshot; every
+run records the snapshot version it ran under.
 
 ## AI backends (`backend/app/rules/ai_backends.py`)
 

@@ -378,10 +378,11 @@
       "category": "Subject Property",
       "description": "If DwellingCount < 1",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If DwellingCount < 1"
+        "type": "numeric_range",
+        "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/DwellingCount",
+        "min": 1
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0021, Message ID UAD1014",
       "messages": {
@@ -474,10 +475,11 @@
       "category": "Subject Property",
       "description": "If LivingUnitExcludingADUCount < 1",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If LivingUnitExcludingADUCount < 1"
+        "type": "numeric_range",
+        "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/LivingUnitExcludingADUCount",
+        "min": 1
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0022, Message ID UAD1018",
       "messages": {
@@ -522,10 +524,27 @@
       "category": "Subject Property",
       "description": "If (PropertyInProjectIndicator = \"false\" or ProjectLegalStructureType = \"Condominium\"), and PropertyEstateType is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If (PropertyInProjectIndicator = \"false\" or ProjectLegalStructureType = \"Condominium\"), and PropertyEstateType is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "false"
+            }
+          ],
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectLegalStructureType",
+              "equals": "Condominium"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyEstateType"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0024, Message ID UAD1021",
       "messages": {
@@ -546,10 +565,21 @@
       "category": "Subject Property",
       "description": "If PropertyEstateType = \"Other\" and PropertyEstateTypeOtherDescription is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyEstateType = \"Other\" and PropertyEstateTypeOtherDescription is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyEstateType",
+              "equals": "Other"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyEstateTypeOtherDescription"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0053, Message ID UAD1022",
       "messages": {
@@ -594,10 +624,25 @@
       "category": "Subject Property",
       "description": "If PropertyEstateType = \"Leasehold\" and LandOwnedInCommonIndicator = \"false\", and PropertyGroundLeaseAnnualAmount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyEstateType = \"Leasehold\" and LandOwnedInCommonIndicator = \"false\", and PropertyGroundLeaseAnnualAmount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyEstateType",
+              "equals": "Leasehold"
+            },
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_DETAIL/LandOwnedInCommonIndicator",
+              "equals": "false"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_GROUND_RENT/PropertyGroundLeaseAnnualAmount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0028, Message ID UAD1024",
       "messages": {
@@ -618,10 +663,25 @@
       "category": "Subject Property",
       "description": "If PropertyEstateType = \"Leasehold\" and LandOwnedInCommonIndicator = \"false\", and PropertyGroundLeaseExpirationDate is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyEstateType = \"Leasehold\" and LandOwnedInCommonIndicator = \"false\", and PropertyGroundLeaseExpirationDate is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyEstateType",
+              "equals": "Leasehold"
+            },
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_DETAIL/LandOwnedInCommonIndicator",
+              "equals": "false"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_GROUND_RENT/PropertyGroundLeaseExpirationDate"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0029, Message ID UAD1025",
       "messages": {
@@ -642,10 +702,25 @@
       "category": "Subject Property",
       "description": "If PropertyEstateType = \"Leasehold\" and LandOwnedInCommonIndicator = \"false\", and PropertyGroundLeaseRenewableIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyEstateType = \"Leasehold\" and LandOwnedInCommonIndicator = \"false\", and PropertyGroundLeaseRenewableIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyEstateType",
+              "equals": "Leasehold"
+            },
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_DETAIL/LandOwnedInCommonIndicator",
+              "equals": "false"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_GROUND_RENT/PropertyGroundLeaseRenewableIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0030, Message ID UAD1026",
       "messages": {
@@ -690,10 +765,21 @@
       "category": "Subject Property",
       "description": "If LandOwnedInCommonIndicator = \"false\" and AllPropertyRightsAppraisedIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If LandOwnedInCommonIndicator = \"false\" and AllPropertyRightsAppraisedIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_DETAIL/LandOwnedInCommonIndicator",
+              "equals": "false"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/AllPropertyRightsAppraisedIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0100.0034, Message ID UAD1028",
       "messages": {
@@ -1122,10 +1208,21 @@
       "category": "Subject Property Amenities",
       "description": "If PropertyAmenityExistsIndicator = \"true\" and SubjectPropertyAmenitiesDefectsExistIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyAmenityExistsIndicator = \"true\" and SubjectPropertyAmenitiesDefectsExistIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyAmenityExistsIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/SubjectPropertyAmenitiesDefectsExistIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0200.0053, Message ID UAD1046",
       "messages": {
@@ -2994,10 +3091,25 @@
       "category": "Manufactured Home",
       "description": "If ImprovementType = \"Dwelling\" and ConstructionMethodType = \"Manufactured\" and ManufacturedHomeInstalledDateEstimatedIndicator is not provided",
       "severity": "Warning",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ImprovementType = \"Dwelling\" and ConstructionMethodType = \"Manufactured\" and ManufacturedHomeInstalledDateEstimatedIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/IMPROVEMENT_DETAIL/ImprovementType",
+              "equals": "Dwelling"
+            },
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/STRUCTURE/CONSTRUCTION_METHODS/CONSTRUCTION_METHOD/ConstructionMethodType",
+              "equals": "Manufactured"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/MANUFACTURED_HOME/MANUFACTURED_HOME_DETAIL/ManufacturedHomeInstalledDateEstimatedIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0500.0041, Message ID UAD1125",
       "messages": {
@@ -3018,10 +3130,25 @@
       "category": "Manufactured Home",
       "description": "If ImprovementType = \"Dwelling\" and ConstructionMethodType = \"Manufactured\" and ManufacturedHomeWidthType is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ImprovementType = \"Dwelling\" and ConstructionMethodType = \"Manufactured\" and ManufacturedHomeWidthType is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/IMPROVEMENT_DETAIL/ImprovementType",
+              "equals": "Dwelling"
+            },
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/STRUCTURE/CONSTRUCTION_METHODS/CONSTRUCTION_METHOD/ConstructionMethodType",
+              "equals": "Manufactured"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/MANUFACTURED_HOME/MANUFACTURED_HOME_DETAIL/ManufacturedHomeWidthType"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0500.0044, Message ID UAD1126",
       "messages": {
@@ -3042,10 +3169,21 @@
       "category": "Sales Contract",
       "description": "If SalesConcessionIndicator = \"true\" and SalesConcessionAmountKnownIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If SalesConcessionIndicator = \"true\" and SalesConcessionAmountKnownIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesConcessionIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesConcessionAmountKnownIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0600.0005, Message ID UAD1127",
       "messages": {
@@ -3066,10 +3204,21 @@
       "category": "Sales Contract",
       "description": "If SalesContractReviewedIndicator = \"true\" and SalesConcessionIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If SalesContractReviewedIndicator = \"true\" and SalesConcessionIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesContractReviewedIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesConcessionIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0600.0006, Message ID UAD1128",
       "messages": {
@@ -3090,10 +3239,21 @@
       "category": "Sales Contract",
       "description": "If SalesContractReviewedIndicator = \"true\" and SalesContractAmount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If SalesContractReviewedIndicator = \"true\" and SalesContractAmount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesContractReviewedIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesContractAmount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0600.0008, Message ID UAD1129",
       "messages": {
@@ -3114,10 +3274,21 @@
       "category": "Sales Contract",
       "description": "If SalesContractReviewedIndicator = \"true\" and SalesContractDate is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If SalesContractReviewedIndicator = \"true\" and SalesContractDate is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesContractReviewedIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesContractDate"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0600.0009, Message ID UAD1130",
       "messages": {
@@ -3162,10 +3333,21 @@
       "category": "Sales Contract",
       "description": "If SalesContractExistsIndicator = \"true\" and SalesContractReviewedIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If SalesContractExistsIndicator = \"true\" and SalesContractReviewedIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesContractExistsIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesContractReviewedIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0600.0010, Message ID UAD1132",
       "messages": {
@@ -3186,10 +3368,21 @@
       "category": "Sales Contract",
       "description": "If SalesConcessionAmountKnownIndicator = \"true\" and TotalSalesConcessionAmount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If SalesConcessionAmountKnownIndicator = \"true\" and TotalSalesConcessionAmount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesConcessionAmountKnownIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/TotalSalesConcessionAmount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0600.0011, Message ID UAD1133",
       "messages": {
@@ -3234,10 +3427,21 @@
       "category": "Sales Contract",
       "description": "If SalesContractReviewedIndicator = \"true\" and SaleType is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If SalesContractReviewedIndicator = \"true\" and SaleType is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesContractReviewedIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SaleType"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 0600.0017, Message ID UAD1135",
       "messages": {
@@ -5035,10 +5239,21 @@
       "category": "Assignment Information",
       "description": "If GovernmentAgencyAppraisalIndicator = \"true\" and GovernmentAgencyAppraisalType is not provided",
       "severity": "Warning",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If GovernmentAgencyAppraisalIndicator = \"true\" and GovernmentAgencyAppraisalType is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/GovernmentAgencyAppraisalIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/GovernmentAgencyAppraisalType"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1000.0029, Message ID UAD1212",
       "messages": {
@@ -5227,10 +5442,21 @@
       "category": "Assignment Information",
       "description": "If ValuationAssignmentType = \"Other\" and ValuationAssignmentTypeOtherDescription is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ValuationAssignmentType = \"Other\" and ValuationAssignmentTypeOtherDescription is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/ValuationAssignmentType",
+              "equals": "Other"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/ValuationAssignmentTypeOtherDescription"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1000.0035, Message ID UAD1220",
       "messages": {
@@ -5395,10 +5621,21 @@
       "category": "Cost Approach",
       "description": "If CostApproachIndicator = \"true\" and DepreciatedCostDwellingsTotalAmount is not provided",
       "severity": "Warning",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If CostApproachIndicator = \"true\" and DepreciatedCostDwellingsTotalAmount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/CostApproachIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/DepreciatedCostDwellingsTotalAmount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1100.0026, Message ID UAD1227",
       "messages": {
@@ -5467,10 +5704,21 @@
       "category": "Cost Approach",
       "description": "If CostApproachIndicator = \"true\" and SiteOtherImprovementsAsIsAmount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If CostApproachIndicator = \"true\" and SiteOtherImprovementsAsIsAmount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/CostApproachIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/SiteOtherImprovementsAsIsAmount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1100.0032, Message ID UAD1230",
       "messages": {
@@ -5515,10 +5763,21 @@
       "category": "Uncategorized",
       "description": "If SiteValuationMethodType = \"Other\" and SiteValuationMethodTypeOtherDescription is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If SiteValuationMethodType = \"Other\" and SiteValuationMethodTypeOtherDescription is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/SiteValuationMethodType",
+              "equals": "Other"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/SiteValuationMethodTypeOtherDescription"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1100.0034, Message ID UAD1232",
       "messages": {
@@ -5755,10 +6014,21 @@
       "category": "Income Approach",
       "description": "If IncomeApproachIndicator = \"true\" and GrossRentMultiplierFactorNumber is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If IncomeApproachIndicator = \"true\" and GrossRentMultiplierFactorNumber is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/IncomeApproachIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/INCOME_APPROACH/INCOME_APPROACH_DETAIL/GrossRentMultiplierFactorNumber"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1200.0003, Message ID UAD1242",
       "messages": {
@@ -5779,10 +6049,21 @@
       "category": "Income Approach",
       "description": "If IncomeApproachIndicator = \"true\" and ValueIndicatedByIncomeApproachAmount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If IncomeApproachIndicator = \"true\" and ValueIndicatedByIncomeApproachAmount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/IncomeApproachIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/INCOME_APPROACH/INCOME_APPROACH_DETAIL/ValueIndicatedByIncomeApproachAmount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1200.0004, Message ID UAD1243",
       "messages": {
@@ -5995,10 +6276,21 @@
       "category": "Cost Approach",
       "description": "If CostApproachIndicator = \"true\" and ValueIndicatedByCostApproachAmount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If CostApproachIndicator = \"true\" and ValueIndicatedByCostApproachAmount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/CostApproachIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/ValueIndicatedByCostApproachAmount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1300.0001, Message ID UAD1252",
       "messages": {
@@ -6019,10 +6311,21 @@
       "category": "Sales Comparison Approach",
       "description": "If SalesComparisonApproachIndicator = \"true\" and ValueIndicatedBySalesComparisonAmount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If SalesComparisonApproachIndicator = \"true\" and ValueIndicatedBySalesComparisonAmount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/SalesComparisonApproachIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/SALES_COMPARISON_APPROACH/SALES_COMPARISON_APPROACH_DETAIL/ValueIndicatedBySalesComparisonAmount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1300.0006, Message ID UAD1253",
       "messages": {
@@ -6236,10 +6539,11 @@
       "category": "Reconciliation",
       "description": "If OpinionOfValueAmount < 1",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If OpinionOfValueAmount < 1"
+        "type": "numeric_range",
+        "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_SUMMARY/VALUATION_RECONCILIATION_SUMMARY_DETAIL/OpinionOfValueAmount",
+        "min": 1
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1300.0017, Message ID UAD1263",
       "messages": {
@@ -6260,10 +6564,11 @@
       "category": "Reconciliation",
       "description": "If OpinionOfValueAmount > 1,000,000,000",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If OpinionOfValueAmount > 1,000,000,000"
+        "type": "numeric_range",
+        "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_SUMMARY/VALUATION_RECONCILIATION_SUMMARY_DETAIL/OpinionOfValueAmount",
+        "max": 1000000000
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1300.0017, Message ID UAD1264",
       "messages": {
@@ -6332,10 +6637,35 @@
       "category": "Reconciliation",
       "description": "If NewConstructionIndicator = \"false\" and (PropertyValuationConditionalConclusionType = \"SubjectToCompletionPerPlans\" or \"SubjectToRepair\") and PropertyAsIsConditionRatingCode is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If NewConstructionIndicator = \"false\" and (PropertyValuationConditionalConclusionType = \"SubjectToCompletionPerPlans\" or \"SubjectToRepair\") and PropertyAsIsConditionRatingCode is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/NewConstructionIndicator",
+              "equals": "false"
+            },
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_SUMMARY/VALUATION_CONDITIONS/VALUATION_CONDITION/PropertyValuationConditionalConclusionType",
+              "equals": "SubjectToCompletionPerPlans"
+            }
+          ],
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/NewConstructionIndicator",
+              "equals": "false"
+            },
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_SUMMARY/VALUATION_CONDITIONS/VALUATION_CONDITION/PropertyValuationConditionalConclusionType",
+              "equals": "SubjectToRepair"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_SUMMARY/VALUATION_RECONCILIATION_SUMMARY_DETAIL/PropertyAsIsConditionRatingCode"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1300.0034, Message ID UAD1267",
       "messages": {
@@ -7124,10 +7454,21 @@
       "category": "Site",
       "description": "If ParcelIdentificationType = \"AssessorUnformattedIdentifier\" and ParcelIdentifier is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ParcelIdentificationType = \"AssessorUnformattedIdentifier\" and ParcelIdentifier is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PARCELS/PARCEL/PARCEL_IDENTIFICATIONS/PARCEL_IDENTIFICATION/ParcelIdentificationType",
+              "equals": "AssessorUnformattedIdentifier"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PARCELS/PARCEL/PARCEL_IDENTIFICATIONS/PARCEL_IDENTIFICATION/ParcelIdentifier"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1500.0027, Message ID UAD1305",
       "messages": {
@@ -7148,10 +7489,27 @@
       "category": "Subject Property",
       "description": "If PropertyEstateType = \"Leasehold\" or \"Other\", and CommunityLandTrustIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyEstateType = \"Leasehold\" or \"Other\", and CommunityLandTrustIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyEstateType",
+              "equals": "Leasehold"
+            }
+          ],
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyEstateType",
+              "equals": "Other"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/CommunityLandTrustIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1500.0031, Message ID UAD1306",
       "messages": {
@@ -7172,10 +7530,25 @@
       "category": "Site",
       "description": "If LandOwnedInCommonIndicator = \"false\", and PropertyMixedUsageIndicator = \"true\", and NonResidentialModificationIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If LandOwnedInCommonIndicator = \"false\", and PropertyMixedUsageIndicator = \"true\", and NonResidentialModificationIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_DETAIL/LandOwnedInCommonIndicator",
+              "equals": "false"
+            },
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_USE_SUMMARY/PropertyMixedUsageIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_USE_SUMMARY/NonResidentialModificationIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1500.0032, Message ID UAD1307",
       "messages": {
@@ -7196,10 +7569,21 @@
       "category": "Site",
       "description": "If LandOwnedInCommonIndicator = \"false\" and PropertyMixedUsageIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If LandOwnedInCommonIndicator = \"false\" and PropertyMixedUsageIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_DETAIL/LandOwnedInCommonIndicator",
+              "equals": "false"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_USE_SUMMARY/PropertyMixedUsageIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1500.0034, Message ID UAD1308",
       "messages": {
@@ -7220,10 +7604,25 @@
       "category": "Site",
       "description": "If LandOwnedInCommonIndicator = \"false\", and PropertyMixedUsageIndicator = \"true\", and PropertyPrimarilyResidentialUseIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If LandOwnedInCommonIndicator = \"false\", and PropertyMixedUsageIndicator = \"true\", and PropertyPrimarilyResidentialUseIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_DETAIL/LandOwnedInCommonIndicator",
+              "equals": "false"
+            },
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_USE_SUMMARY/PropertyMixedUsageIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_USE_SUMMARY/PropertyPrimarilyResidentialUseIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1500.0036, Message ID UAD1309",
       "messages": {
@@ -7340,10 +7739,21 @@
       "category": "Site",
       "description": "If HazardZoneType = \"USGSLavaFlowZone\" and LavaFlowZoneCode is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If HazardZoneType = \"USGSLavaFlowZone\" and LavaFlowZoneCode is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/HAZARD_ZONES/HAZARD_ZONE/HazardZoneType",
+              "equals": "USGSLavaFlowZone"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/HAZARD_ZONES/HAZARD_ZONE/LavaFlowZoneCode"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1500.0045, Message ID UAD1315",
       "messages": {
@@ -7364,10 +7774,21 @@
       "category": "Site",
       "description": "If PropertyPrimaryEntryExitMethodType = \"PrivateStreet\" and PrivateStreetMaintenanceAgreementExistIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyPrimaryEntryExitMethodType = \"PrivateStreet\" and PrivateStreetMaintenanceAgreementExistIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/PROPERTY_ACCESS/PROPERTY_ACCESS_DETAIL/PropertyPrimaryEntryExitMethodType",
+              "equals": "PrivateStreet"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/PROPERTY_ACCESS/PROPERTY_ACCESS_DETAIL/PrivateStreetMaintenanceAgreementExistIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1500.0052, Message ID UAD1316",
       "messages": {
@@ -7436,10 +7857,21 @@
       "category": "Site",
       "description": "If PropertyPrimaryEntryExitMethodType = \"Other\" and PropertyPrimaryEntryExitMethodTypeOtherDescription is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyPrimaryEntryExitMethodType = \"Other\" and PropertyPrimaryEntryExitMethodTypeOtherDescription is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/PROPERTY_ACCESS/PROPERTY_ACCESS_DETAIL/PropertyPrimaryEntryExitMethodType",
+              "equals": "Other"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/PROPERTY_ACCESS/PROPERTY_ACCESS_DETAIL/PropertyPrimaryEntryExitMethodTypeOtherDescription"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1500.0056, Message ID UAD1319",
       "messages": {
@@ -7916,10 +8348,21 @@
       "category": "Site",
       "description": "If LandOwnedInCommonIndicator = \"false\" and LotSizeAreaMeasure is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If LandOwnedInCommonIndicator = \"false\" and LotSizeAreaMeasure is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_DETAIL/LandOwnedInCommonIndicator",
+              "equals": "false"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_SIZE_LAYOUT/LotSizeAreaMeasure"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1500.0093, Message ID UAD1341",
       "messages": {
@@ -7940,10 +8383,21 @@
       "category": "Site",
       "description": "If LandOwnedInCommonIndicator = \"false\" and ParcelCount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If LandOwnedInCommonIndicator = \"false\" and ParcelCount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_DETAIL/LandOwnedInCommonIndicator",
+              "equals": "false"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_SIZE_LAYOUT/ParcelCount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1500.0094, Message ID UAD1342",
       "messages": {
@@ -8516,10 +8970,21 @@
       "category": "Site",
       "description": "If SiteZoningComplianceType <> \"NoZoning\" and SiteZoningClassificationIdentifier is not provided",
       "severity": "Warning",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If SiteZoningComplianceType <> \"NoZoning\" and SiteZoningClassificationIdentifier is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_ZONING/SITE_ZONING_DETAIL/SiteZoningComplianceType",
+              "not_equals": "NoZoning"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_ZONING/SITE_ZONING_DETAIL/SiteZoningClassificationIdentifier"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1500.0122, Message ID UAD1367",
       "messages": {
@@ -8540,10 +9005,21 @@
       "category": "Site",
       "description": "If SiteZoningComplianceType <> \"NoZoning\" and SiteZoningClassificationDescription is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If SiteZoningComplianceType <> \"NoZoning\" and SiteZoningClassificationDescription is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_ZONING/SITE_ZONING_DETAIL/SiteZoningComplianceType",
+              "not_equals": "NoZoning"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_ZONING/SITE_ZONING_DETAIL/SiteZoningClassificationDescription"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1500.0123, Message ID UAD1368",
       "messages": {
@@ -8780,10 +9256,21 @@
       "category": "Subject Property",
       "description": "If NativeAmericanLandsIndicator = \"true\" and NativeAmericanLandsType is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If NativeAmericanLandsIndicator = \"true\" and NativeAmericanLandsType is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/NativeAmericanLandsIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/NativeAmericanLandsType"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1500.0199, Message ID UAD1380",
       "messages": {
@@ -8804,10 +9291,21 @@
       "category": "Subject Property",
       "description": "If NativeAmericanLandsType = \"Other\" and NativeAmericanLandsTypeOtherDescription is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If NativeAmericanLandsType = \"Other\" and NativeAmericanLandsTypeOtherDescription is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/NativeAmericanLandsType",
+              "equals": "Other"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/NativeAmericanLandsTypeOtherDescription"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1500.0200, Message ID UAD1381",
       "messages": {
@@ -11156,10 +11654,27 @@
       "category": "Uncategorized",
       "description": "If (RentScheduleIndicator = \"true\" or IncomeApproachIndicator = \"true\"), and TotalMonthlyActualRentAmount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If (RentScheduleIndicator = \"true\" or IncomeApproachIndicator = \"true\"), and TotalMonthlyActualRentAmount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/RentScheduleIndicator",
+              "equals": "true"
+            }
+          ],
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/IncomeApproachIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/RENTAL_INFORMATION_SUMMARY/RENTAL_INFORMATION_SUMMARY_DETAIL/TotalMonthlyActualRentAmount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2000.0032, Message ID UAD1488",
       "messages": {
@@ -11180,10 +11695,27 @@
       "category": "Uncategorized",
       "description": "If (RentScheduleIndicator = \"true\" or IncomeApproachIndicator = \"true\"), and TotalMonthlyMarketRentAmount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If (RentScheduleIndicator = \"true\" or IncomeApproachIndicator = \"true\"), and TotalMonthlyMarketRentAmount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/RentScheduleIndicator",
+              "equals": "true"
+            }
+          ],
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/IncomeApproachIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/RENTAL_INFORMATION_SUMMARY/RENTAL_INFORMATION_SUMMARY_DETAIL/TotalMonthlyMarketRentAmount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2000.0035, Message ID UAD1489",
       "messages": {
@@ -12742,10 +13274,27 @@
       "category": "Assignment Information",
       "description": "If PartyRoleType = \"Lender\" or \"ManagementCompany\" and FullName is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PartyRoleType = \"Lender\" or \"ManagementCompany\" and FullName is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:SERVICE/PARTIES/PARTY/ROLES/ROLE/ROLE_DETAIL/PartyRoleType",
+              "equals": "Lender"
+            }
+          ],
+          [
+            {
+              "field": "doc:SERVICE/PARTIES/PARTY/ROLES/ROLE/ROLE_DETAIL/PartyRoleType",
+              "equals": "ManagementCompany"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:SERVICE/PARTIES/PARTY/LEGAL_ENTITY/LEGAL_ENTITY_DETAIL/FullName"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2400.0295, Message ID UAD1560",
       "messages": {
@@ -12766,10 +13315,21 @@
       "category": "Assignment Information",
       "description": "If PartyRoleType = \"SignificantRealPropertyAppraisalAssistance\" and FirstName is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PartyRoleType = \"SignificantRealPropertyAppraisalAssistance\" and FirstName is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:SERVICE/PARTIES/PARTY/ROLES/ROLE/ROLE_DETAIL/PartyRoleType",
+              "equals": "SignificantRealPropertyAppraisalAssistance"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:SERVICE/PARTIES/PARTY/INDIVIDUAL/NAME/FirstName"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2400.0405, Message ID UAD1561",
       "messages": {
@@ -12790,10 +13350,21 @@
       "category": "Assignment Information",
       "description": "If PartyRoleType = \"SignificantRealPropertyAppraisalAssistance\" and LastName is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PartyRoleType = \"SignificantRealPropertyAppraisalAssistance\" and LastName is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:SERVICE/PARTIES/PARTY/ROLES/ROLE/ROLE_DETAIL/PartyRoleType",
+              "equals": "SignificantRealPropertyAppraisalAssistance"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:SERVICE/PARTIES/PARTY/INDIVIDUAL/NAME/LastName"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2400.0406, Message ID UAD1562",
       "messages": {
@@ -12814,10 +13385,21 @@
       "category": "Assignment Information",
       "description": "If PartyRoleType = \"SignificantRealPropertyAppraisalAssistance\" and PartyRoleTypeAdditionalDescription is not provided",
       "severity": "Warning",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PartyRoleType = \"SignificantRealPropertyAppraisalAssistance\" and PartyRoleTypeAdditionalDescription is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:SERVICE/PARTIES/PARTY/ROLES/ROLE/ROLE_DETAIL/PartyRoleType",
+              "equals": "SignificantRealPropertyAppraisalAssistance"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:SERVICE/PARTIES/PARTY/ROLES/ROLE/ROLE_DETAIL/PartyRoleTypeAdditionalDescription"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2400.0413, Message ID UAD1563",
       "messages": {
@@ -13078,10 +13660,25 @@
       "category": "Project Information",
       "description": "If AssociationChargeType = \"AssociationSpecialAssessment\" and AssociationSpecialAssessmentStatusType = \"Existing\", and AssociationChargeBalanceAmount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If AssociationChargeType = \"AssociationSpecialAssessment\" and AssociationSpecialAssessmentStatusType = \"Existing\", and AssociationChargeBalanceAmount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/HOMEOWNERS_ASSOCIATIONS/HOMEOWNERS_ASSOCIATION/ASSOCIATION_CHARGES/ASSOCIATION_CHARGE/ASSOCIATION_CHARGE_DETAIL/AssociationChargeType",
+              "equals": "AssociationSpecialAssessment"
+            },
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/HOMEOWNERS_ASSOCIATIONS/HOMEOWNERS_ASSOCIATION/ASSOCIATION_CHARGES/ASSOCIATION_CHARGE/ASSOCIATION_CHARGE_DETAIL/AssociationSpecialAssessmentStatusType",
+              "equals": "Existing"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/HOMEOWNERS_ASSOCIATIONS/HOMEOWNERS_ASSOCIATION/ASSOCIATION_CHARGES/ASSOCIATION_CHARGE/ASSOCIATION_CHARGE_DETAIL/AssociationChargeBalanceAmount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0013, Message ID UAD1578",
       "messages": {
@@ -13102,10 +13699,21 @@
       "category": "Project Information",
       "description": "If PropertyInProjectIndicator = \"true\" and OwnershipTransferFeeIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyInProjectIndicator = \"true\" and OwnershipTransferFeeIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/HOMEOWNERS_ASSOCIATIONS/HOMEOWNERS_ASSOCIATION/ASSOCIATION_CHARGES/ASSOCIATION_CHARGE/ASSOCIATION_CHARGE_DETAIL/OwnershipTransferFeeIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0019, Message ID UAD1579",
       "messages": {
@@ -13126,10 +13734,27 @@
       "category": "Project Information",
       "description": "If ProjectLegalStructureType = \"Cooperative\" or \"Condop\", and CooperativeProprietaryLeaseExpirationDate is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ProjectLegalStructureType = \"Cooperative\" or \"Condop\", and CooperativeProprietaryLeaseExpirationDate is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectLegalStructureType",
+              "equals": "Cooperative"
+            }
+          ],
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectLegalStructureType",
+              "equals": "Condop"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/CooperativeProprietaryLeaseExpirationDate"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0023, Message ID UAD1580",
       "messages": {
@@ -13150,10 +13775,27 @@
       "category": "Project Information",
       "description": "If ProjectLegalStructureType = \"Cooperative\" or \"Condop\", and PropertyCooperativeSharesCount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ProjectLegalStructureType = \"Cooperative\" or \"Condop\", and PropertyCooperativeSharesCount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectLegalStructureType",
+              "equals": "Cooperative"
+            }
+          ],
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectLegalStructureType",
+              "equals": "Condop"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyCooperativeSharesCount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0024, Message ID UAD1581",
       "messages": {
@@ -13174,10 +13816,21 @@
       "category": "Project Information",
       "description": "If ProjectBlanketFinancingIndicator = \"true\" and ProRataSharePercent is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ProjectBlanketFinancingIndicator = \"true\" and ProRataSharePercent is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_FINANCIAL_INFORMATION/ProjectBlanketFinancingIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/ProRataSharePercent"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0025, Message ID UAD1582",
       "messages": {
@@ -13198,10 +13851,21 @@
       "category": "Project Information",
       "description": "If PropertyInProjectIndicator = \"true\" and ProjectAnalysisGroundRentIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyInProjectIndicator = \"true\" and ProjectAnalysisGroundRentIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_ANALYSIS/ProjectAnalysisGroundRentIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0031, Message ID UAD1583",
       "messages": {
@@ -13222,10 +13886,21 @@
       "category": "Project Information",
       "description": "If ProjectDeficiencyObservedIndicator = \"true\" and ProjectConditionAndQualityDescription is not provided",
       "severity": "Warning",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ProjectDeficiencyObservedIndicator = \"true\" and ProjectConditionAndQualityDescription is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_ANALYSIS/ProjectDeficiencyObservedIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_ANALYSIS/ProjectConditionAndQualityDescription"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0032, Message ID UAD1584",
       "messages": {
@@ -13246,10 +13921,21 @@
       "category": "Project Information",
       "description": "If PropertyInProjectIndicator = \"true\" and ProjectDeficiencyObservedIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyInProjectIndicator = \"true\" and ProjectDeficiencyObservedIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_ANALYSIS/ProjectDeficiencyObservedIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0033, Message ID UAD1585",
       "messages": {
@@ -13366,10 +14052,21 @@
       "category": "Project Information",
       "description": "If PropertyInProjectIndicator = \"true\" and ProjectConversionIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyInProjectIndicator = \"true\" and ProjectConversionIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_CONVERSION/ProjectConversionIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0048, Message ID UAD1590",
       "messages": {
@@ -13390,10 +14087,25 @@
       "category": "Project Information",
       "description": "If (PropertyInProjectIndicator = \"true\" and ProjectConversionIndicator = \"true\"), and ProjectConversionOriginalUseType is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If (PropertyInProjectIndicator = \"true\" and ProjectConversionIndicator = \"true\"), and ProjectConversionOriginalUseType is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            },
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_CONVERSION/ProjectConversionIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_CONVERSION/ProjectConversionOriginalUseType"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0049, Message ID UAD1591",
       "messages": {
@@ -13414,10 +14126,21 @@
       "category": "Project Information",
       "description": "If ProjectConversionOriginalUseType = \"Other\" and ProjectConversionOriginalUseTypeOtherDescription is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ProjectConversionOriginalUseType = \"Other\" and ProjectConversionOriginalUseTypeOtherDescription is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_CONVERSION/ProjectConversionOriginalUseType",
+              "equals": "Other"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_CONVERSION/ProjectConversionOriginalUseTypeOtherDescription"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0050, Message ID UAD1592",
       "messages": {
@@ -13438,10 +14161,27 @@
       "category": "Project Information",
       "description": "If (PropertyInProjectIndicator = \"true\" or PUDIndicator = \"true\") and LegalActionIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If (PropertyInProjectIndicator = \"true\" or PUDIndicator = \"true\") and LegalActionIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            }
+          ],
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PUDIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/LegalActionIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0051, Message ID UAD1593",
       "messages": {
@@ -13462,10 +14202,21 @@
       "category": "Project Information",
       "description": "If PropertyInProjectIndicator = \"true\" and ProjectCommercialSpaceIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyInProjectIndicator = \"true\" and ProjectCommercialSpaceIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectCommercialSpaceIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0055, Message ID UAD1594",
       "messages": {
@@ -13486,10 +14237,25 @@
       "category": "Project Information",
       "description": "If PropertyInProjectIndicator = \"true\", and ProjectCommercialSpaceIndicator = \"true\", and ProjectCommercialSpacePercent is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyInProjectIndicator = \"true\", and ProjectCommercialSpaceIndicator = \"true\", and ProjectCommercialSpacePercent is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            },
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectCommercialSpaceIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectCommercialSpacePercent"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0057, Message ID UAD1595",
       "messages": {
@@ -13510,10 +14276,21 @@
       "category": "Project Information",
       "description": "If PropertyInProjectIndicator = \"true\" and ProjectCompletedIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyInProjectIndicator = \"true\" and ProjectCompletedIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectCompletedIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0058, Message ID UAD1596",
       "messages": {
@@ -13534,10 +14311,21 @@
       "category": "Project Information",
       "description": "If PropertyInProjectIndicator = \"true\" and ProjectDwellingUnitCount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyInProjectIndicator = \"true\" and ProjectDwellingUnitCount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectDwellingUnitCount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0060, Message ID UAD1597",
       "messages": {
@@ -13558,10 +14346,21 @@
       "category": "Project Information",
       "description": "If PropertyInProjectIndicator = \"true\" and ProjectDwellingUnitsForSaleCount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyInProjectIndicator = \"true\" and ProjectDwellingUnitsForSaleCount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectDwellingUnitsForSaleCount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0061, Message ID UAD1598",
       "messages": {
@@ -13582,10 +14381,21 @@
       "category": "Project Information",
       "description": "If PropertyInProjectIndicator = \"true\" and ProjectDwellingUnitsRentedCount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyInProjectIndicator = \"true\" and ProjectDwellingUnitsRentedCount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectDwellingUnitsRentedCount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0062, Message ID UAD1599",
       "messages": {
@@ -13606,10 +14416,21 @@
       "category": "Project Information",
       "description": "If PropertyInProjectIndicator = \"true\" and ProjectDwellingUnitsSoldCount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyInProjectIndicator = \"true\" and ProjectDwellingUnitsSoldCount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectDwellingUnitsSoldCount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0064, Message ID UAD1600",
       "messages": {
@@ -13630,10 +14451,25 @@
       "category": "Project Information",
       "description": "If (PropertyInProjectIndicator = \"true\" and ProjectCompletedIndicator = \"false\") and SubjectBuildingCompletedIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If (PropertyInProjectIndicator = \"true\" and ProjectCompletedIndicator = \"false\") and SubjectBuildingCompletedIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            },
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectCompletedIndicator",
+              "equals": "false"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/SubjectBuildingCompletedIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0066, Message ID UAD1601",
       "messages": {
@@ -13654,10 +14490,27 @@
       "category": "Project Information",
       "description": "If (PropertyInProjectIndicator = \"true\" or PUDIndicator = \"true\") and ProjectDeveloperOrSponsorControlsProjectManagementIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If (PropertyInProjectIndicator = \"true\" or PUDIndicator = \"true\") and ProjectDeveloperOrSponsorControlsProjectManagementIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            }
+          ],
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PUDIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DEVELOPER/ProjectDeveloperOrSponsorControlsProjectManagementIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0067, Message ID UAD1602",
       "messages": {
@@ -13750,10 +14603,27 @@
       "category": "Project Information",
       "description": "If ProjectLegalStructureType = \"Cooperative\" or \"Condop\", and ProjectBlanketFinancingIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ProjectLegalStructureType = \"Cooperative\" or \"Condop\", and ProjectBlanketFinancingIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectLegalStructureType",
+              "equals": "Cooperative"
+            }
+          ],
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectLegalStructureType",
+              "equals": "Condop"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_FINANCIAL_INFORMATION/ProjectBlanketFinancingIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0074, Message ID UAD1606",
       "messages": {
@@ -13774,10 +14644,27 @@
       "category": "Project Information",
       "description": "If ProjectLegalStructureType = \"Cooperative\" or \"Condop\", and ProjectTotalSharesIssuedAndOutstandingCount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ProjectLegalStructureType = \"Cooperative\" or \"Condop\", and ProjectTotalSharesIssuedAndOutstandingCount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectLegalStructureType",
+              "equals": "Cooperative"
+            }
+          ],
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectLegalStructureType",
+              "equals": "Condop"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_FINANCIAL_INFORMATION/ProjectTotalSharesIssuedAndOutstandingCount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0075, Message ID UAD1607",
       "messages": {
@@ -13798,10 +14685,27 @@
       "category": "Project Information",
       "description": "If ProjectLegalStructureType = \"Cooperative\" or \"Condop\", and SingleEntityGreatestNumberOfSharesCount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ProjectLegalStructureType = \"Cooperative\" or \"Condop\", and SingleEntityGreatestNumberOfSharesCount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectLegalStructureType",
+              "equals": "Cooperative"
+            }
+          ],
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectLegalStructureType",
+              "equals": "Condop"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_FINANCIAL_INFORMATION/SingleEntityGreatestNumberOfSharesCount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0076, Message ID UAD1608",
       "messages": {
@@ -13822,10 +14726,21 @@
       "category": "Project Information",
       "description": "If ProjectLegalStructureType = \"Condominium\" and SingleEntityGreatestNumberOfUnitsCount is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ProjectLegalStructureType = \"Condominium\" and SingleEntityGreatestNumberOfUnitsCount is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectLegalStructureType",
+              "equals": "Condominium"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_FINANCIAL_INFORMATION/SingleEntityGreatestNumberOfUnitsCount"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0078, Message ID UAD1609",
       "messages": {
@@ -13846,10 +14761,27 @@
       "category": "Project Information",
       "description": "If (PropertyInProjectIndicator = \"true\" or PUDIndicator = \"true\") and PropertyTaxAbatementsOrExemptionsIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If (PropertyInProjectIndicator = \"true\" or PUDIndicator = \"true\") and PropertyTaxAbatementsOrExemptionsIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            }
+          ],
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PUDIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_TAXES/PROPERTY_TAX/PROPERTY_TAX_DETAIL/PropertyTaxAbatementsOrExemptionsIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0081, Message ID UAD1610",
       "messages": {
@@ -13966,10 +14898,21 @@
       "category": "Project Information",
       "description": "If PropertyInProjectIndicator = \"true\" and ProjectLegalStructureType is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If PropertyInProjectIndicator = \"true\" and ProjectLegalStructureType is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectLegalStructureType"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 2500.0168, Message ID UAD1615",
       "messages": {
@@ -15214,10 +16157,21 @@
       "category": "Vehicle Storage",
       "description": "If CarStorageType <> \"None\" and VehicleStorageDefectsExistIndicator is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If CarStorageType <> \"None\" and VehicleStorageDefectsExistIndicator is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/CAR_STORAGES/CAR_STORAGE/CAR_STORAGE_DETAIL/CarStorageType",
+              "not_equals": "None"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/VehicleStorageDefectsExistIndicator"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 3200.0021, Message ID UAD1675",
       "messages": {
@@ -15262,10 +16216,21 @@
       "category": "Sketch",
       "description": "If SketchExistsIndicator = \"true\" and MeasurementStandardPublisherType is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If SketchExistsIndicator = \"true\" and MeasurementStandardPublisherType is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_REPORT_DETAIL/SketchExistsIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_REPORT_DETAIL/MeasurementStandardPublisherType"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 3300.0007, Message ID UAD1677",
       "messages": {
@@ -15286,10 +16251,21 @@
       "category": "Sketch",
       "description": "If MeasurementStandardPublisherType = \"Other\" and MeasurementStandardPublisherTypeOtherDescription is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If MeasurementStandardPublisherType = \"Other\" and MeasurementStandardPublisherTypeOtherDescription is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_REPORT_DETAIL/MeasurementStandardPublisherType",
+              "equals": "Other"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_REPORT_DETAIL/MeasurementStandardPublisherTypeOtherDescription"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 3300.0008, Message ID UAD1678",
       "messages": {
@@ -16877,10 +17853,21 @@
       "category": "Revision History",
       "description": "If ReconsiderationOfValueIndicator = \"true\" and ReconsiderationOfValueCommentDescription is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ReconsiderationOfValueIndicator = \"true\" and ReconsiderationOfValueCommentDescription is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_REPORT_DETAIL/ReconsiderationOfValueIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/RECONSIDERATIONS_OF_VALUE/RECONSIDERATION_OF_VALUE/ReconsiderationOfValueCommentDescription"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 4000.0005, Message ID UAD1751",
       "messages": {
@@ -16901,10 +17888,21 @@
       "category": "Revision History",
       "description": "If ReconsiderationOfValueIndicator = \"true\" and ReconsiderationOfValueRequestedByType is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ReconsiderationOfValueIndicator = \"true\" and ReconsiderationOfValueRequestedByType is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_REPORT_DETAIL/ReconsiderationOfValueIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/RECONSIDERATIONS_OF_VALUE/RECONSIDERATION_OF_VALUE/ReconsiderationOfValueRequestedByType"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 4000.0006, Message ID UAD1752",
       "messages": {
@@ -16925,10 +17923,21 @@
       "category": "Revision History",
       "description": "If ReconsiderationOfValueIndicator = \"true\" and ReconsiderationOfValueResultType is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ReconsiderationOfValueIndicator = \"true\" and ReconsiderationOfValueResultType is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_REPORT_DETAIL/ReconsiderationOfValueIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/RECONSIDERATIONS_OF_VALUE/RECONSIDERATION_OF_VALUE/ReconsiderationOfValueResultType"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 4000.0008, Message ID UAD1753",
       "messages": {
@@ -16949,10 +17958,21 @@
       "category": "Revision History",
       "description": "If ReconsiderationOfValueIndicator = \"true\" and ReconsiderationOfValueResultDate is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If ReconsiderationOfValueIndicator = \"true\" and ReconsiderationOfValueResultDate is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_REPORT_DETAIL/ReconsiderationOfValueIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/RECONSIDERATIONS_OF_VALUE/RECONSIDERATION_OF_VALUE/ReconsiderationOfValueResultDate"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 4000.0007, Message ID UAD1754",
       "messages": {
@@ -17094,10 +18114,21 @@
       "category": "Sales Comparison Approach",
       "description": "If SalesComparisonApproachIndicator = \"true\" and SalesComparisonCommentDescription is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If SalesComparisonApproachIndicator = \"true\" and SalesComparisonCommentDescription is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/SalesComparisonApproachIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/SALES_COMPARISON_APPROACH/SALES_COMPARISON_APPROACH_DETAIL/SalesComparisonCommentDescription"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1800.0278, Message ID UAD1760",
       "messages": {
@@ -17118,10 +18149,21 @@
       "category": "Cost Approach",
       "description": "If CostApproachIndicator = \"true\" and CostAnalysisCommentDescription is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If CostApproachIndicator = \"true\" and CostAnalysisCommentDescription is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/CostApproachIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/CostAnalysisCommentDescription"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1100.0023, Message ID UAD1761",
       "messages": {
@@ -17142,10 +18184,21 @@
       "category": "Income Approach",
       "description": "If IncomeApproachIndicator = \"true\" and IncomeAnalysisCommentDescription is not provided",
       "severity": "HardStop",
-      "enabled": false,
+      "enabled": true,
       "logic": {
-        "type": "needs_encoding",
-        "source_logic": "If IncomeApproachIndicator = \"true\" and IncomeAnalysisCommentDescription is not provided"
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/IncomeApproachIndicator",
+              "equals": "true"
+            }
+          ]
+        ],
+        "then": {
+          "type": "field_present",
+          "field": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/INCOME_APPROACH/INCOME_APPROACH_DETAIL/IncomeAnalysisCommentDescription"
+        }
       },
       "citation": "UAD 3.6 Appendix H-1 v1.4, Unique ID 1200.0007, Message ID UAD1762",
       "messages": {

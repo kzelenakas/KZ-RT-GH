@@ -19,6 +19,30 @@
       "section": "Certifications"
     },
     {
+      "key": "doc:SERVICE/PARTIES/PARTY/INDIVIDUAL/NAME/FirstName",
+      "scope": "doc",
+      "xpath_dir": "SERVICE/PARTIES/PARTY/INDIVIDUAL/NAME/",
+      "element": "FirstName",
+      "label": "Significant Real Property Appraisal Assistance - Name",
+      "section": "Assignment Information"
+    },
+    {
+      "key": "doc:SERVICE/PARTIES/PARTY/INDIVIDUAL/NAME/LastName",
+      "scope": "doc",
+      "xpath_dir": "SERVICE/PARTIES/PARTY/INDIVIDUAL/NAME/",
+      "element": "LastName",
+      "label": "Significant Real Property Appraisal Assistance - Name",
+      "section": "Assignment Information"
+    },
+    {
+      "key": "doc:SERVICE/PARTIES/PARTY/LEGAL_ENTITY/LEGAL_ENTITY_DETAIL/FullName",
+      "scope": "doc",
+      "xpath_dir": "SERVICE/PARTIES/PARTY/LEGAL_ENTITY/LEGAL_ENTITY_DETAIL/",
+      "element": "FullName",
+      "label": "Company Name",
+      "section": "Assignment Information"
+    },
+    {
       "key": "doc:SERVICE/PARTIES/PARTY/ROLES/ROLE/LICENSES/LICENSE/LICENSE_DETAIL/LicenseExpirationDate",
       "scope": "doc",
       "xpath_dir": "SERVICE/PARTIES/PARTY/ROLES/ROLE/LICENSES/LICENSE/LICENSE_DETAIL/",
@@ -27,11 +51,139 @@
       "section": "Assignment Information"
     },
     {
+      "key": "doc:SERVICE/PARTIES/PARTY/ROLES/ROLE/ROLE_DETAIL/PartyRoleType",
+      "scope": "doc",
+      "xpath_dir": "SERVICE/PARTIES/PARTY/ROLES/ROLE/ROLE_DETAIL/",
+      "element": "PartyRoleType",
+      "label": "Does Not Display",
+      "section": "Does Not Display"
+    },
+    {
+      "key": "doc:SERVICE/PARTIES/PARTY/ROLES/ROLE/ROLE_DETAIL/PartyRoleTypeAdditionalDescription",
+      "scope": "doc",
+      "xpath_dir": "SERVICE/PARTIES/PARTY/ROLES/ROLE/ROLE_DETAIL/",
+      "element": "PartyRoleTypeAdditionalDescription",
+      "label": "Significant Real Property Appraisal Assistance - Description",
+      "section": "Assignment Information"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/CostAnalysisCommentDescription",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/",
+      "element": "CostAnalysisCommentDescription",
+      "label": "{No Label}",
+      "section": "Cost Approach"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/DepreciatedCostDwellingsTotalAmount",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/",
+      "element": "DepreciatedCostDwellingsTotalAmount",
+      "label": "Depreciated Cost of Dwellings",
+      "section": "Cost Approach"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/SiteOtherImprovementsAsIsAmount",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/",
+      "element": "SiteOtherImprovementsAsIsAmount",
+      "label": "As Is Value of Site Improvements",
+      "section": "Cost Approach"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/SiteValuationMethodType",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/",
+      "element": "SiteValuationMethodType",
+      "label": "Primary Site Valuation Method",
+      "section": "Uncategorized"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/SiteValuationMethodTypeOtherDescription",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/",
+      "element": "SiteValuationMethodTypeOtherDescription",
+      "label": "Primary Site Valuation Method",
+      "section": "Uncategorized"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/ValueIndicatedByCostApproachAmount",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/",
+      "element": "ValueIndicatedByCostApproachAmount",
+      "label": "Indicated Value by Cost Approach",
+      "section": "Cost Approach"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/INCOME_APPROACH/INCOME_APPROACH_DETAIL/GrossRentMultiplierFactorNumber",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/INCOME_APPROACH/INCOME_APPROACH_DETAIL/",
+      "element": "GrossRentMultiplierFactorNumber",
+      "label": "Gross Rent Multiplier",
+      "section": "Income Approach"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/INCOME_APPROACH/INCOME_APPROACH_DETAIL/IncomeAnalysisCommentDescription",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/INCOME_APPROACH/INCOME_APPROACH_DETAIL/",
+      "element": "IncomeAnalysisCommentDescription",
+      "label": "{No Label}",
+      "section": "Income Approach"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/INCOME_APPROACH/INCOME_APPROACH_DETAIL/ValueIndicatedByIncomeApproachAmount",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/INCOME_APPROACH/INCOME_APPROACH_DETAIL/",
+      "element": "ValueIndicatedByIncomeApproachAmount",
+      "label": "Indicated Value by Income Approach",
+      "section": "Income Approach"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/SALES_COMPARISON_APPROACH/SALES_COMPARISON_APPROACH_DETAIL/SalesComparisonCommentDescription",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/SALES_COMPARISON_APPROACH/SALES_COMPARISON_APPROACH_DETAIL/",
+      "element": "SalesComparisonCommentDescription",
+      "label": "{No Label}",
+      "section": "Sales Comparison Approach"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/SALES_COMPARISON_APPROACH/SALES_COMPARISON_APPROACH_DETAIL/ValueIndicatedBySalesComparisonAmount",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/SALES_COMPARISON_APPROACH/SALES_COMPARISON_APPROACH_DETAIL/",
+      "element": "ValueIndicatedBySalesComparisonAmount",
+      "label": "Indicated Value",
+      "section": "Sales Comparison Approach"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/RECONSIDERATIONS_OF_VALUE/RECONSIDERATION_OF_VALUE/ReconsiderationOfValueCommentDescription",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/RECONSIDERATIONS_OF_VALUE/RECONSIDERATION_OF_VALUE/",
+      "element": "ReconsiderationOfValueCommentDescription",
+      "label": "Reconsideration of Value Commentary",
+      "section": "Revision History"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/RECONSIDERATIONS_OF_VALUE/RECONSIDERATION_OF_VALUE/ReconsiderationOfValueRequestedByType",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/RECONSIDERATIONS_OF_VALUE/RECONSIDERATION_OF_VALUE/",
+      "element": "ReconsiderationOfValueRequestedByType",
+      "label": "Type",
+      "section": "Revision History"
+    },
+    {
       "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/RECONSIDERATIONS_OF_VALUE/RECONSIDERATION_OF_VALUE/ReconsiderationOfValueResultDate",
       "scope": "doc",
       "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/RECONSIDERATIONS_OF_VALUE/RECONSIDERATION_OF_VALUE/",
       "element": "ReconsiderationOfValueResultDate",
-      "label": "Date (%PV%)",
+      "label": "Date",
+      "section": "Revision History"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/RECONSIDERATIONS_OF_VALUE/RECONSIDERATION_OF_VALUE/ReconsiderationOfValueResultType",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/RECONSIDERATIONS_OF_VALUE/RECONSIDERATION_OF_VALUE/",
+      "element": "ReconsiderationOfValueResultType",
+      "label": "Result",
       "section": "Revision History"
     },
     {
@@ -49,6 +201,14 @@
       "element": "GovernmentAgencyAppraisalIndicator",
       "label": "Does Not Display",
       "section": "Does Not Display"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/GovernmentAgencyAppraisalType",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/",
+      "element": "GovernmentAgencyAppraisalType",
+      "label": "Government Agency",
+      "section": "Assignment Information"
     },
     {
       "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/IncomeApproachIndicator",
@@ -99,6 +259,14 @@
       "section": "Assignment Information"
     },
     {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/ValuationAssignmentTypeOtherDescription",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/SCOPE_OF_WORK/SCOPE_OF_WORK_DETAIL/",
+      "element": "ValuationAssignmentTypeOtherDescription",
+      "label": "Assignment Reason",
+      "section": "Assignment Information"
+    },
+    {
       "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_DETAIL/AdditionalClientRequestedConditionsIndicator",
       "scope": "doc",
       "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_DETAIL/",
@@ -112,6 +280,14 @@
       "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_DETAIL/",
       "element": "ValuationReconciliationSummaryCommentDescription",
       "label": "{No Label}",
+      "section": "Reconciliation"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_SUMMARY/VALUATION_CONDITIONS/VALUATION_CONDITION/PropertyValuationConditionalConclusionType",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_SUMMARY/VALUATION_CONDITIONS/VALUATION_CONDITION/",
+      "element": "PropertyValuationConditionalConclusionType",
+      "label": "Market Value Condition",
       "section": "Reconciliation"
     },
     {
@@ -131,6 +307,14 @@
       "section": "Reconciliation"
     },
     {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_SUMMARY/VALUATION_RECONCILIATION_SUMMARY_DETAIL/PropertyAsIsConditionRatingCode",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_SUMMARY/VALUATION_RECONCILIATION_SUMMARY_DETAIL/",
+      "element": "PropertyAsIsConditionRatingCode",
+      "label": "As Is Overall Condition Rating",
+      "section": "Reconciliation"
+    },
+    {
       "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_REPORT_DETAIL/AppraiserAdditionalCertificationIndicator",
       "scope": "doc",
       "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_REPORT_DETAIL/",
@@ -145,6 +329,22 @@
       "element": "AppraiserPriorServicesPerformedIndicator",
       "label": "{No Label}",
       "section": "Certifications"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_REPORT_DETAIL/MeasurementStandardPublisherType",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_REPORT_DETAIL/",
+      "element": "MeasurementStandardPublisherType",
+      "label": "Measurement Standard",
+      "section": "Sketch"
+    },
+    {
+      "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_REPORT_DETAIL/MeasurementStandardPublisherTypeOtherDescription",
+      "scope": "doc",
+      "xpath_dir": "VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_REPORT_DETAIL/",
+      "element": "MeasurementStandardPublisherTypeOtherDescription",
+      "label": "Measurement Standard",
+      "section": "Sketch"
     },
     {
       "key": "doc:VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_REPORT_DETAIL/PropertyDataReportIndicator",
@@ -259,6 +459,14 @@
       "section": "Subject Property"
     },
     {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/CAR_STORAGES/CAR_STORAGE/CAR_STORAGE_DETAIL/CarStorageType",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/CAR_STORAGES/CAR_STORAGE/CAR_STORAGE_DETAIL/",
+      "element": "CarStorageType",
+      "label": "Storage",
+      "section": "Vehicle Storage"
+    },
+    {
       "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/ENERGY_EFFICIENCY_AND_GREEN/ENERGY_EFFICIENCY_AND_GREEN_DETAIL/EfficiencyRatingExistsIndicator",
       "scope": "subject",
       "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/ENERGY_EFFICIENCY_AND_GREEN/ENERGY_EFFICIENCY_AND_GREEN_DETAIL/",
@@ -283,12 +491,76 @@
       "section": "Energy Efficient and Green Features"
     },
     {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/HOMEOWNERS_ASSOCIATIONS/HOMEOWNERS_ASSOCIATION/ASSOCIATION_CHARGES/ASSOCIATION_CHARGE/ASSOCIATION_CHARGE_DETAIL/AssociationChargeBalanceAmount",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/HOMEOWNERS_ASSOCIATIONS/HOMEOWNERS_ASSOCIATION/ASSOCIATION_CHARGES/ASSOCIATION_CHARGE/ASSOCIATION_CHARGE_DETAIL/",
+      "element": "AssociationChargeBalanceAmount",
+      "label": "Detail",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/HOMEOWNERS_ASSOCIATIONS/HOMEOWNERS_ASSOCIATION/ASSOCIATION_CHARGES/ASSOCIATION_CHARGE/ASSOCIATION_CHARGE_DETAIL/AssociationChargeType",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/HOMEOWNERS_ASSOCIATIONS/HOMEOWNERS_ASSOCIATION/ASSOCIATION_CHARGES/ASSOCIATION_CHARGE/ASSOCIATION_CHARGE_DETAIL/",
+      "element": "AssociationChargeType",
+      "label": "Does Not Display",
+      "section": "Does Not Display"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/HOMEOWNERS_ASSOCIATIONS/HOMEOWNERS_ASSOCIATION/ASSOCIATION_CHARGES/ASSOCIATION_CHARGE/ASSOCIATION_CHARGE_DETAIL/AssociationSpecialAssessmentStatusType",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/HOMEOWNERS_ASSOCIATIONS/HOMEOWNERS_ASSOCIATION/ASSOCIATION_CHARGES/ASSOCIATION_CHARGE/ASSOCIATION_CHARGE_DETAIL/",
+      "element": "AssociationSpecialAssessmentStatusType",
+      "label": "Detail",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/HOMEOWNERS_ASSOCIATIONS/HOMEOWNERS_ASSOCIATION/ASSOCIATION_CHARGES/ASSOCIATION_CHARGE/ASSOCIATION_CHARGE_DETAIL/OwnershipTransferFeeIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/HOMEOWNERS_ASSOCIATIONS/HOMEOWNERS_ASSOCIATION/ASSOCIATION_CHARGES/ASSOCIATION_CHARGE/ASSOCIATION_CHARGE_DETAIL/",
+      "element": "OwnershipTransferFeeIndicator",
+      "label": "Detail",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/IMPROVEMENT_DETAIL/ImprovementType",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/IMPROVEMENT_DETAIL/",
+      "element": "ImprovementType",
+      "label": "ImprovementType",
+      "section": "Uncategorized"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/MANUFACTURED_HOME/MANUFACTURED_HOME_DETAIL/ManufacturedHomeInstalledDateEstimatedIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/MANUFACTURED_HOME/MANUFACTURED_HOME_DETAIL/",
+      "element": "ManufacturedHomeInstalledDateEstimatedIndicator",
+      "label": "Year Installed",
+      "section": "Manufactured Home"
+    },
+    {
       "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/MANUFACTURED_HOME/MANUFACTURED_HOME_DETAIL/ManufacturedHomeManufactureDate",
       "scope": "subject",
       "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/MANUFACTURED_HOME/MANUFACTURED_HOME_DETAIL/",
       "element": "ManufacturedHomeManufactureDate",
       "label": "Date of Manufacture (%PV%)",
       "section": "Manufactured Home"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/MANUFACTURED_HOME/MANUFACTURED_HOME_DETAIL/ManufacturedHomeWidthType",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/MANUFACTURED_HOME/MANUFACTURED_HOME_DETAIL/",
+      "element": "ManufacturedHomeWidthType",
+      "label": "Manufactured Home Width",
+      "section": "Manufactured Home"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/STRUCTURE/CONSTRUCTION_METHODS/CONSTRUCTION_METHOD/ConstructionMethodType",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/IMPROVEMENTS/IMPROVEMENT/STRUCTURE/CONSTRUCTION_METHODS/CONSTRUCTION_METHOD/",
+      "element": "ConstructionMethodType",
+      "label": "Construction Method",
+      "section": "Dwelling Exterior"
     },
     {
       "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/LISTING_INFORMATION_SUMMARY/ListedWithinPreviousYearIndicator",
@@ -347,6 +619,190 @@
       "section": "Market"
     },
     {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PARCELS/PARCEL/PARCEL_IDENTIFICATIONS/PARCEL_IDENTIFICATION/ParcelIdentificationType",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PARCELS/PARCEL/PARCEL_IDENTIFICATIONS/PARCEL_IDENTIFICATION/",
+      "element": "ParcelIdentificationType",
+      "label": "Does Not Display",
+      "section": "Does Not Display"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PARCELS/PARCEL/PARCEL_IDENTIFICATIONS/PARCEL_IDENTIFICATION/ParcelIdentifier",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PARCELS/PARCEL/PARCEL_IDENTIFICATIONS/PARCEL_IDENTIFICATION/",
+      "element": "ParcelIdentifier",
+      "label": "Assessor Parcel Number (APN)",
+      "section": "Site"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_ANALYSIS/ProjectAnalysisGroundRentIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_ANALYSIS/",
+      "element": "ProjectAnalysisGroundRentIndicator",
+      "label": "Ground Rent",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_ANALYSIS/ProjectConditionAndQualityDescription",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_ANALYSIS/",
+      "element": "ProjectConditionAndQualityDescription",
+      "label": "Description of Deficiencies",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_ANALYSIS/ProjectDeficiencyObservedIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_ANALYSIS/",
+      "element": "ProjectDeficiencyObservedIndicator",
+      "label": "Observed Deficiencies",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_CONVERSION/ProjectConversionIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_CONVERSION/",
+      "element": "ProjectConversionIndicator",
+      "label": "Converted in Past 3 Years",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_CONVERSION/ProjectConversionOriginalUseType",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_CONVERSION/",
+      "element": "ProjectConversionOriginalUseType",
+      "label": "Detail",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_CONVERSION/ProjectConversionOriginalUseTypeOtherDescription",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_CONVERSION/",
+      "element": "ProjectConversionOriginalUseTypeOtherDescription",
+      "label": "Detail",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/LegalActionIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/",
+      "element": "LegalActionIndicator",
+      "label": "Detail",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectCommercialSpaceIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/",
+      "element": "ProjectCommercialSpaceIndicator",
+      "label": "Detail",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectCommercialSpacePercent",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/",
+      "element": "ProjectCommercialSpacePercent",
+      "label": "Detail",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectCompletedIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/",
+      "element": "ProjectCompletedIndicator",
+      "label": "Are units, common areas, and amenities in project complete?",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectDwellingUnitCount",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/",
+      "element": "ProjectDwellingUnitCount",
+      "label": "Total Units",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectDwellingUnitsForSaleCount",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/",
+      "element": "ProjectDwellingUnitsForSaleCount",
+      "label": "Units for Sale",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectDwellingUnitsRentedCount",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/",
+      "element": "ProjectDwellingUnitsRentedCount",
+      "label": "Units Rented",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectDwellingUnitsSoldCount",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/",
+      "element": "ProjectDwellingUnitsSoldCount",
+      "label": "Units Sold",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/ProjectLegalStructureType",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/",
+      "element": "ProjectLegalStructureType",
+      "label": "Condominium; Cooperative; Condop",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/SubjectBuildingCompletedIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DETAIL/",
+      "element": "SubjectBuildingCompletedIndicator",
+      "label": "Subject Property Building Complete",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DEVELOPER/ProjectDeveloperOrSponsorControlsProjectManagementIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_DEVELOPER/",
+      "element": "ProjectDeveloperOrSponsorControlsProjectManagementIndicator",
+      "label": "Detail",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_FINANCIAL_INFORMATION/ProjectBlanketFinancingIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_FINANCIAL_INFORMATION/",
+      "element": "ProjectBlanketFinancingIndicator",
+      "label": "{No Label}",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_FINANCIAL_INFORMATION/ProjectTotalSharesIssuedAndOutstandingCount",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_FINANCIAL_INFORMATION/",
+      "element": "ProjectTotalSharesIssuedAndOutstandingCount",
+      "label": "Shares Issued and Outstanding",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_FINANCIAL_INFORMATION/SingleEntityGreatestNumberOfSharesCount",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_FINANCIAL_INFORMATION/",
+      "element": "SingleEntityGreatestNumberOfSharesCount",
+      "label": "Detail",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_FINANCIAL_INFORMATION/SingleEntityGreatestNumberOfUnitsCount",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROJECT/PROJECT_FINANCIAL_INFORMATION/",
+      "element": "SingleEntityGreatestNumberOfUnitsCount",
+      "label": "Detail",
+      "section": "Project Information"
+    },
+    {
       "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/AccessoryDwellingUnitTotalCount",
       "scope": "subject",
       "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/",
@@ -363,11 +819,19 @@
       "section": "Subject Property"
     },
     {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/CommunityLandTrustIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/",
+      "element": "CommunityLandTrustIndicator",
+      "label": "Community Land Trust",
+      "section": "Subject Property"
+    },
+    {
       "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/CooperativeProprietaryLeaseExpirationDate",
       "scope": "subject",
       "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/",
       "element": "CooperativeProprietaryLeaseExpirationDate",
-      "label": "Proprietary Lease Expires (%PV%)",
+      "label": "Proprietary Lease Expires",
       "section": "Project Information"
     },
     {
@@ -400,6 +864,22 @@
       "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/",
       "element": "NativeAmericanLandsIndicator",
       "label": "Property on Native American Lands",
+      "section": "Subject Property"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/NativeAmericanLandsType",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/",
+      "element": "NativeAmericanLandsType",
+      "label": "Native American Lands",
+      "section": "Subject Property"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/NativeAmericanLandsTypeOtherDescription",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/",
+      "element": "NativeAmericanLandsTypeOtherDescription",
+      "label": "Native American Lands",
       "section": "Subject Property"
     },
     {
@@ -443,12 +923,44 @@
       "section": "Prior Sale and Transfer History"
     },
     {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/ProRataSharePercent",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/",
+      "element": "ProRataSharePercent",
+      "label": "Pro Rata Share",
+      "section": "Project Information"
+    },
+    {
       "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyAmenityExistsIndicator",
       "scope": "subject",
       "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/",
       "element": "PropertyAmenityExistsIndicator",
       "label": "{No Label}",
       "section": "Subject Property Amenities"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyCooperativeSharesCount",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/",
+      "element": "PropertyCooperativeSharesCount",
+      "label": "Shares Attributable to Subject Property",
+      "section": "Project Information"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyEstateType",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/",
+      "element": "PropertyEstateType",
+      "label": "Property Rights Appraised",
+      "section": "Subject Property"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyEstateTypeOtherDescription",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/",
+      "element": "PropertyEstateTypeOtherDescription",
+      "label": "Property Rights Appraised",
+      "section": "Subject Property"
     },
     {
       "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/PropertyInProjectIndicator",
@@ -459,12 +971,84 @@
       "section": "Subject Property"
     },
     {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/SubjectPropertyAmenitiesDefectsExistIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/",
+      "element": "SubjectPropertyAmenitiesDefectsExistIndicator",
+      "label": "{No Label}",
+      "section": "Subject Property Amenities"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/VehicleStorageDefectsExistIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_DETAIL/",
+      "element": "VehicleStorageDefectsExistIndicator",
+      "label": "{No Label}",
+      "section": "Vehicle Storage"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_GROUND_RENT/PropertyGroundLeaseAnnualAmount",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_GROUND_RENT/",
+      "element": "PropertyGroundLeaseAnnualAmount",
+      "label": "Ground Rent Annual Amount",
+      "section": "Subject Property"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_GROUND_RENT/PropertyGroundLeaseExpirationDate",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_GROUND_RENT/",
+      "element": "PropertyGroundLeaseExpirationDate",
+      "label": "Expires",
+      "section": "Subject Property"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_GROUND_RENT/PropertyGroundLeaseRenewableIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_GROUND_RENT/",
+      "element": "PropertyGroundLeaseRenewableIndicator",
+      "label": "Renewable",
+      "section": "Subject Property"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_TAXES/PROPERTY_TAX/PROPERTY_TAX_DETAIL/PropertyTaxAbatementsOrExemptionsIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_TAXES/PROPERTY_TAX/PROPERTY_TAX_DETAIL/",
+      "element": "PropertyTaxAbatementsOrExemptionsIndicator",
+      "label": "Detail",
+      "section": "Project Information"
+    },
+    {
       "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_TAXES/PROPERTY_TAX/PROPERTY_TAX_DETAIL/SpecialTaxAssessmentsIndicator",
       "scope": "subject",
       "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_TAXES/PROPERTY_TAX/PROPERTY_TAX_DETAIL/",
       "element": "SpecialTaxAssessmentsIndicator",
       "label": "Special Tax Assessments",
       "section": "Subject Property"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_USE_SUMMARY/NonResidentialModificationIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_USE_SUMMARY/",
+      "element": "NonResidentialModificationIndicator",
+      "label": "Non-Residential Modification",
+      "section": "Site"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_USE_SUMMARY/PropertyMixedUsageIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_USE_SUMMARY/",
+      "element": "PropertyMixedUsageIndicator",
+      "label": "Non-Residential Use",
+      "section": "Site"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_USE_SUMMARY/PropertyPrimarilyResidentialUseIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_USE_SUMMARY/",
+      "element": "PropertyPrimarilyResidentialUseIndicator",
+      "label": "Primarily Residential",
+      "section": "Site"
     },
     {
       "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/PROPERTY_VALUATIONS/PROPERTY_VALUATION/PROPERTY_VALUATION_DETAIL/PropertyValuationMethodType",
@@ -475,11 +1059,67 @@
       "section": "Assignment Information"
     },
     {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/RENTAL_INFORMATION_SUMMARY/RENTAL_INFORMATION_SUMMARY_DETAIL/TotalMonthlyActualRentAmount",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/RENTAL_INFORMATION_SUMMARY/RENTAL_INFORMATION_SUMMARY_DETAIL/",
+      "element": "TotalMonthlyActualRentAmount",
+      "label": "TotalMonthlyActualRentAmount",
+      "section": "Uncategorized"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/RENTAL_INFORMATION_SUMMARY/RENTAL_INFORMATION_SUMMARY_DETAIL/TotalMonthlyMarketRentAmount",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/RENTAL_INFORMATION_SUMMARY/RENTAL_INFORMATION_SUMMARY_DETAIL/",
+      "element": "TotalMonthlyMarketRentAmount",
+      "label": "TotalMonthlyMarketRentAmount",
+      "section": "Uncategorized"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/AllPropertyRightsAppraisedIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/",
+      "element": "AllPropertyRightsAppraisedIndicator",
+      "label": "All Rights Included in Appraisal",
+      "section": "Subject Property"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SaleType",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/",
+      "element": "SaleType",
+      "label": "Transfer Terms",
+      "section": "Sales Contract"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesConcessionAmountKnownIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/",
+      "element": "SalesConcessionAmountKnownIndicator",
+      "label": "Total Sales Concessions",
+      "section": "Sales Contract"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesConcessionIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/",
+      "element": "SalesConcessionIndicator",
+      "label": "Known Sales Concessions",
+      "section": "Sales Contract"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesContractAmount",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/",
+      "element": "SalesContractAmount",
+      "label": "Contract Price",
+      "section": "Sales Contract"
+    },
+    {
       "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesContractDate",
       "scope": "subject",
       "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/",
       "element": "SalesContractDate",
-      "label": "Contract Date (%PV%)",
+      "label": "Contract Date",
       "section": "Sales Contract"
     },
     {
@@ -491,12 +1131,44 @@
       "section": "Sales Contract"
     },
     {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/SalesContractReviewedIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/",
+      "element": "SalesContractReviewedIndicator",
+      "label": "Was sales contract information analyzed?",
+      "section": "Sales Contract"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/TotalSalesConcessionAmount",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_CONTRACTS/SALES_CONTRACT/SALES_CONTRACT_DETAIL/",
+      "element": "TotalSalesConcessionAmount",
+      "label": "Total Sales Concessions",
+      "section": "Sales Contract"
+    },
+    {
       "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_HISTORIES/SALES_HISTORY/OwnershipTransferDate",
       "scope": "subject",
       "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SALES_HISTORIES/SALES_HISTORY/",
       "element": "OwnershipTransferDate",
       "label": "Date (%PV%)",
       "section": "Prior Sale and Transfer History"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/HAZARD_ZONES/HAZARD_ZONE/HazardZoneType",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/HAZARD_ZONES/HAZARD_ZONE/",
+      "element": "HazardZoneType",
+      "label": "Detail",
+      "section": "Site"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/HAZARD_ZONES/HAZARD_ZONE/LavaFlowZoneCode",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/HAZARD_ZONES/HAZARD_ZONE/",
+      "element": "LavaFlowZoneCode",
+      "label": "Detail",
+      "section": "Site"
     },
     {
       "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/HIGHEST_AND_BEST_USE/FinanciallyFeasibleIndicator",
@@ -539,6 +1211,14 @@
       "section": "Highest and Best Use"
     },
     {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/PROPERTY_ACCESS/PROPERTY_ACCESS_DETAIL/PrivateStreetMaintenanceAgreementExistIndicator",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/PROPERTY_ACCESS/PROPERTY_ACCESS_DETAIL/",
+      "element": "PrivateStreetMaintenanceAgreementExistIndicator",
+      "label": "Known Maintenance Agreement",
+      "section": "Site"
+    },
+    {
       "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/PROPERTY_ACCESS/PROPERTY_ACCESS_DETAIL/PropertyAccessTypicalToMarketIndicator",
       "scope": "subject",
       "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/PROPERTY_ACCESS/PROPERTY_ACCESS_DETAIL/",
@@ -551,6 +1231,14 @@
       "scope": "subject",
       "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/PROPERTY_ACCESS/PROPERTY_ACCESS_DETAIL/",
       "element": "PropertyPrimaryEntryExitMethodType",
+      "label": "Primary Access",
+      "section": "Site"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/PROPERTY_ACCESS/PROPERTY_ACCESS_DETAIL/PropertyPrimaryEntryExitMethodTypeOtherDescription",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/PROPERTY_ACCESS/PROPERTY_ACCESS_DETAIL/",
+      "element": "PropertyPrimaryEntryExitMethodTypeOtherDescription",
       "label": "Primary Access",
       "section": "Site"
     },
@@ -576,6 +1264,38 @@
       "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_DETAIL/",
       "element": "SiteDefectsExistIndicator",
       "label": "{No Label}",
+      "section": "Site"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_SIZE_LAYOUT/LotSizeAreaMeasure",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_SIZE_LAYOUT/",
+      "element": "LotSizeAreaMeasure",
+      "label": "Total Site Size",
+      "section": "Site"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_SIZE_LAYOUT/ParcelCount",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_SIZE_LAYOUT/",
+      "element": "ParcelCount",
+      "label": "Number of Parcels",
+      "section": "Site"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_ZONING/SITE_ZONING_DETAIL/SiteZoningClassificationDescription",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_ZONING/SITE_ZONING_DETAIL/",
+      "element": "SiteZoningClassificationDescription",
+      "label": "Classification Code Description",
+      "section": "Site"
+    },
+    {
+      "key": "subject:VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_ZONING/SITE_ZONING_DETAIL/SiteZoningClassificationIdentifier",
+      "scope": "subject",
+      "xpath_dir": "VALUATION_ANALYSIS/PROPERTIES/PROPERTY/SITE/SITE_ZONING/SITE_ZONING_DETAIL/",
+      "element": "SiteZoningClassificationIdentifier",
+      "label": "Classification Code",
       "section": "Site"
     },
     {

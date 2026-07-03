@@ -76,7 +76,11 @@ def evaluate(
         if not result.triggered:
             record(rule, "pass")
             continue
-        field_path = str(rule.logic.get("field") or next(iter(rule.logic.get("fields", [])), ""))
+        field_path = str(
+            rule.logic.get("field")
+            or next(iter(rule.logic.get("fields", [])), "")
+            or rule.logic.get("then", {}).get("field", "")
+        )
         normalized_field = report.fields.get(field_path)
         appraiser = rule.messages.appraiser or rule.messages.reviewer or rule.description
         reviewer = rule.messages.reviewer or rule.messages.appraiser or rule.description

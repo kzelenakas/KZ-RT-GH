@@ -106,3 +106,44 @@ def test_trace_covers_all_rules_in_order():
     result = evaluate(FILLED, rules)
     assert [t.rule_id for t in result.trace] == [f"R-{i}" for i in range(5)]
     assert all(t.status == "pass" for t in result.trace)
+
+
+def test_conditional_rule_finding_uses_then_field_for_location():
+    rule = make_rule(
+        logic={
+            "type": "conditional",
+            "if_any": [[{"field": "subject.PropertyInProjectIndicator", "equals": "false"}]],
+            "then": {"type": "field_present", "field": "subject.CityName"},
+        },
+    )
+    report = NormalizedReport(
+        schema_version="TEST",
+        fields={
+            "subject.PropertyInProjectIndicator": NormalizedField(value="false"),
+            "subject.CityName": NormalizedField(
+                value="", xpath="/m/ADDRESS/CityName", section="Subject Property",
+            ),
+        },
+    )
+    result = evaluate(report, [rule])
+    assert len(result.findings) == 1
+    f = result.findings[0]
+    assert f.field_path == "subject.CityName"
+    assert f.xpath == "/m/ADDRESS/CityName"
+    assert f.section == "Subject Property"
+
+
+def test_conditional_rule_condition_false_produces_no_finding():
+    rule = make_rule(
+        logic={
+            "type": "conditional",
+            "if_any": [[{"field": "subject.PropertyInProjectIndicator", "equals": "false"}]],
+            "then": {"type": "field_present", "field": "subject.CityName"},
+        },
+    )
+    report = NormalizedReport(
+        schema_version="TEST",
+        fields={"subject.PropertyInProjectIndicator": NormalizedField(value="true")},
+    )
+    result = evaluate(report, [rule])
+    assert result.findings == [] and result.rule_errors == []
