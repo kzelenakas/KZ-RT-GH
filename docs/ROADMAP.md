@@ -67,51 +67,57 @@ the local dev database rebuilds itself (rules re-seed automatically). Nothing im
 
 ### C-0. Prerequisite — the ask to IT (do this first; it gates everything)
 
-- [ ] **C0.1.** Email IT/security. Request:
+- [x] **C0.1.** Email IT/security. Request:
   1. A **GCP project** (suggest name `uad36-qc-beta`) with **billing enabled**.
   2. Your company Google account granted the **Editor** role (or Owner) on that project.
   3. Mention: the app will hold GLBA-protected borrower data, which is *why* it must be
      company-controlled — this was the design decision, it's a feature not a favor.
-- [ ] **C0.2.** Write down the **Project ID** they give you (looks like `uad36-qc-beta-123456`).
+- [x] **C0.2.** Write down the **Project ID** they give you. *(Done: `uad36-qc-beta`.)*
 
 ### C-1. One-time PC setup (~15 min)
 
-- [ ] **C1.1.** Install the Google Cloud CLI: https://cloud.google.com/sdk/docs/install →
+- [x] **C1.1.** Install the Google Cloud CLI: https://cloud.google.com/sdk/docs/install →
   Windows installer → accept all defaults → let it restart the terminal.
-- [ ] **C1.2.** Log in (browser window opens; use your **company** Google account):
+- [x] **C1.2.** Log in (browser window opens; use your **company** Google account):
   ```powershell
   gcloud auth login
   ```
 
 ### C-2. Deploy (~20 min, one command)
 
-- [ ] **C2.1.** From the project folder:
+- [x] **C2.1.** From the project folder:
   ```powershell
   .\infra\deploy-gcp.ps1 -ProjectId "PASTE-PROJECT-ID-HERE"
   ```
   The script: enables GCP services → creates the Postgres database (smallest tier) →
   creates the file-retention bucket → builds the app in the cloud → deploys to Cloud Run.
-- [ ] **C2.2.** ⚠️ The script prints a **generated database password** — save it in your
+  *(2026-07-02: first run failed silently on DB creation — POSTGRES_16 needs
+  `--edition=enterprise` for db-f1-micro. Script fixed; DB created manually; service healthy.)*
+- [x] **C2.2.** ⚠️ The script prints a **generated database password** — save it in your
   password manager immediately. You'll need it for future redeploys.
-- [ ] **C2.3.** Copy the **service URL** it prints at the end (looks like
-  `https://uad36-qc-xxxxx-uc.a.run.app`). Opening it now gives a permission error — correct,
-  the login wall isn't on yet.
+- [x] **C2.3.** Copy the **service URL** it prints at the end.
+  *(Done: `https://uad36-qc-620834509337.us-central1.run.app`.)*
 
 ### C-3. Turn on the login wall (IAP) (~15 min, point-and-click)
 
-- [ ] **C3.1.** Browser → https://console.cloud.google.com/security/iap → make sure the
-  project selector (top bar) shows your project.
-- [ ] **C3.2.** If prompted to configure the "OAuth consent screen": choose **Internal**,
-  app name `UAD 3.6 QC`, your email for both contact fields, Save.
-- [ ] **C3.3.** In the IAP resource list find the Cloud Run service **uad36-qc** → flip its toggle **ON**.
-- [ ] **C3.4.** Tick the checkbox next to it → right panel → **Add principal** → your company
-  email → role **IAP-secured Web App User** → Save. Repeat later for each teammate.
-- [ ] **C3.5.** Open the service URL → Google sign-in → the app. **That's the beta, live.**
+*(2026-07-02: C3.1–C3.4 done via CLI instead of console — `gcloud run services update
+uad36-qc --iap` + `gcloud iap web add-iam-policy-binding`. To add a teammate later:)*
+```powershell
+gcloud iap web add-iam-policy-binding --resource-type=cloud-run --service=uad36-qc `
+  --region=us-central1 --member="user:TEAMMATE@truefootage.tech" `
+  --role="roles/iap.httpsResourceAccessor" --project=uad36-qc-beta
+```
+
+- [x] **C3.1.** IAP enabled on the service (CLI).
+- [x] **C3.2.** OAuth consent screen — not required with Cloud Run's built-in IAP integration.
+- [x] **C3.3.** IAP toggle ON (`run.googleapis.com/iap-enabled: true` verified).
+- [x] **C3.4.** kevin.zelenakas@truefootage.tech granted **IAP-secured Web App User**.
+- [ ] **C3.5.** Open the service URL → Google sign-in (company account) → the app. **That's the beta, live.**
 
 ### C-4. Budget guardrails (~5 min)
 
-- [ ] **C4.1.** https://console.cloud.google.com/billing → Budgets & alerts → Create budget →
-  scope: your project → amount **$25/month** → alerts at 50% / 90% / 100% → your email.
+- [x] **C4.1.** Budget created via CLI: **$25/month**, alerts at 50% / 90% / 100%,
+  scoped to `uad36-qc-beta`. *(Alerts go to billing-account admins by default.)*
 - [ ] **C4.2.** Expected spend: Cloud SQL ~$9–12/mo, Cloud Run ~$0–3/mo (sleeps when idle),
   storage pennies. Anything above $25 = something's wrong; email me the billing screenshot.
 
