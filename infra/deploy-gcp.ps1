@@ -25,10 +25,15 @@ Write-Host "==> Creating Cloud SQL Postgres (smallest tier, ~`$10/mo). Skips if 
 $exists = gcloud sql instances list --filter="name=$DbInstance" --format="value(name)"
 if (-not $exists) {
     if (-not $DbPassword) { $DbPassword = -join ((65..90) + (97..122) + (48..57) | Get-Random -Count 20 | ForEach-Object { [char]$_ }) ; Write-Host "Generated DB password: $DbPassword  (SAVE THIS)" -ForegroundColor Yellow }
+    # --edition=enterprise required: POSTGRES_16 defaults to Enterprise Plus,
+    # which rejects shared-core tiers like db-f1-micro
     gcloud sql instances create $DbInstance --database-version=POSTGRES_16 `
-        --tier=db-f1-micro --region=$Region --storage-size=10
+        --edition=enterprise --tier=db-f1-micro --region=$Region --storage-size=10
+    if ($LASTEXITCODE -ne 0) { throw "Cloud SQL instance creation failed - stopping. Nothing was deployed." }
     gcloud sql users set-password postgres --instance=$DbInstance --password=$DbPassword
+    if ($LASTEXITCODE -ne 0) { throw "Setting DB password failed - stopping." }
     gcloud sql databases create qc --instance=$DbInstance
+    if ($LASTEXITCODE -ne 0) { throw "Creating qc database failed - stopping." }
 }
 
 Write-Host "==> Creating GCS bucket for retained report files. Skips if it exists." -ForegroundColor Cyan
