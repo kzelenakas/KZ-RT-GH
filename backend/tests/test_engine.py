@@ -79,3 +79,30 @@ def test_message_fallback_to_description():
     rule = make_rule(messages={})
     result = evaluate(EMPTY, [rule])
     assert result.findings[0].message_appraiser == "Field must be present."
+
+
+def test_trace_records_every_rule_with_status():
+    rules = [
+        make_rule(rule_id="FIRES"),                                            # finding on EMPTY
+        make_rule(rule_id="PASSES", logic={"type": "field_present", "field": "subject.CityName"}),
+        make_rule(rule_id="OFF", enabled=False),
+        make_rule(rule_id="BAD", logic={"type": "quantum_check"}),
+    ]
+    result = evaluate(FILLED, [rules[1], rules[2], rules[3]])
+    by_id = {t.rule_id: t for t in result.trace}
+    assert by_id["PASSES"].status == "pass"
+    assert by_id["OFF"].status == "skipped"
+    assert by_id["BAD"].status == "error"
+    assert "unsupported_logic" in by_id["BAD"].detail
+
+    fired = evaluate(EMPTY, [rules[0]])
+    assert fired.trace[0].status == "finding"
+    assert fired.trace[0].detail == "Audit: CityName missing."
+    assert len(fired.trace) == 1
+
+
+def test_trace_covers_all_rules_in_order():
+    rules = [make_rule(rule_id=f"R-{i}") for i in range(5)]
+    result = evaluate(FILLED, rules)
+    assert [t.rule_id for t in result.trace] == [f"R-{i}" for i in range(5)]
+    assert all(t.status == "pass" for t in result.trace)

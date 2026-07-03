@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Sequence
 
-from app.models import Finding, NormalizedReport, RuleDefinition, RuleError, RunResult
+from app.models import Finding, NormalizedReport, RuleDefinition, RuleError, RuleTrace, RunResult
 from app.rules.operators import OperatorResult, OPERATORS
 
 # PURE aside from the injected AI backend: no DB, no file I/O in this module.
@@ -34,39 +34,47 @@ def evaluate(
 ) -> RunResult:
     findings: list[Finding] = []
     errors: list[RuleError] = []
+    trace: list[RuleTrace] = []
+
+    def record(rule: RuleDefinition, status: str, detail: str = "") -> None:
+        trace.append(RuleTrace(
+            rule_id=rule.rule_id, category=rule.category, severity=rule.severity,
+            status=status, detail=detail,
+        ))
+
     for rule in rules:
         if not rule.enabled:
+            record(rule, "skipped", "rule disabled (not yet encoded or turned off in admin)")
             continue
         logic_type = str(rule.logic.get("type", ""))
         if logic_type == "ai":
             try:
                 result = _run_ai_rule(rule, report, ai_backend)
             except Exception as exc:  # noqa: BLE001 - AI failure must never kill the run
-                errors.append(RuleError(
-                    rule_id=rule.rule_id,
-                    error_type="ai_error",
-                    detail=f"{type(exc).__name__}: {exc}",
-                ))
+                detail = f"{type(exc).__name__}: {exc}"
+                errors.append(RuleError(rule_id=rule.rule_id, error_type="ai_error", detail=detail))
+                record(rule, "error", f"ai_error: {detail}")
                 continue
         else:
             operator = OPERATORS.get(logic_type)
             if operator is None:
+                detail = f"Unknown logic type: {logic_type!r}"
                 errors.append(RuleError(
-                    rule_id=rule.rule_id,
-                    error_type="unsupported_logic",
-                    detail=f"Unknown logic type: {logic_type!r}",
+                    rule_id=rule.rule_id, error_type="unsupported_logic", detail=detail,
                 ))
+                record(rule, "error", f"unsupported_logic: {detail}")
                 continue
             try:
                 result = operator(rule.logic, report)
             except Exception as exc:  # noqa: BLE001 - a broken rule must never kill the run
+                detail = f"{type(exc).__name__}: {exc}"
                 errors.append(RuleError(
-                    rule_id=rule.rule_id,
-                    error_type="execution_error",
-                    detail=f"{type(exc).__name__}: {exc}",
+                    rule_id=rule.rule_id, error_type="execution_error", detail=detail,
                 ))
+                record(rule, "error", f"execution_error: {detail}")
                 continue
         if not result.triggered:
+            record(rule, "pass")
             continue
         field_path = str(rule.logic.get("field") or next(iter(rule.logic.get("fields", [])), ""))
         normalized_field = report.fields.get(field_path)
@@ -84,4 +92,5 @@ def evaluate(
             values=result.values,
             citation=rule.citation,
         ))
-    return RunResult(findings=findings, rule_errors=errors)
+        record(rule, "finding", reviewer)
+    return RunResult(findings=findings, rule_errors=errors, trace=trace)

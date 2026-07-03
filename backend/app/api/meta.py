@@ -13,6 +13,6 @@ def meta(request: Request) -> dict:
         "schema_version": state.adapter.schema_version,
         "ruleset_version": ruleset_version,
         "rule_count": len(state.rules_repo.list_rules("all")),
-        "active_rule_count": len(rules),
+        "active_rule_count": sum(1 for r in rules if r.enabled),
         "profiles": [p["name"] for p in state.rules_repo.list_profiles()],
     }

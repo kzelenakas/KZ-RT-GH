@@ -91,3 +91,25 @@ def test_meta(client):
     meta = client.get("/api/meta").json()
     assert meta["schema_version"] == "GSE_UAD_3.6.0_v1.3"
     assert meta["rule_count"] == 729
+
+
+@needs_official_files
+def test_rules_log_written_and_downloadable(client):
+    import csv
+    import io
+
+    with open(SAMPLES_DIR / "SF1_Appraisal_v1.4.zip", "rb") as fh:
+        run_id = client.post("/api/runs", files={"file": ("SF1.zip", fh, "application/zip")}).json()["id"]
+
+    response = client.get(f"/api/runs/{run_id}/rules-log")
+    assert response.status_code == 200
+    assert response.headers["content-type"].startswith("text/csv")
+
+    rows = list(csv.DictReader(io.StringIO(response.text)))
+    assert len(rows) == 729  # every rule accounted for, enabled or not
+    statuses = {r["status"] for r in rows}
+    assert statuses <= {"pass", "finding", "error", "skipped"}
+    assert sum(1 for r in rows if r["status"] == "skipped") >= 600  # needs_encoding queue
+    assert all(r["run_id"] == run_id and r["source_file"] == "SF1.zip" for r in rows[:5])
+
+    assert client.get("/api/runs/no-such-run/rules-log").status_code == 404

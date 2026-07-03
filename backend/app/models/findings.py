@@ -32,6 +32,17 @@ class RuleError(BaseModel):
     detail: str
 
 
+class RuleTrace(BaseModel):
+    """One row per rule the engine considered — the per-run audit trail."""
+
+    rule_id: str
+    category: str
+    severity: Severity
+    status: str  # "pass" | "finding" | "error" | "skipped"
+    detail: str = ""
+
+
 class RunResult(BaseModel):
     findings: list[Finding] = Field(default_factory=list)
     rule_errors: list[RuleError] = Field(default_factory=list)
+    trace: list[RuleTrace] = Field(default_factory=list)

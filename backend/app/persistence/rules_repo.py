@@ -76,7 +76,9 @@ class RulesRepository:
             return d
 
     def active_rules(self, profile_name: str | None = None) -> tuple[list[RuleDefinition], str]:
-        """Enabled, non-archived rules (minus profile-disabled) + version string."""
+        """All non-archived rules + version string. Disabled and profile-disabled rules
+        come back with enabled=False so the engine can log them as skipped — every rule
+        appears in the per-run audit trace."""
         disabled: set[str] = set()
         profile_tag = ""
         if profile_name:
@@ -86,11 +88,11 @@ class RulesRepository:
                 profile_tag = f"+{profile['name']}"
         with self._sessions() as session:
             rows = session.scalars(
-                select(RuleRow).where(RuleRow.archived.is_(False), RuleRow.enabled.is_(True))
+                select(RuleRow).where(RuleRow.archived.is_(False))
             ).all()
             definitions = [
-                {**r.definition_json, "enabled": True}
-                for r in rows if r.rule_id not in disabled
+                {**r.definition_json, "enabled": r.enabled and r.rule_id not in disabled}
+                for r in rows
             ]
         version = self._snapshot_if_changed()
         return [RuleDefinition.model_validate(d) for d in definitions], version + profile_tag

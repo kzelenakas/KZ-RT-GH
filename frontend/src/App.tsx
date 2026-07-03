@@ -165,6 +165,13 @@ export default function App() {
                   >
                     CSV
                   </a>
+                  <a
+                    href={`/api/runs/${run.id}/rules-log`}
+                    title="Full audit log: every rule run against this report and its result"
+                    className="rounded border border-gray-300 px-2 py-1 font-medium text-gray-700 hover:bg-gray-50"
+                  >
+                    Rule log
+                  </a>
                   <span className="rounded bg-gray-100 px-2 py-1 font-medium text-gray-800">
                     {SIGN_OFF_LABEL[run.sign_off_state] ?? run.sign_off_state}
                     {run.reviewer_name ? ` · ${run.reviewer_name}` : ""}
