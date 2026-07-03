@@ -112,7 +112,8 @@ gcloud iap web add-iam-policy-binding --resource-type=cloud-run --service=uad36-
 - [x] **C3.2.** OAuth consent screen — not required with Cloud Run's built-in IAP integration.
 - [x] **C3.3.** IAP toggle ON (`run.googleapis.com/iap-enabled: true` verified).
 - [x] **C3.4.** kevin.zelenakas@truefootage.tech granted **IAP-secured Web App User**.
-- [ ] **C3.5.** Open the service URL → Google sign-in (company account) → the app. **That's the beta, live.**
+- [x] **C3.5.** Open the service URL → Google sign-in (company account) → the app. **That's the beta, live.**
+  *(Verified 2026-07-03: sign-in works, app loads, drag-and-drop upload works on revision uad36-qc-00003-spt.)*
 
 ### C-4. Budget guardrails (~5 min)
 
