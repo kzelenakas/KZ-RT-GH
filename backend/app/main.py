@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app import config
 from app.api import admin, exports, meta, reviews, runs
-from app.persistence import RulesRepository, RunRepository, init_db
+from app.persistence import CandidateRulesRepository, RulesRepository, RunRepository, init_db
 from app.rules.ai_backends import build_backend
 from app.schema_adapters import get_default_adapter
 
@@ -17,6 +17,7 @@ def create_app() -> FastAPI:
     sessions = init_db(config.DB_URL)
     app.state.repo = RunRepository(sessions)
     app.state.rules_repo = RulesRepository(sessions)
+    app.state.candidate_rules_repo = CandidateRulesRepository(sessions)
     # First boot: seed the rules DB from the external ruleset file (H-1 import).
     app.state.rules_repo.seed_from_file(config.RULES_PATH)
 
