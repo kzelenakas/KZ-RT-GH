@@ -105,3 +105,22 @@ class AuditLogRow(Base):
     action: Mapped[str] = mapped_column(String(50))
     detail: Mapped[str] = mapped_column(Text, default="")
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
+
+
+class CandidateRuleRow(Base):
+    __tablename__ = "candidate_rules"
+    # Drafts from client-revision theme mining. Never auto-promoted; Admin
+    # review moves a row into RuleRow via the /candidate-rules/{id}/approve endpoint.
+    rule_id: Mapped[str] = mapped_column(String(100), primary_key=True)
+    definition_json: Mapped[dict] = mapped_column(JSON)
+    source: Mapped[str] = mapped_column(String(50), default="client_revision")
+    theme_id: Mapped[str] = mapped_column(String(200))
+    occurrence_count: Mapped[int] = mapped_column(default=0)
+    date_range_start: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    date_range_end: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    redundancy_verdict: Mapped[str] = mapped_column(String(20), default="new")
+    redundancy_notes: Mapped[str] = mapped_column(Text, default="")
+    review_status: Mapped[str] = mapped_column(String(20), default="pending")
+    reviewed_by: Mapped[str | None] = mapped_column(String(200), nullable=True)
+    reviewed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow)
