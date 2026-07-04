@@ -99,3 +99,47 @@ def upsert_profile(body: ProfileBody, request: Request, x_qc_role: str | None = 
     if not body.name.strip():
         raise HTTPException(status_code=422, detail="Profile name required")
     return request.app.state.rules_repo.upsert_profile(body.name.strip(), body.description, body.disabled_rule_ids)
+
+
+class CandidateReviewBody(BaseModel):
+    reviewer: str
+
+
+@router.get("/candidate-rules")
+def list_candidate_rules(request: Request, status: str = "all", x_qc_role: str | None = Header(default=None)) -> list[dict]:
+    _require_admin(x_qc_role)
+    return request.app.state.candidate_rules_repo.list_candidates(status)
+
+
+@router.get("/candidate-rules/{rule_id}")
+def get_candidate_rule(rule_id: str, request: Request, x_qc_role: str | None = Header(default=None)) -> dict:
+    _require_admin(x_qc_role)
+    candidate = request.app.state.candidate_rules_repo.get_candidate(rule_id)
+    if candidate is None:
+        raise HTTPException(status_code=404, detail="Candidate rule not found")
+    return candidate
+
+
+@router.post("/candidate-rules/{rule_id}/approve")
+def approve_candidate_rule(rule_id: str, body: CandidateReviewBody, request: Request, x_qc_role: str | None = Header(default=None)) -> dict:
+    _require_admin(x_qc_role)
+    candidate = request.app.state.candidate_rules_repo.get_candidate(rule_id)
+    if candidate is None:
+        raise HTTPException(status_code=404, detail="Candidate rule not found")
+    if candidate["redundancy_verdict"] == "exact_duplicate":
+        raise HTTPException(status_code=409, detail="Cannot approve an exact-duplicate candidate rule")
+    definition = {
+        k: candidate[k] for k in ("rule_id", "category", "description", "severity", "enabled", "logic", "citation", "messages")
+    }
+    definition["enabled"] = False  # promoted rules still start disabled; admin turns them on separately
+    request.app.state.rules_repo.upsert_rule(definition)
+    return request.app.state.candidate_rules_repo.mark_reviewed(rule_id, "approved", body.reviewer)
+
+
+@router.post("/candidate-rules/{rule_id}/reject")
+def reject_candidate_rule(rule_id: str, body: CandidateReviewBody, request: Request, x_qc_role: str | None = Header(default=None)) -> dict:
+    _require_admin(x_qc_role)
+    updated = request.app.state.candidate_rules_repo.mark_reviewed(rule_id, "rejected", body.reviewer)
+    if updated is None:
+        raise HTTPException(status_code=404, detail="Candidate rule not found")
+    return updated
