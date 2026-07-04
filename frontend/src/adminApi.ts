@@ -76,3 +76,36 @@ export async function importRuleset(ruleset: unknown, replace: boolean): Promise
     body: JSON.stringify({ ruleset, replace }),
   }));
 }
+
+export interface CandidateRule extends AdminRule {
+  theme_id: string;
+  occurrence_count: number;
+  date_range_start: string | null;
+  date_range_end: string | null;
+  redundancy_verdict: "exact_duplicate" | "overlaps" | "new";
+  redundancy_notes: string;
+  review_status: "pending" | "approved" | "rejected";
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  source: string;
+}
+
+export async function listCandidateRules(status: string): Promise<CandidateRule[]> {
+  return handle(await fetch(`/api/admin/candidate-rules?status=${status}`, { headers: ADMIN }));
+}
+
+export async function approveCandidateRule(ruleId: string, reviewer: string): Promise<CandidateRule> {
+  return handle(await fetch(`/api/admin/candidate-rules/${encodeURIComponent(ruleId)}/approve`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...ADMIN },
+    body: JSON.stringify({ reviewer }),
+  }));
+}
+
+export async function rejectCandidateRule(ruleId: string, reviewer: string): Promise<CandidateRule> {
+  return handle(await fetch(`/api/admin/candidate-rules/${encodeURIComponent(ruleId)}/reject`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...ADMIN },
+    body: JSON.stringify({ reviewer }),
+  }));
+}
