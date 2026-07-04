@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  archiveRule, exportRuleset, importRuleset, listAdminRules, listProfiles,
-  saveProfile, saveRule, toggleRule,
+  approveCandidateRule, archiveRule, exportRuleset, importRuleset, listAdminRules,
+  listCandidateRules, listProfiles, rejectCandidateRule, saveProfile, saveRule, toggleRule,
 } from "./adminApi";
-import type { AdminRule, Profile } from "./adminApi";
+import type { AdminRule, CandidateRule, Profile } from "./adminApi";
 
-type Tab = "all" | "enabled" | "needs_encoding" | "profiles";
+type Tab = "all" | "enabled" | "needs_encoding" | "profiles" | "client_revisions";
 
 const SEVERITIES = ["HardStop", "Warning", "Advisory"] as const;
 const PAGE_SIZE = 50;
@@ -23,8 +23,8 @@ export function AdminPanel() {
   async function refresh() {
     setError(null);
     try {
-      if (tab === "profiles") {
-        setProfiles(await listProfiles());
+      if (tab === "profiles" || tab === "client_revisions") {
+        setProfiles(tab === "profiles" ? await listProfiles() : profiles);
       } else {
         setRules(await listAdminRules(tab));
       }
@@ -114,13 +114,13 @@ export function AdminPanel() {
     <div className="space-y-4">
       <section className="rounded-lg border border-gray-200 bg-white p-4">
         <div className="flex flex-wrap items-center gap-2">
-          {(["all", "enabled", "needs_encoding", "profiles"] as Tab[]).map((t) => (
+          {(["all", "enabled", "needs_encoding", "profiles", "client_revisions"] as Tab[]).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
               className={`rounded px-3 py-1.5 text-sm font-medium ${tab === t ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
             >
-              {t === "all" ? "All rules" : t === "enabled" ? "Enabled" : t === "needs_encoding" ? "Needs encoding" : "Client profiles"}
+              {t === "all" ? "All rules" : t === "enabled" ? "Enabled" : t === "needs_encoding" ? "Needs encoding" : t === "profiles" ? "Client profiles" : "Client revisions"}
             </button>
           ))}
           <span className="ml-auto flex items-center gap-2">
@@ -148,6 +148,8 @@ export function AdminPanel() {
 
       {tab === "profiles" ? (
         <ProfilesPanel profiles={profiles} onSaved={refresh} />
+      ) : tab === "client_revisions" ? (
+        <CandidateRulesPanel />
       ) : (
         <section className="overflow-hidden rounded-lg border border-gray-200 bg-white">
           <div className="flex items-center justify-between border-b border-gray-200 px-4 py-2 text-xs text-gray-600">
@@ -324,6 +326,120 @@ function ProfilesPanel({ profiles, onSaved }: { profiles: Profile[]; onSaved: ()
             {error && <span className="ml-2 text-red-700">{error}</span>}
           </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function CandidateRulesPanel() {
+  const [status, setStatus] = useState<"pending" | "approved" | "rejected" | "all">("pending");
+  const [candidates, setCandidates] = useState<CandidateRule[]>([]);
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  async function refresh() {
+    setError(null);
+    try {
+      setCandidates(await listCandidateRules(status));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    }
+  }
+
+  useEffect(() => {
+    refresh();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
+
+  async function onApprove(rule: CandidateRule) {
+    const reviewer = window.prompt("Your name (for the review record):");
+    if (!reviewer) return;
+    try {
+      await approveCandidateRule(rule.rule_id, reviewer);
+      setMessage(`${rule.rule_id} approved and promoted to the live rule set (still OFF — enable it separately).`);
+      await refresh();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    }
+  }
+
+  async function onReject(rule: CandidateRule) {
+    const reviewer = window.prompt("Your name (for the review record):");
+    if (!reviewer) return;
+    try {
+      await rejectCandidateRule(rule.rule_id, reviewer);
+      setMessage(`${rule.rule_id} rejected.`);
+      await refresh();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+    }
+  }
+
+  const verdictLabel: Record<CandidateRule["redundancy_verdict"], string> = {
+    exact_duplicate: "Exact duplicate",
+    overlaps: "Overlaps existing rule",
+    new: "New",
+  };
+  const verdictClass: Record<CandidateRule["redundancy_verdict"], string> = {
+    exact_duplicate: "bg-red-100 text-red-800",
+    overlaps: "bg-amber-100 text-amber-800",
+    new: "bg-green-100 text-green-800",
+  };
+
+  return (
+    <section className="space-y-4">
+      <div className="rounded-lg border border-gray-200 bg-white p-4">
+        <h3 className="text-sm font-semibold text-gray-900">Client revision candidate rules</h3>
+        <p className="mt-1 text-xs text-gray-500">
+          Mined from client revision-request patterns (3+ occurrences). Approving copies a rule
+          into the live rule set — it still starts OFF; enable it separately once you're ready.
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {(["pending", "approved", "rejected", "all"] as const).map((s) => (
+            <button
+              key={s}
+              onClick={() => setStatus(s)}
+              className={`rounded px-3 py-1.5 text-sm font-medium ${status === s ? "bg-gray-900 text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"}`}
+            >
+              {s[0].toUpperCase() + s.slice(1)}
+            </button>
+          ))}
+        </div>
+        {message && <p className="mt-2 text-xs text-green-700">{message}</p>}
+        {error && <p className="mt-2 text-xs text-red-700">{error}</p>}
+      </div>
+      <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+        <ul className="divide-y divide-gray-100">
+          {candidates.map((c) => (
+            <li key={c.rule_id} className="px-4 py-3 text-xs">
+              <div className="flex items-center gap-3">
+                <span className="w-24 shrink-0 font-mono font-medium text-gray-900">{c.rule_id}</span>
+                <span className="w-16 shrink-0 text-gray-500">{c.occurrence_count}×</span>
+                <span className={`shrink-0 rounded px-1.5 py-0.5 ${verdictClass[c.redundancy_verdict]}`}>
+                  {verdictLabel[c.redundancy_verdict]}
+                </span>
+                <span className="min-w-0 flex-1 truncate text-gray-700">{c.description}</span>
+                {status === "pending" && (
+                  <>
+                    <button
+                      onClick={() => onApprove(c)}
+                      disabled={c.redundancy_verdict === "exact_duplicate"}
+                      className="shrink-0 rounded border border-gray-300 px-2 py-0.5 text-gray-700 hover:bg-gray-50 disabled:opacity-40"
+                      title={c.redundancy_verdict === "exact_duplicate" ? "Blocked: exact duplicate of an existing rule" : "Approve and promote"}
+                    >
+                      Approve
+                    </button>
+                    <button onClick={() => onReject(c)} className="shrink-0 rounded border border-red-200 px-2 py-0.5 text-red-700 hover:bg-red-50">
+                      Reject
+                    </button>
+                  </>
+                )}
+              </div>
+              <div className="mt-1 pl-24 text-gray-500">{c.redundancy_notes}</div>
+            </li>
+          ))}
+          {candidates.length === 0 && <li className="px-4 py-3 text-xs text-gray-500">No candidate rules in this status.</li>}
+        </ul>
       </div>
     </section>
   );
