@@ -1,10 +1,22 @@
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
 REPO_ROOT = BACKEND_DIR.parent
+
+# collateral_risk_engine/ lives at the repo root, a sibling of backend/, not inside it.
+# It has no packaging metadata (no pyproject.toml/setup.py), and the app only ever runs
+# with backend/ on sys.path (uvicorn's --app-dir backend, see dev.ps1 and Dockerfile) --
+# the repo root is never added automatically. Insert it here so `import
+# collateral_risk_engine` works from app.api.runs. Guarded against duplicate inserts
+# since this module gets importlib.reload()-ed per test (backend/tests/test_api.py's
+# client fixture).
+_repo_root_str = str(REPO_ROOT)
+if _repo_root_str not in sys.path:
+    sys.path.insert(0, _repo_root_str)
 
 XSD_PATH = Path(os.environ.get(
     "QC_XSD_PATH",
