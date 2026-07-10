@@ -18,6 +18,7 @@ COPY backend/requirements.txt backend/requirements.txt
 RUN pip install --no-cache-dir -r backend/requirements.txt
 
 COPY backend/app backend/app
+COPY collateral_risk_engine collateral_risk_engine
 COPY rules rules
 COPY schemas schemas
 # Only the XSDs are needed at runtime (not the multi-MB reference PDFs).

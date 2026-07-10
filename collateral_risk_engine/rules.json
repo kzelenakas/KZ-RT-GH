@@ -1,0 +1,1501 @@
+{
+  "name": "collateral-risk-rules",
+  "version": "1.0.0",
+  "schema": "UAD-3.6",
+  "rules": [
+    {
+      "rule_id": "CR-001",
+      "category": "Comparable Selection & Proximity",
+      "description": "Comparable located materially farther from subject than typical for the market (>1 mile default)",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "numeric_range",
+        "field": "COMPARABLE/COMPARABLE_DETAIL/ProximityToSubjectDistanceLinearMeasure",
+        "max": 1.0,
+        "unit": "miles"
+      },
+      "citation": "MI/Arch checklist: comparable distance vs. subject location"
+    },
+    {
+      "rule_id": "CR-002",
+      "category": "Comparable Selection & Proximity",
+      "description": "Comp sale is stale relative to effective date",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if comp settlement/contract date is more than 12 months before AppraisalReportEffectiveDate",
+        "uad_fields_referenced": "SALES_HISTORY settlement/contract date vs. AppraisalReportEffectiveDate"
+      },
+      "citation": "MI checklist: 'Did any of the comparables sell more than 12 months prior to the effective date?'"
+    },
+    {
+      "rule_id": "CR-003",
+      "category": "Comparable Selection & Proximity",
+      "description": "All comparables selected are materially superior or inferior to subject (one-directional bias)",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if ComparableToSubjectDirectionType is the same direction (all 'Superior' or all 'Inferior') across every comp on a given characteristic line",
+        "uad_fields_referenced": "COMPARABLE_DETAIL/ComparableToSubjectDirectionType (all comps)"
+      },
+      "citation": "MGIC training: 'Property value may be inflated when all comparables are significantly superior or inferior to the subject.'"
+    },
+    {
+      "rule_id": "CR-004",
+      "category": "Comparable Selection & Proximity",
+      "description": "Fewer than 3 closed sales comparables reported without an explanation",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if count of Sales Comparable #n instances < 3 and no supplemental addendum/comment field populated",
+        "uad_fields_referenced": "PROPERTY[@ValuationUseType=SalesComparable] instance count; VALUATION_COMMENTARY"
+      },
+      "citation": "Fannie Mae B4-1.3-08/09: minimum comparable sufficiency to support value"
+    },
+    {
+      "rule_id": "CR-005",
+      "category": "Comparable Selection & Proximity",
+      "description": "Comp weighting inconsistent with adjustment magnitude",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if ComparableWeightType marks a comp as most heavily weighted while it also carries the largest SalePriceNetTotalAdjustmentAmount among the set",
+        "uad_fields_referenced": "COMPARABLE_DETAIL/ComparableWeightType; SalePriceNetTotalAdjustmentAmount"
+      },
+      "citation": "CU FNM1011: 'CU indicates heightened overvaluation risk may result from the appraiser's weighting of adjusted sale prices.'"
+    },
+    {
+      "rule_id": "CR-006",
+      "category": "Comparable Selection & Proximity",
+      "description": "Comp property type mismatch with subject use type",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a Sales Comparable's improvement/property type materially differs from Subject's (e.g. subject SFR, comp is a PUD/condo) without adjustment",
+        "uad_fields_referenced": "PROPERTY_DETAIL/PropertyType (subject vs. comp)"
+      },
+      "citation": "Fannie Mae B4-1.3-08: comparable sales should have similar physical and legal characteristics"
+    },
+    {
+      "rule_id": "CR-007",
+      "category": "Comparable Selection & Proximity",
+      "description": "Rental comparable count insufficient for GRM support",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if Income Approach is used (GrossRentMultiplierFactorNumber populated) but fewer than 3 rental/GRM comparables reported",
+        "uad_fields_referenced": "PROPERTY[@ValuationUseType=GrossRentMultiplierComparable] instance count; INCOME_APPROACH_DETAIL/GrossRentMultiplierFactorNumber"
+      },
+      "citation": "Standard income-approach sufficiency practice, mirrors sales-comparison minimum-comp guidance"
+    },
+    {
+      "rule_id": "CR-008",
+      "category": "Comparable Selection & Proximity",
+      "description": "Comp settlement date after appraisal effective date",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a comparable's SALES_HISTORY settlement date is later than AppraisalReportEffectiveDate (future/impossible market data)",
+        "uad_fields_referenced": "SALES_HISTORY settlement date vs. AppraisalReportEffectiveDate"
+      },
+      "citation": "Logical data-integrity check; parallels CU Data Integrity flag category"
+    },
+    {
+      "rule_id": "CR-009",
+      "category": "Comparable Selection & Proximity",
+      "description": "Land/site comparable used for an improved subject without cost-approach cross-check",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if Land Comparable(s) are present but ValueIndicatedByCostApproachAmount is blank",
+        "uad_fields_referenced": "PROPERTY[@ValuationUseType=LandComparable]; COST_APPROACH_DETAIL/ValueIndicatedByCostApproachAmount"
+      },
+      "citation": "Consistency check between comparable set used and approaches developed"
+    },
+    {
+      "rule_id": "CR-010",
+      "category": "Comparable Selection & Proximity",
+      "description": "Same comparable address used as both a sales comparable and later disclosed as a prior sale of the subject",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a comparable's address matches the subject's PriorSalesOrTransfersIndicator disclosure (possible self-comp / non-arm's-length reuse)",
+        "uad_fields_referenced": "COMPARABLE address vs. Subject PriorSalesOrTransfersIndicator"
+      },
+      "citation": "General appraisal-fraud pattern: comp reuse / related-party transaction masking"
+    },
+    {
+      "rule_id": "CR-011",
+      "category": "Adjustment Reasonableness & Direction",
+      "description": "Adjustment direction contradicts stated superiority/inferiority",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a comp is marked superior (ComparableToSubjectDirectionType) on a feature but carries a positive dollar adjustment (should be negative), or vice versa",
+        "uad_fields_referenced": "COMPARABLE_ADJUSTMENT/ComparableAdjustmentAmount vs. ComparableToSubjectDirectionType"
+      },
+      "citation": "CU FNM0623/0624: 'the adjustment is in the wrong direction and is material relative to the comparable sales price'"
+    },
+    {
+      "rule_id": "CR-012",
+      "category": "Adjustment Reasonableness & Direction",
+      "description": "Net adjustment exceeds 15% of comparable sale price",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if abs(SalePriceNetTotalAdjustmentAmount) / comparable sale price > 15% without explanatory commentary",
+        "uad_fields_referenced": "SalePriceNetTotalAdjustmentAmount / comparable sale price"
+      },
+      "citation": "Widely-used investor/MI overlay threshold (MGIC training materials); FNMA Selling Guide removed a hard cap but underwriters must still evaluate 'extent of adjustments'"
+    },
+    {
+      "rule_id": "CR-013",
+      "category": "Adjustment Reasonableness & Direction",
+      "description": "Gross adjustment exceeds 25% of comparable sale price",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if sum of absolute value of all line-item COMPARABLE_ADJUSTMENT amounts / comparable sale price > 25%",
+        "uad_fields_referenced": "sum(COMPARABLE_ADJUSTMENT/ComparableAdjustmentAmount) / comparable sale price"
+      },
+      "citation": "Same source as CR-012; conventional gross-adjustment overlay"
+    },
+    {
+      "rule_id": "CR-014",
+      "category": "Adjustment Reasonableness & Direction",
+      "description": "Identical adjustment amount applied 'across the board' to every comparable",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if the same non-zero ComparableAdjustmentAmount for a given ComparableAdjustmentType repeats identically across all comps (rule-of-thumb, not market-derived)",
+        "uad_fields_referenced": "COMPARABLE_ADJUSTMENT/ComparableAdjustmentAmount (cross-comp, same type)"
+      },
+      "citation": "MI checklist: flags 'across the board' adjustments for significant features; FNMA B4-1.3-09 prohibits rule-of-thumb adjustments"
+    },
+    {
+      "rule_id": "CR-015",
+      "category": "Adjustment Reasonableness & Direction",
+      "description": "GLA adjustment inconsistent with actual square-footage difference",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if the GLA adjustment amount doesn't scale proportionally with the reported GrossLivingAreaSquareFeet delta between subject and comp (e.g. large SF gap but zero/minimal adjustment)",
+        "uad_fields_referenced": "GrossLivingAreaSquareFeet (subject vs. comp); GLA ComparableAdjustmentAmount"
+      },
+      "citation": "CU FNM0623: GLA adjustment direction/materiality check"
+    },
+    {
+      "rule_id": "CR-016",
+      "category": "Adjustment Reasonableness & Direction",
+      "description": "Sales/financing concession present but not adjusted",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if SalesConcessionIndicator or TotalSalesConcessionAmount is populated on a comp's contract but no corresponding negative ComparableAdjustmentAmount is recorded",
+        "uad_fields_referenced": "SALES_CONTRACT_DETAIL/SalesConcessionIndicator, TotalSalesConcessionAmount; COMPARABLE_ADJUSTMENT"
+      },
+      "citation": "FNMA B4-1.3-09: 'Comparable sales that include sales or financing concessions must be adjusted'"
+    },
+    {
+      "rule_id": "CR-017",
+      "category": "Adjustment Reasonableness & Direction",
+      "description": "Positive adjustment applied for a sales/financing concession",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a concession-related ComparableAdjustmentAmount is positive (increases value) rather than negative",
+        "uad_fields_referenced": "COMPARABLE_ADJUSTMENT/ComparableAdjustmentAmount (concession line)"
+      },
+      "citation": "FNMA B4-1.3-09: 'Positive adjustments for sales or financing concessions are not acceptable'"
+    },
+    {
+      "rule_id": "CR-018",
+      "category": "Value Reconciliation & Bracketing",
+      "description": "Reconciliation section present but no narrative explaining comp weighting",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "conditional_field_present",
+        "conditions": [
+          {
+            "field": "VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_SUMMARY/VALUATION_RECONCILIATION_SUMMARY_DETAIL/OpinionOfValueAmount",
+            "required": true
+          }
+        ],
+        "required_field": "VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_DETAIL/ValuationReconciliationSummaryCommentDescription"
+      },
+      "citation": "FNMA B4-1.3-09 reconciliation-narrative requirement"
+    },
+    {
+      "rule_id": "CR-019",
+      "category": "Adjustment Reasonableness & Direction",
+      "description": "Quality or condition adjustment direction wrong relative to rating codes",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if subject's OverallQualityRatingCode/OverallConditionRatingCode indicates lower quality/condition than the comp, but the adjustment moves the wrong direction",
+        "uad_fields_referenced": "OverallQualityRatingCode, OverallConditionRatingCode (subject vs. comp); related adjustment amount"
+      },
+      "citation": "CU FNM0624: 'the quality adjustment is in the wrong direction and is material relative to the comparable sales price'"
+    },
+    {
+      "rule_id": "CR-020",
+      "category": "Adjustment Reasonableness & Direction",
+      "description": "Adjustment line item present with zero dollar amount and no supporting comment",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a ComparableAdjustmentType line exists with ComparableAdjustmentAmount = 0 for a feature where subject/comp values visibly differ, and no VALUATION_COMMENTARY entry references it",
+        "uad_fields_referenced": "COMPARABLE_ADJUSTMENT (zero-amount lines); VALUATION_COMMENTARY"
+      },
+      "citation": "FNMA B4-1.3-09: appraiser must comment on logic/reasoning for adjustments, including zero-adjustment decisions"
+    },
+    {
+      "rule_id": "CR-021",
+      "category": "Adjustment Reasonableness & Direction",
+      "description": "Builder incentives/options not reflected as a downward adjustment",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if subject shows newly-constructed / high option-package indicators without a corresponding market-support adjustment on comps lacking those options",
+        "uad_fields_referenced": "PROPERTY_DETAIL / IMPROVEMENT construction-status fields; ComparableAdjustmentAmount"
+      },
+      "citation": "MGIC training: builder options/personal property often don't recapture dollar-for-dollar in resale value"
+    },
+    {
+      "rule_id": "CR-022",
+      "category": "Value Reconciliation & Bracketing",
+      "description": "Reconciled value falls outside the range of adjusted comparable sale prices",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if OpinionOfValueAmount is greater than the maximum or less than the minimum adjusted comparable sale price across all comps used",
+        "uad_fields_referenced": "OpinionOfValueAmount vs. min/max of adjusted comp sale prices"
+      },
+      "citation": "FNMA B4-1.3-09: 'the indicated value must be within the range of the adjusted sales price of the comparables'; CU: 'appraised value is above the range of adjusted comparable sales prices'"
+    },
+    {
+      "rule_id": "CR-023",
+      "category": "Value Reconciliation & Bracketing",
+      "description": "Reconciled value supported by only a single comparable near the top/bottom of the range",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if OpinionOfValueAmount sits within a narrow band of only one comp's adjusted price while diverging materially from the others",
+        "uad_fields_referenced": "OpinionOfValueAmount vs. each comp's adjusted sale price"
+      },
+      "citation": "CU FNM0505/FNM0506: value near max/min adjusted comp price 'with support from only that comparable sale'"
+    },
+    {
+      "rule_id": "CR-024",
+      "category": "Value Reconciliation & Bracketing",
+      "description": "Sales Comparison value materially diverges from Cost Approach value (>15%) without explanation",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "value_comparison",
+        "operator": "ratio_gt",
+        "field": "VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_SUMMARY/VALUATION_RECONCILIATION_SUMMARY_DETAIL/OpinionOfValueAmount",
+        "compare_field": "VALUATION_ANALYSIS/VALUATION_REPORT/APPROACH_TO_VALUE/COST_APPROACH/COST_APPROACH_DETAIL/ValueIndicatedByCostApproachAmount",
+        "threshold": 0.15
+      },
+      "citation": "Standard multi-approach reconciliation practice"
+    },
+    {
+      "rule_id": "CR-025",
+      "category": "Value Reconciliation & Bracketing",
+      "description": "Sales Comparison value materially diverges from Cost Approach value without explanation",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if abs(OpinionOfValueAmount - ValueIndicatedByCostApproachAmount) / OpinionOfValueAmount exceeds a threshold (e.g. 10-15%) and no reconciliation commentary addresses the gap",
+        "uad_fields_referenced": "OpinionOfValueAmount; ValueIndicatedByCostApproachAmount; VALUATION_COMMENTARY"
+      },
+      "citation": "Standard appraisal-review practice: reconciliation must address material divergence between developed approaches"
+    },
+    {
+      "rule_id": "CR-026",
+      "category": "Value Reconciliation & Bracketing",
+      "description": "Opinion of value equals purchase contract price exactly, with no independent support shown",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if OpinionOfValueAmount equals the subject's sales contract amount to the dollar and adjusted comp range spans a wider band (possible value-to-contract bias)",
+        "uad_fields_referenced": "OpinionOfValueAmount; SALES_CONTRACT_DETAIL contract amount; adjusted comp range"
+      },
+      "citation": "Documented appraisal-bias pattern; CU overvaluation-risk category covers value/contract alignment"
+    },
+    {
+      "rule_id": "CR-027",
+      "category": "Value Reconciliation & Bracketing",
+      "description": "Reconciliation section present but no narrative explaining comp weighting",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if OpinionOfValueAmount is populated but VALUATION_RECONCILIATION_SUMMARY commentary field is empty",
+        "uad_fields_referenced": "VALUATION_RECONCILIATION_SUMMARY_DETAIL; commentary field"
+      },
+      "citation": "FNMA B4-1.3-09: appraiser's comments 'must reflect his or her reconciliation... and identify why the sale(s) were given the most weight'"
+    },
+    {
+      "rule_id": "CR-028",
+      "category": "Value Reconciliation & Bracketing",
+      "description": "Final value indicates >10% variance from predominant/median value of neighborhood price range",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if OpinionOfValueAmount varies more than 10% from the subject's reported neighborhood predominant value without commentary",
+        "uad_fields_referenced": "OpinionOfValueAmount vs. neighborhood predominant/price-range fields"
+      },
+      "citation": "MI checklist: 'If value varies >10% from predominant value...'"
+    },
+    {
+      "rule_id": "CR-029",
+      "category": "Value Reconciliation & Bracketing",
+      "description": "Income Approach GRM-derived value materially diverges from Sales Comparison value",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if income approach's implied value (GrossRentMultiplierFactorNumber x market rent) diverges >15% from OpinionOfValueAmount without reconciliation comment",
+        "uad_fields_referenced": "GrossRentMultiplierFactorNumber; OpinionOfValueAmount; VALUATION_COMMENTARY"
+      },
+      "citation": "Standard multi-approach reconciliation practice, mirrors CR-024"
+    },
+    {
+      "rule_id": "CR-030",
+      "category": "Condition/Quality Rating Consistency",
+      "description": "Condition rating code outside the valid UAD C1-C6 enumeration",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "field_in_set",
+        "field": "PROPERTY_DETAIL/OverallConditionRatingCode",
+        "allowed": [
+          "C1",
+          "C2",
+          "C3",
+          "C4",
+          "C5",
+          "C6"
+        ]
+      },
+      "citation": "CU: quality/condition rating model-range validity"
+    },
+    {
+      "rule_id": "CR-031",
+      "category": "Condition/Quality Rating Consistency",
+      "description": "Quality rating code outside the valid UAD Q1-Q6 enumeration",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "field_in_set",
+        "field": "PROPERTY_DETAIL/OverallQualityRatingCode",
+        "allowed": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4",
+          "Q5",
+          "Q6"
+        ]
+      },
+      "citation": "CU: quality/condition rating model-range validity"
+    },
+    {
+      "rule_id": "CR-032",
+      "category": "Condition/Quality Rating Consistency",
+      "description": "Condition rating code outside the valid UAD C1-C6 enumeration",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if OverallConditionRatingCode/ExteriorConditionRatingCode/InteriorConditionRatingCode is not one of the defined UAD Appendix D values",
+        "uad_fields_referenced": "OverallConditionRatingCode, ExteriorConditionRatingCode, InteriorConditionRatingCode"
+      },
+      "citation": "CU: 'Verify that the quality rating is [in the] model range... per the UAD Appendix D quality definitions'"
+    },
+    {
+      "rule_id": "CR-033",
+      "category": "Condition/Quality Rating Consistency",
+      "description": "C6 condition rating without a 'subject to repairs' scope indicator",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "PROPERTY_DETAIL/OverallConditionRatingCode",
+              "equals": "C6"
+            }
+          ]
+        ],
+        "then": {
+          "type": "commentary_category_present",
+          "category_field": "VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_SUMMARY/VALUATION_CONDITIONS/VALUATION_CONDITION/PropertyValuationConditionalConclusionType",
+          "category_value": "SubjectToRepair"
+        }
+      },
+      "citation": "Enact/MI checklist: C6 properties ineligible unless subject-to-repairs"
+    },
+    {
+      "rule_id": "CR-034",
+      "category": "Condition/Quality Rating Consistency",
+      "description": "C6 condition rating without an eligibility/repair-contingency indicator",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if OverallConditionRatingCode = 'C6' and no 'subject to repairs' scope-of-work indicator is present (property ineligible as-is)",
+        "uad_fields_referenced": "OverallConditionRatingCode; scope-of-work / subject-to indicator"
+      },
+      "citation": "Enact/MI checklist: 'Properties in C6 condition are ineligible unless the appraisal is subject to repairs which correct all issues'"
+    },
+    {
+      "rule_id": "CR-035",
+      "category": "Condition/Quality Rating Consistency",
+      "description": "Subject and comparable share the same condition/quality rating but no adjustment applied for observed differences",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if subject and comp both show e.g. C3, but VALUATION_COMMENTARY or adjustment amounts show no analysis of actual condition differences",
+        "uad_fields_referenced": "OverallConditionRatingCode (subject vs. comp); COMPARABLE_ADJUSTMENT; VALUATION_COMMENTARY"
+      },
+      "citation": "FNMA Dec-2025 guidance: 'Even if the subject and comparables share the same rating, the appraiser is required to analyze and make adjustments based on actual quality and condition differences'"
+    },
+    {
+      "rule_id": "CR-036",
+      "category": "Condition/Quality Rating Consistency",
+      "description": "Comparable quality rating differs from subject with no adjustment or explanation",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a comp's OverallQualityRatingCode differs from subject's and no quality-line ComparableAdjustmentAmount / commentary addresses it",
+        "uad_fields_referenced": "OverallQualityRatingCode (subject vs. comp); COMPARABLE_ADJUSTMENT"
+      },
+      "citation": "MI checklist: 'Do comparables have similar quality ratings? If no, is an explanation/adjustment provided?'"
+    },
+    {
+      "rule_id": "CR-037",
+      "category": "Condition/Quality Rating Consistency",
+      "description": "Effective age substantially less than actual age without renovation commentary",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if EffectiveAgeYearsCount is materially lower than (AppraisalReportEffectiveDate year - PropertyStructureBuiltYear) and no renovation/upgrade commentary is present",
+        "uad_fields_referenced": "EffectiveAgeYearsCount; PropertyStructureBuiltYear; VALUATION_COMMENTARY"
+      },
+      "citation": "Arch MI checklist: 'Is the effective age substantially less than the actual age? If yes, this should be justified in comments'"
+    },
+    {
+      "rule_id": "CR-038",
+      "category": "Condition/Quality Rating Consistency",
+      "description": "Quality of construction rated Q6 (minimal/substandard) -- surfaces for underwriter review",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "field_in_set",
+        "field": "PROPERTY_DETAIL/OverallQualityRatingCode",
+        "allowed": [
+          "Q6"
+        ]
+      },
+      "citation": "Arch MI checklist: subject quality of construction substandard (Q6)"
+    },
+    {
+      "rule_id": "CR-039",
+      "category": "Condition/Quality Rating Consistency",
+      "description": "Overall rating not holistically consistent with room-level condition/quality entries",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if OverallConditionRatingCode is materially better than the worst individual room/component condition captured elsewhere in the report",
+        "uad_fields_referenced": "OverallConditionRatingCode vs. component-level condition fields"
+      },
+      "citation": "FNMA Dec-2025 guidance: ratings 'must be based on a holistic view... not just isolated upgrades'"
+    },
+    {
+      "rule_id": "CR-040",
+      "category": "Condition/Quality Rating Consistency",
+      "description": "Quality of construction rated Q6 without corresponding eligibility flag",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if OverallQualityRatingCode = 'Q6' (minimal/substandard) \u2014 surfaces for underwriter review regardless of other findings",
+        "uad_fields_referenced": "OverallQualityRatingCode"
+      },
+      "citation": "Arch MI checklist: 'Is the subject's quality of construction substandard (Q6)?'"
+    },
+    {
+      "rule_id": "CR-041",
+      "category": "Site, Zoning & Location Risk",
+      "description": "Zoning compliance not 'Legal' without a highest-and-best-use commentary",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "SITE/SITE_ZONING/SITE_ZONING_DETAIL/SiteZoningComplianceType",
+              "not_equals": "Legal"
+            }
+          ]
+        ],
+        "then": {
+          "type": "commentary_category_present",
+          "category_field": "VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_COMMENTARIES/VALUATION_COMMENTARY/ValuationAnalysisCategoryType",
+          "category_value": "ZoningCompliance"
+        }
+      },
+      "citation": "USPAP highest-and-best-use requirement; mirrors H-1 UAD1377/1378"
+    },
+    {
+      "rule_id": "CR-042",
+      "category": "Condition/Quality Rating Consistency",
+      "description": "View rating differs materially between subject and comps without a view adjustment",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if subject ViewType indicates a premium view (water/mountain/city skyline) not shared by a comp, and no view-line adjustment is recorded",
+        "uad_fields_referenced": "ViewType (subject vs. comp); COMPARABLE_ADJUSTMENT"
+      },
+      "citation": "Standard grid-consistency practice; parallel to CD checklist items on unadjusted feature differences"
+    },
+    {
+      "rule_id": "CR-043",
+      "category": "Prior Sales, Listing History & Property Flipping",
+      "description": "Subject resold within 90 days of prior acquisition at a materially higher price (FHA anti-flip window)",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if PriorSalesOrTransfersIndicator shows a transfer within 90 days of the current contract date and price increase exceeds a threshold",
+        "uad_fields_referenced": "PriorSalesOrTransfersIndicator / prior transfer date; current contract price vs. prior price"
+      },
+      "citation": "HUD: property resold within 90 days of acquisition is ineligible for FHA insurance absent an exemption"
+    },
+    {
+      "rule_id": "CR-044",
+      "category": "Prior Sales, Listing History & Property Flipping",
+      "description": "Subject resold 91-180 days after acquisition exceeding the resale-percentage threshold",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if resale occurs 91-180 days after acquisition and price increase meets/exceeds HUD's ZIP-code-based resale-percentage threshold (second appraisal required)",
+        "uad_fields_referenced": "prior transfer date/price vs. current contract date/price"
+      },
+      "citation": "HUD: resale 91-180 days requiring a second appraisal when the resale-percentage threshold is met"
+    },
+    {
+      "rule_id": "CR-045",
+      "category": "Prior Sales, Listing History & Property Flipping",
+      "description": "Prior sale/transfer of subject not disclosed despite recent MLS/public record activity pattern",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if PriorSalesOrTransfersIndicator is 'No'/blank but subject's DATA_SOURCE entries reference a recent transaction (cross-field inconsistency)",
+        "uad_fields_referenced": "PriorSalesOrTransfersIndicator; DATA_SOURCE entries"
+      },
+      "citation": "FNMA B4-1.3-07: 3-year subject sales history disclosure requirement"
+    },
+    {
+      "rule_id": "CR-046",
+      "category": "Prior Sales, Listing History & Property Flipping",
+      "description": "Comparable prior sale/transfer not disclosed within the required 12-month lookback",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a comp's PriorSalesOrTransfersIndicator omits a transfer that occurred within 12 months of its current sale date",
+        "uad_fields_referenced": "COMPARABLE PriorSalesOrTransfersIndicator; SALES_HISTORY dates"
+      },
+      "citation": "FNMA B4-1.3-07: 12-month comparable sales history requirement; MGIC: appraiser must identify prior sales/listing activity"
+    },
+    {
+      "rule_id": "CR-047",
+      "category": "Site, Zoning & Location Risk",
+      "description": "Hazard zone identified without a corresponding valuation-impact commentary",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "conditional",
+        "if_any": [
+          [
+            {
+              "field": "SITE/HAZARD_ZONES/HAZARD_ZONE/HazardZoneType",
+              "not_equals": "None"
+            }
+          ]
+        ],
+        "then": {
+          "type": "commentary_category_present",
+          "category_field": "VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_COMMENTARIES/VALUATION_COMMENTARY/ValuationAnalysisCategoryType",
+          "category_value": "HazardZones"
+        }
+      },
+      "citation": "Mirrors H-1 UAD1374/1375; extends to risk framing"
+    },
+    {
+      "rule_id": "CR-048",
+      "category": "Prior Sales, Listing History & Property Flipping",
+      "description": "Adverse value trend in prior sales/listing history not addressed in commentary",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if subject or comp prior-sale price trend is declining and no VALUATION_COMMENTARY explanation is present",
+        "uad_fields_referenced": "SALES_HISTORY price trend; VALUATION_COMMENTARY"
+      },
+      "citation": "MGIC training: 'Adverse value trends need to be identified and explained'"
+    },
+    {
+      "rule_id": "CR-049",
+      "category": "Prior Sales, Listing History & Property Flipping",
+      "description": "Comparable turnover / unsubstantiated value increase between successive sales",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a comparable itself shows a prior sale within 12 months at a materially lower price with no explanation for the increase",
+        "uad_fields_referenced": "COMPARABLE SALES_HISTORY successive transaction prices/dates"
+      },
+      "citation": "MI checklist: 'Does the prior sale of the subject or comparables indicate an unsubstantiated increase in value or property turnover?'"
+    },
+    {
+      "rule_id": "CR-050",
+      "category": "Prior Sales, Listing History & Property Flipping",
+      "description": "Appraisal effective date is more than 120 days old as of loan closing/note date without recertification",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if AppraisalReportEffectiveDate is >120 days prior to the note/closing date and no recertification-of-value indicator is present",
+        "uad_fields_referenced": "AppraisalReportEffectiveDate vs. note/closing date; recertification indicator"
+      },
+      "citation": "MGIC training: 'Appraisals with an effective date older than 120 days but within 12 months of the note date must be recertified for current value'; MI checklist: 'Is the appraisal no more than 120 days old as of the effective date?'"
+    },
+    {
+      "rule_id": "CR-051",
+      "category": "Prior Sales, Listing History & Property Flipping",
+      "description": "Short time gap between comparable's listing date and sale date (motivated/rushed transaction indicator)",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a comp's time-on-market (listing date to sale/contract date) is unusually short relative to typical market exposure",
+        "uad_fields_referenced": "LISTING_INFORMATION_DETAIL dates; SALES_HISTORY contract/settlement date"
+      },
+      "citation": "USPAP market-value definition requires 'reasonable time... allowed for exposure in the open market'; short exposure undermines arm's-length assumption"
+    },
+    {
+      "rule_id": "CR-052",
+      "category": "Prior Sales, Listing History & Property Flipping",
+      "description": "Multiple comparables share the same buyer, seller, or entity name across transactions",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if PARTY names on comparable sales transactions repeat across two or more comps (possible related-party/investor-controlled sales pattern)",
+        "uad_fields_referenced": "COMPARABLE transaction PARTY names"
+      },
+      "citation": "General appraisal-fraud/collusion pattern; parallels HUD's related-party flipping schemes"
+    },
+    {
+      "rule_id": "CR-053",
+      "category": "Sales/Financing Concessions & Transaction Independence",
+      "description": "Subject sale is non-arm's-length without required disclosure/adjustment analysis",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if the subject transaction type indicates a relationship between buyer/seller (e.g. family, employer, REO/short-sale) and no commentary addresses market-value applicability",
+        "uad_fields_referenced": "SALES_CONTRACT_DETAIL transaction-type/relationship fields; VALUATION_COMMENTARY"
+      },
+      "citation": "USPAP market-value definition requires typically-motivated, unrelated parties; non-arm's-length sales require explicit analysis"
+    },
+    {
+      "rule_id": "CR-054",
+      "category": "Sales/Financing Concessions & Transaction Independence",
+      "description": "Seller-paid closing costs/concessions on subject contract not disclosed with an amount",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if SalesConcessionAmountKnownIndicator = true/known but TotalSalesConcessionAmount is blank",
+        "uad_fields_referenced": "SalesConcessionAmountKnownIndicator; TotalSalesConcessionAmount"
+      },
+      "citation": "FNMA B4-1.3-09 concession-adjustment requirement; consistent completeness check"
+    },
+    {
+      "rule_id": "CR-055",
+      "category": "Sales/Financing Concessions & Transaction Independence",
+      "description": "Appraiser-borrower/lender independence indicator missing or flagged",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if PARTY relationship/role data suggests the appraiser has a business or personal relationship with the loan production side without an independence disclosure",
+        "uad_fields_referenced": "PARTY roles/relationships (Appraiser vs. Loan Originator/Lender)"
+      },
+      "citation": "HUD OIG: 'appraiser and mortgage broker having an undisclosed relationship jeopardizing the independence of the appraisal'"
+    },
+    {
+      "rule_id": "CR-056",
+      "category": "Sales/Financing Concessions & Transaction Independence",
+      "description": "Subject sale price identical to a very recent comparable's sale price (possible fabricated support)",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if the subject's SALES_CONTRACT price exactly matches a comparable's reported sale price to the dollar",
+        "uad_fields_referenced": "SALES_CONTRACT_DETAIL price vs. COMPARABLE sale price"
+      },
+      "citation": "General data-integrity/fraud-pattern check; parallels CU Data Integrity category"
+    },
+    {
+      "rule_id": "CR-057",
+      "category": "Sales/Financing Concessions & Transaction Independence",
+      "description": "Cash-equivalent financing not identified when comparable financing terms are atypical",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a comp's financing type is non-conventional (seller financing, assumption) and no cash-equivalency adjustment/commentary is present",
+        "uad_fields_referenced": "financing type field on COMPARABLE; ComparableAdjustmentAmount (financing line)"
+      },
+      "citation": "FNMA B4-1.3-09: appraiser must recognize cash-equivalent sales and adjust atypical financing appropriately"
+    },
+    {
+      "rule_id": "CR-058",
+      "category": "Sales/Financing Concessions & Transaction Independence",
+      "description": "Multiple successive cash-out refinances on the subject in a short window",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if subject's transaction/ownership history shows repeated refinance activity within an abnormally short period",
+        "uad_fields_referenced": "subject ownership/transaction history fields"
+      },
+      "citation": "Fannie Mae 'Potential Red Flags for Mortgage Fraud': 'Multiple successive cash-out refinances'"
+    },
+    {
+      "rule_id": "CR-059",
+      "category": "Sales/Financing Concessions & Transaction Independence",
+      "description": "Appraised value inconsistent with a materially different prior appraisal or AVM on file",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a prior valuation (if referenced/attached) diverges from current OpinionOfValueAmount beyond a reasonable variance without explanation",
+        "uad_fields_referenced": "prior valuation reference (if present); OpinionOfValueAmount"
+      },
+      "citation": "Fannie Mae fraud red-flags list: appraised value differs significantly from a prior or third-party value estimate"
+    },
+    {
+      "rule_id": "CR-060",
+      "category": "Sales/Financing Concessions & Transaction Independence",
+      "description": "Comparable selected shares an unusually close relationship to subject's transaction parties",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a PARTY name tied to the comp transaction matches a PARTY name on the subject transaction (buyer, seller, agent)",
+        "uad_fields_referenced": "COMPARABLE transaction PARTY names vs. subject transaction PARTY names"
+      },
+      "citation": "General collusion/self-dealing pattern consistent with HUD OIG fraud schemes"
+    },
+    {
+      "rule_id": "CR-061",
+      "category": "Sales/Financing Concessions & Transaction Independence",
+      "description": "Sales concession amount unusually large relative to sale price",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if TotalSalesConcessionAmount / subject contract price exceeds a market-typical threshold (e.g. 6-9%) without commentary",
+        "uad_fields_referenced": "TotalSalesConcessionAmount; SALES_CONTRACT_DETAIL price"
+      },
+      "citation": "FNMA B4-1.3-09: large concessions can still indicate a price reflecting more than real estate value if unadjusted"
+    },
+    {
+      "rule_id": "CR-062",
+      "category": "Sales/Financing Concessions & Transaction Independence",
+      "description": "REO/foreclosure/short-sale comparable used without market-condition adjustment",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a comp is identified as REO/short-sale/foreclosure and no distressed-sale adjustment or commentary addresses atypical motivation",
+        "uad_fields_referenced": "COMPARABLE sale-condition/type field; ComparableAdjustmentAmount"
+      },
+      "citation": "USPAP/market-value definition: distressed sales may not reflect typically-motivated buyer/seller behavior"
+    },
+    {
+      "rule_id": "CR-063",
+      "category": "Sales/Financing Concessions & Transaction Independence",
+      "description": "Appraisal fee or ordering party indicates AMC bypass / direct lender-to-appraiser assignment risk",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if PARTY roles show the assignment came directly from a loan production employee rather than an AMC/independent appraisal desk",
+        "uad_fields_referenced": "PARTY roles (ordering party vs. loan production)"
+      },
+      "citation": "Appraiser independence requirements (Dodd-Frank/AIR); HUD OIG undisclosed-relationship fraud pattern"
+    },
+    {
+      "rule_id": "CR-064",
+      "category": "Site, Zoning & Location Risk",
+      "description": "Zoning compliance marked 'legal nonconforming' or 'illegal' without a highest-and-best-use analysis",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if SiteZoningComplianceType is not 'Legal' and no VALUATION_COMMENTARY addresses highest-and-best-use / marketability impact",
+        "uad_fields_referenced": "SiteZoningComplianceType; VALUATION_COMMENTARY"
+      },
+      "citation": "USPAP highest-and-best-use requirement; UAD Compliance rules already flag missing zoning-compliance commentary (H-1 UAD1377/1378 pattern)"
+    },
+    {
+      "rule_id": "CR-065",
+      "category": "Site, Zoning & Location Risk",
+      "description": "Hazard zone identified without a corresponding valuation-impact commentary",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if HazardZoneType is not 'None' and no VALUATION_COMMENTARY entry with ValuationAnalysisCategoryType='HazardZones' is present",
+        "uad_fields_referenced": "HazardZoneType; VALUATION_COMMENTARY"
+      },
+      "citation": "Mirrors H-1 UAD1374/1375 pattern already in the ruleset; extends to a broader risk-detection framing"
+    },
+    {
+      "rule_id": "CR-066",
+      "category": "Site, Zoning & Location Risk",
+      "description": "Environmental condition proximity flagged as bordering/onsite without a market-impact adjustment",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if EnvironmentalConditionProximityType indicates 'Bordering' or 'Onsite' and no adjustment or discount is reflected in reconciliation",
+        "uad_fields_referenced": "EnvironmentalConditionProximityType; VALUATION_COMMENTARY / adjustment"
+      },
+      "citation": "Mirrors H-1 UAD1294 pattern; extends to collateral-risk framing beyond simple disclosure"
+    },
+    {
+      "rule_id": "CR-067",
+      "category": "Site, Zoning & Location Risk",
+      "description": "Site influence (adverse) reported without a location/site adjustment applied",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if SiteInfluenceProximityType indicates an adverse influence (e.g. adjacent to commercial, high-traffic) and no location-line adjustment is present",
+        "uad_fields_referenced": "SiteInfluenceProximityType; COMPARABLE_ADJUSTMENT (location line)"
+      },
+      "citation": "Standard grid-consistency practice; extends UAD1330 pattern to risk detection"
+    },
+    {
+      "rule_id": "CR-068",
+      "category": "Site, Zoning & Location Risk",
+      "description": "Subject in a flood zone without required flood-insurance/disclosure commentary",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if HazardZoneType includes a flood-related enumeration and no commentary addresses flood insurance requirements/eligibility impact",
+        "uad_fields_referenced": "HazardZoneType; VALUATION_COMMENTARY"
+      },
+      "citation": "FHA/GSE flood-zone eligibility and disclosure requirements"
+    },
+    {
+      "rule_id": "CR-069",
+      "category": "Site, Zoning & Location Risk",
+      "description": "Site size materially larger than neighborhood-typical without excess-land/highest-and-best-use analysis",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if subject SiteArea exceeds typical neighborhood lot size by a large margin and no excess-land analysis is present",
+        "uad_fields_referenced": "SiteArea (subject) vs. neighborhood-typical lot size; VALUATION_COMMENTARY"
+      },
+      "citation": "USPAP highest-and-best-use requirement for excess/surplus land"
+    },
+    {
+      "rule_id": "CR-070",
+      "category": "Prior Sales, Listing History & Property Flipping",
+      "description": "Subject currently listed for sale at a price materially different (>10%) from the opinion of value",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "value_comparison",
+        "operator": "ratio_gt",
+        "field": "LISTING_INFORMATIONS/LISTING_INFORMATION/LISTING_INFORMATION_DETAIL/FinalListPriceAmount",
+        "compare_field": "VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_SUMMARY/VALUATION_RECONCILIATION_SUMMARY_DETAIL/OpinionOfValueAmount",
+        "threshold": 0.1
+      },
+      "citation": "Active-listing consistency check"
+    },
+    {
+      "rule_id": "CR-071",
+      "category": "Site, Zoning & Location Risk",
+      "description": "View or site amenity claimed but contradicted by geospatial data",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if ViewType claims a premium view (e.g. waterfront) but LatitudeIdentifier/LongitudeIndicator place the parcel a significant distance from the claimed feature",
+        "uad_fields_referenced": "ViewType; LatitudeIdentifier/LongitudeIndicator"
+      },
+      "citation": "Data-integrity cross-check pattern consistent with CU's aerial-imagery verification approach"
+    },
+    {
+      "rule_id": "CR-072",
+      "category": "Site, Zoning & Location Risk",
+      "description": "Legal description / parcel identifier inconsistent between subject and public-record data source",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if subject's parcel/legal description conflicts with DATA_SOURCE-reported public record identifiers",
+        "uad_fields_referenced": "subject legal description/parcel ID; DATA_SOURCE fields"
+      },
+      "citation": "Data Integrity flag category (CU); general identity/eligibility-misrepresentation fraud pattern (HUD OIG)"
+    },
+    {
+      "rule_id": "CR-073",
+      "category": "Site, Zoning & Location Risk",
+      "description": "Site utility type marked unavailable without a corresponding value/marketability commentary",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a required SITE_UTILITY_DETAIL entry (electricity/water/sewer) is absent or marked unavailable and no commentary addresses habitability/marketability impact",
+        "uad_fields_referenced": "SITE_UTILITY_DETAIL; VALUATION_COMMENTARY"
+      },
+      "citation": "Extends H-1 UAD1345-1347 pattern (utility presence) into a risk-impact framing"
+    },
+    {
+      "rule_id": "CR-074",
+      "category": "Structural/Physical Defect Disclosure Follow-Through",
+      "description": "Defect noted by appraiser with no corresponding action/repair-requirement flag",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if DEFECT_DETAIL contains an entry (infestation, dampness, settlement, structural) but no 'subject to inspection/repair' scope indicator is set",
+        "uad_fields_referenced": "DEFECT_DETAIL; scope-of-work / subject-to indicator"
+      },
+      "citation": "FNMA Dec-2025: defects flagged when 'appraiser noted an issue but lender didn't follow up' or 'said no action was needed'"
+    },
+    {
+      "rule_id": "CR-075",
+      "category": "Structural/Physical Defect Disclosure Follow-Through",
+      "description": "Evidence of infestation, dampness, or settlement noted without a specialist inspection reference",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if DEFECT_DETAIL references infestation/dampness/settlement keywords and no third-party inspection report reference is present",
+        "uad_fields_referenced": "DEFECT_DETAIL; supporting inspection/report reference"
+      },
+      "citation": "Arch MI checklist: 'Is there evidence of infestation, dampness or settlement? If yes, additional inspection reports may be needed'"
+    },
+    {
+      "rule_id": "CR-076",
+      "category": "Structural/Physical Defect Disclosure Follow-Through",
+      "description": "Roof condition marked non-observable without an alternate verification method noted",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if RoofObservableIndicator = false and no alternate roof-condition verification (comment, photo, prior report) is referenced",
+        "uad_fields_referenced": "RoofObservableIndicator; VALUATION_COMMENTARY"
+      },
+      "citation": "Extends H-1 UAD1074/roof-related pattern into a risk-detection framing"
+    },
+    {
+      "rule_id": "CR-077",
+      "category": "Structural/Physical Defect Disclosure Follow-Through",
+      "description": "Property description narrative indicates needed repairs but condition rating doesn't reflect it",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if VALUATION_COMMENTARY / defect text references needed repairs while OverallConditionRatingCode remains C1-C3 (better than deferred-maintenance would imply)",
+        "uad_fields_referenced": "VALUATION_COMMENTARY; OverallConditionRatingCode"
+      },
+      "citation": "Arch MI checklist: 'Does the property description section indicate that repairs are needed?' cross-checked against rating"
+    },
+    {
+      "rule_id": "CR-078",
+      "category": "Structural/Physical Defect Disclosure Follow-Through",
+      "description": "Significant adverse physical/functional concern noted without value-impact discussion",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a DEFECT_DETAIL or commentary entry describes a functional obsolescence issue (e.g. no legal bedroom egress, converted garage) without a reconciliation-impact discussion",
+        "uad_fields_referenced": "DEFECT_DETAIL; VALUATION_COMMENTARY"
+      },
+      "citation": "Arch MI checklist: 'Are there significant adverse physical or functional concerns noted?'"
+    },
+    {
+      "rule_id": "CR-079",
+      "category": "Structural/Physical Defect Disclosure Follow-Through",
+      "description": "Manufactured home HUD data plate / certification fields incomplete on a manufactured-home subject",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if ConstructionMethodType = 'Manufactured' and MANUFACTURED_HOME_DETAIL certification fields are incomplete",
+        "uad_fields_referenced": "ConstructionMethodType; MANUFACTURED_HOME_DETAIL fields"
+      },
+      "citation": "Extends H-1 UAD1106 pattern (manufactured-home data-plate rule) into a broader completeness/eligibility risk framing"
+    },
+    {
+      "rule_id": "CR-080",
+      "category": "Structural/Physical Defect Disclosure Follow-Through",
+      "description": "Accessory dwelling unit present without confirmed legal/permitted status commentary",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if AccessoryDwellingUnitIndicator = true and no commentary addresses legal permitting/zoning status of the ADU",
+        "uad_fields_referenced": "AccessoryDwellingUnitIndicator; VALUATION_COMMENTARY"
+      },
+      "citation": "GSE ADU eligibility guidance requires legal-use confirmation for value inclusion"
+    },
+    {
+      "rule_id": "CR-081",
+      "category": "Date/Timeline & Process Consistency",
+      "description": "Inspection date after the appraisal report effective date",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "date_field_compare",
+        "operator": ">",
+        "field": "INSPECTIONS/INSPECTION/INSPECTION_DETAIL/InspectionDate",
+        "compare_field": "VALUATION_ANALYSIS/VALUATION_REPORT/VALUATION_RECONCILIATION/VALUATION_RECONCILIATION_SUMMARY/VALUATION_RECONCILIATION_SUMMARY_DETAIL/AppraisalReportEffectiveDate"
+      },
+      "citation": "Basic data-integrity/sequencing check"
+    },
+    {
+      "rule_id": "CR-082",
+      "category": "Structural/Physical Defect Disclosure Follow-Through",
+      "description": "Photos of subject basement/interior missing despite a claimed condition/defect rating requiring visual support",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a defect or below-average condition rating is present but no corresponding IMAGE entries reference the relevant area",
+        "uad_fields_referenced": "OverallConditionRatingCode / DEFECT_DETAIL; IMAGE entries"
+      },
+      "citation": "FNMA Dec-2025 guidance lists 'Subject photos (exterior and basement)' among areas commonly flagged for UAD 2.6/3.6 defect review"
+    },
+    {
+      "rule_id": "CR-083",
+      "category": "Structural/Physical Defect Disclosure Follow-Through",
+      "description": "Structural component (foundation/roof/HVAC) age or condition inconsistent with reported effective age",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a specific STRUCTURE_COMPONENT_DETAIL shows an aged/deteriorated condition rating while overall EffectiveAgeYearsCount is reported as low",
+        "uad_fields_referenced": "STRUCTURE_COMPONENT_DETAIL condition; EffectiveAgeYearsCount"
+      },
+      "citation": "Extends FNMA Dec-2025 'holistic condition review' guidance to component-level consistency"
+    },
+    {
+      "rule_id": "CR-084",
+      "category": "Date/Timeline & Process Consistency",
+      "description": "Inspection date after the appraisal report effective date",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if InspectionDate is later than AppraisalReportEffectiveDate (logically impossible sequencing)",
+        "uad_fields_referenced": "InspectionDate vs. AppraisalReportEffectiveDate"
+      },
+      "citation": "Basic data-integrity/sequencing check; parallels CU Data Integrity flag category"
+    },
+    {
+      "rule_id": "CR-085",
+      "category": "Date/Timeline & Process Consistency",
+      "description": "Effective date precedes the sales contract date on a purchase transaction",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if AppraisalReportEffectiveDate is earlier than the subject's SALES_CONTRACT contract date on a purchase-money assignment",
+        "uad_fields_referenced": "AppraisalReportEffectiveDate vs. SALES_CONTRACT_DETAIL contract date"
+      },
+      "citation": "Sequencing/scope-of-work consistency check"
+    },
+    {
+      "rule_id": "CR-086",
+      "category": "Date/Timeline & Process Consistency",
+      "description": "Appraisal execution/signature date precedes the effective date",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if ExecutionDate on the appraiser's certification is earlier than AppraisalReportEffectiveDate",
+        "uad_fields_referenced": "ExecutionDate; AppraisalReportEffectiveDate"
+      },
+      "citation": "Basic certification-sequencing integrity check"
+    },
+    {
+      "rule_id": "CR-087",
+      "category": "Date/Timeline & Process Consistency",
+      "description": "Reconsideration of Value (ROV) result date precedes the original effective date",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if ReconsiderationOfValueResultDate is earlier than AppraisalReportEffectiveDate",
+        "uad_fields_referenced": "ReconsiderationOfValueResultDate; AppraisalReportEffectiveDate"
+      },
+      "citation": "Extends H-1 UAD1756-style pattern into a general timeline-integrity framing"
+    },
+    {
+      "rule_id": "CR-088",
+      "category": "Date/Timeline & Process Consistency",
+      "description": "Appraiser license expiration date precedes the appraisal effective date",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if any signing appraiser's LicenseExpirationDate is before AppraisalReportEffectiveDate (report signed under an expired license)",
+        "uad_fields_referenced": "LicenseExpirationDate (per PARTY/Appraiser); AppraisalReportEffectiveDate"
+      },
+      "citation": "USPAP/state-board licensing-currency requirement; direct collateral/legal risk to loan file"
+    },
+    {
+      "rule_id": "CR-089",
+      "category": "Date/Timeline & Process Consistency",
+      "description": "Comparable data-source effective date significantly predates its use in the report",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if DataSourceEffectiveDate for MLS/public-record data is materially older than AppraisalReportEffectiveDate without commentary on data currency",
+        "uad_fields_referenced": "DataSourceEffectiveDate; AppraisalReportEffectiveDate"
+      },
+      "citation": "Data-currency practice consistent with DataSourceQualityRatingCode disclosure intent"
+    },
+    {
+      "rule_id": "CR-090",
+      "category": "Date/Timeline & Process Consistency",
+      "description": "Multiple inspection dates recorded for the same property visit with inconsistent values",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if more than one INSPECTION_DETAIL entry exists for the subject with conflicting dates and no explanation (e.g. interior vs. exterior re-inspection)",
+        "uad_fields_referenced": "INSPECTION_DETAIL (subject, multiple instances)"
+      },
+      "citation": "Data-integrity/process-consistency check"
+    },
+    {
+      "rule_id": "CR-091",
+      "category": "Date/Timeline & Process Consistency",
+      "description": "Appraisal report effective date falls on a date after the loan's rate-lock or commitment expiration",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if AppraisalReportEffectiveDate is later than a referenced commitment/rate-lock expiration date, if such a field is populated",
+        "uad_fields_referenced": "AppraisalReportEffectiveDate; commitment/lock expiration reference (if present)"
+      },
+      "citation": "Loan-file process-risk check, complements collateral timeline integrity"
+    },
+    {
+      "rule_id": "CR-092",
+      "category": "Date/Timeline & Process Consistency",
+      "description": "Property inspection method inconsistent with certification type",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if PropertyInteriorInspectionMethodType/PropertyExteriorInspectionMethodType (e.g. 'Virtual'/'NoInspection') doesn't match the declared ValuationReportInspectionCertificationType",
+        "uad_fields_referenced": "PropertyInteriorInspectionMethodType, PropertyExteriorInspectionMethodType, ValuationReportInspectionCertificationType"
+      },
+      "citation": "Extends H-1 UAD1512-1518 pattern (already identified in the prior ruleset audit) into the risk-detection framing"
+    },
+    {
+      "rule_id": "CR-093",
+      "category": "Date/Timeline & Process Consistency",
+      "description": "Significant real property appraisal assistance disclosed without a corresponding certification statement",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a SignificantRealPropertyAppraisalAssistance party is named but no certification/scope-of-work statement discloses the nature/extent of assistance",
+        "uad_fields_referenced": "PARTY (SignificantRealPropertyAppraisalAssistance); certification statement field"
+      },
+      "citation": "USPAP Standards Rule 2-3 certification requirement for assistance disclosure"
+    },
+    {
+      "rule_id": "CR-094",
+      "category": "Comparable Selection & Proximity",
+      "description": "Comparable pool skewed toward a single listing agent/brokerage",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if 2+ comparables share the same listing/selling agent or brokerage PARTY reference without commentary on market representativeness",
+        "uad_fields_referenced": "COMPARABLE transaction agent/brokerage PARTY fields"
+      },
+      "citation": "Comparable-independence best practice; parallels CU comparable-selection scrutiny"
+    },
+    {
+      "rule_id": "CR-095",
+      "category": "Value Reconciliation & Bracketing",
+      "description": "Cost approach depreciation amount inconsistent with reported effective age/condition",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if COST_APPROACH_DETAIL depreciation figure doesn't scale with EffectiveAgeYearsCount/OverallConditionRatingCode",
+        "uad_fields_referenced": "COST_APPROACH_DETAIL depreciation; EffectiveAgeYearsCount; OverallConditionRatingCode"
+      },
+      "citation": "Standard cost-approach internal-consistency check"
+    },
+    {
+      "rule_id": "CR-096",
+      "category": "Site, Zoning & Location Risk",
+      "description": "Highest-and-best-use conclusion inconsistent with actual zoning/use classification",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a highest-and-best-use narrative concludes a use inconsistent with SiteZoningComplianceType/current use",
+        "uad_fields_referenced": "SiteZoningComplianceType; highest-and-best-use commentary"
+      },
+      "citation": "USPAP Standards Rule 1-3(b) highest-and-best-use analysis requirement"
+    },
+    {
+      "rule_id": "CR-097",
+      "category": "Structural/Physical Defect Disclosure Follow-Through",
+      "description": "Pool/spa or other amenity claimed without a corresponding permit or safety-compliance note",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a pool/spa indicator is present without commentary addressing fencing/safety-code compliance where required by jurisdiction",
+        "uad_fields_referenced": "amenity indicator fields; VALUATION_COMMENTARY"
+      },
+      "citation": "Common QC checklist item for amenity-related liability/marketability risk"
+    },
+    {
+      "rule_id": "CR-098",
+      "category": "Date/Timeline & Process Consistency",
+      "description": "Supervisory appraiser certification date precedes trainee/associate inspection date",
+      "severity": "Fatal",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a Supervisory Appraiser's ExecutionDate is earlier than the InspectionDate performed by the associate they are supervising",
+        "uad_fields_referenced": "Supervisory ExecutionDate; InspectionDate"
+      },
+      "citation": "USPAP supervisory-appraiser certification sequencing requirement"
+    },
+    {
+      "rule_id": "CR-099",
+      "category": "Adjustment Reasonableness & Direction",
+      "description": "Room count (bedroom/bathroom) adjustment missing despite a reported count difference",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if subject and comp BedroomCount or FullBathroomCount differ but no corresponding ComparableAdjustmentAmount is recorded for that line",
+        "uad_fields_referenced": "BedroomCount, FullBathroomCount (subject vs. comp); COMPARABLE_ADJUSTMENT"
+      },
+      "citation": "Standard grid-consistency practice; frequent MI/investor QC finding"
+    },
+    {
+      "rule_id": "CR-100",
+      "category": "Prior Sales, Listing History & Property Flipping",
+      "description": "Subject withdrawn/expired listing shortly before appraisal without market-exposure commentary",
+      "severity": "Advisory",
+      "enabled": true,
+      "logic": {
+        "type": "needs_encoding",
+        "source_logic": "Flag if a recent LISTING_INFORMATION entry shows a withdrawn/expired status close to the effective date with no commentary on marketing history relevance",
+        "uad_fields_referenced": "LISTING_INFORMATION_DETAIL status/dates; VALUATION_COMMENTARY"
+      },
+      "citation": "MGIC training: appraiser must identify and address recent listing activity, including withdrawn/expired listings"
+    },
+    {
+      "rule_id": "CR-101",
+      "category": "Site, Zoning & Location Risk",
+      "description": "Subject within 300 ft of an airport/aerodrome",
+      "severity": "Advisory",
+      "enabled": false,
+      "logic": {
+        "type": "geo_proximity",
+        "lat_field": "LOCATION_IDENTIFIER/GEOSPATIAL_INFORMATION/LatitudeIdentifier",
+        "lon_field": "LOCATION_IDENTIFIER/GEOSPATIAL_INFORMATION/LongitudeIdentifier",
+        "category": "airport",
+        "threshold_ft": 300,
+        "radius_m": 500
+      },
+      "citation": null,
+      "message": {
+        "coaching": "The subject is within 300 ft of an airport/aerodrome per public map data -- double-check your report addresses noise/flight-path impact on marketability.",
+        "audit": "Live proximity lookup (OpenStreetMap aerodrome tag) places the subject within 300 ft of an airport. Confirm the report includes commentary or an adjustment addressing this influence."
+      },
+      "_status": "new -- not in Collateral_Risk_Rules_100_2026-07-10.xlsx, requires Kevin's sign-off before enabling"
+    },
+    {
+      "rule_id": "CR-102",
+      "category": "Site, Zoning & Location Risk",
+      "description": "Subject within 300 ft of a motorway/trunk/primary highway",
+      "severity": "Advisory",
+      "enabled": false,
+      "logic": {
+        "type": "geo_proximity",
+        "lat_field": "LOCATION_IDENTIFIER/GEOSPATIAL_INFORMATION/LatitudeIdentifier",
+        "lon_field": "LOCATION_IDENTIFIER/GEOSPATIAL_INFORMATION/LongitudeIdentifier",
+        "category": "highway",
+        "threshold_ft": 300,
+        "radius_m": 500
+      },
+      "citation": null,
+      "message": {
+        "coaching": "The subject is within 300 ft of a major highway/busy road per public map data -- double-check your report addresses traffic noise or access impact on marketability.",
+        "audit": "Live proximity lookup (OpenStreetMap motorway/trunk/primary tag) places the subject within 300 ft of a major road. Confirm the report includes commentary or an adjustment addressing this influence."
+      },
+      "_status": "new -- not in Collateral_Risk_Rules_100_2026-07-10.xlsx, requires Kevin's sign-off before enabling"
+    },
+    {
+      "rule_id": "CR-103",
+      "category": "Site, Zoning & Location Risk",
+      "description": "Subject within 300 ft of a high-voltage transmission line",
+      "severity": "Advisory",
+      "enabled": false,
+      "logic": {
+        "type": "geo_proximity",
+        "lat_field": "LOCATION_IDENTIFIER/GEOSPATIAL_INFORMATION/LatitudeIdentifier",
+        "lon_field": "LOCATION_IDENTIFIER/GEOSPATIAL_INFORMATION/LongitudeIdentifier",
+        "category": "high_voltage",
+        "threshold_ft": 300,
+        "radius_m": 500
+      },
+      "citation": null,
+      "message": {
+        "coaching": "The subject is within 300 ft of a high-voltage transmission line per public map data -- double-check your report addresses visual/marketability impact.",
+        "audit": "Live proximity lookup (OpenStreetMap tagged power line with voltage) places the subject within 300 ft of a high-voltage line. Confirm the report includes commentary or an adjustment addressing this influence."
+      },
+      "_status": "new -- not in Collateral_Risk_Rules_100_2026-07-10.xlsx, requires Kevin's sign-off before enabling"
+    },
+    {
+      "rule_id": "CR-104",
+      "category": "Site, Zoning & Location Risk",
+      "description": "Subject within 300 ft of commercial/industrial land use",
+      "severity": "Advisory",
+      "enabled": false,
+      "logic": {
+        "type": "geo_proximity",
+        "lat_field": "LOCATION_IDENTIFIER/GEOSPATIAL_INFORMATION/LatitudeIdentifier",
+        "lon_field": "LOCATION_IDENTIFIER/GEOSPATIAL_INFORMATION/LongitudeIdentifier",
+        "category": "commercial_industrial",
+        "threshold_ft": 300,
+        "radius_m": 500
+      },
+      "citation": null,
+      "message": {
+        "coaching": "The subject is within 300 ft of commercial/industrial land use per public map data -- double-check your report addresses external-influence impact on marketability.",
+        "audit": "Live proximity lookup (OpenStreetMap commercial/industrial landuse tag) places the subject within 300 ft of non-residential land use. Confirm the report includes commentary or an adjustment addressing this influence."
+      },
+      "_status": "new -- not in Collateral_Risk_Rules_100_2026-07-10.xlsx, requires Kevin's sign-off before enabling"
+    },
+    {
+      "rule_id": "CR-105",
+      "category": "Photo Privacy",
+      "description": "Delivery photo contains a detected face -- review for redaction/blur before delivery",
+      "severity": "Advisory",
+      "enabled": false,
+      "logic": {
+        "type": "photo_face_detected"
+      },
+      "citation": null,
+      "message": {
+        "coaching": "This photo appears to contain a person's face (including a face in a framed photo on a wall counts). Consider redacting or blurring it before you deliver the report.",
+        "audit": "Automated face detection (local, no third-party lookup -- bounding box only, no identity match) found a face-shaped region in this photo. Confirm the appraiser addressed redaction/blur before delivery."
+      },
+      "_status": "new -- Phase 3, requires Kevin's sign-off on wording before enabling; face-detection accuracy not yet validated against real property photos, see docs/superpowers/specs/2026-07-10-collateral-risk-photo-checks-design.md open question 3"
+    },
+    {
+      "rule_id": "CR-106",
+      "category": "Photo Quality",
+      "description": "Delivery photo is too dark to reliably evaluate",
+      "severity": "Advisory",
+      "enabled": false,
+      "logic": {
+        "type": "photo_quality_flag",
+        "check": "dark"
+      },
+      "citation": null,
+      "message": {
+        "coaching": "This photo is very dark -- consider retaking it so the condition of what it shows can actually be assessed.",
+        "audit": "Automated brightness check flags this photo as too dark to reliably support a condition assessment. This is a photo-quality check, not a condition/damage finding."
+      },
+      "_status": "new -- Phase 2 (honestly-scoped photo-quality check, not damage detection -- see design doc 'Scope honesty'), requires Kevin's sign-off before enabling"
+    },
+    {
+      "rule_id": "CR-107",
+      "category": "Photo Quality",
+      "description": "Delivery photo is too blurry to reliably evaluate",
+      "severity": "Advisory",
+      "enabled": false,
+      "logic": {
+        "type": "photo_quality_flag",
+        "check": "blurry"
+      },
+      "citation": null,
+      "message": {
+        "coaching": "This photo appears out of focus -- consider retaking it so the condition of what it shows can actually be assessed.",
+        "audit": "Automated blur check (Laplacian variance) flags this photo as too blurry to reliably support a condition assessment. This is a photo-quality check, not a condition/damage finding."
+      },
+      "_status": "new -- Phase 2 (honestly-scoped photo-quality check, not damage detection -- see design doc 'Scope honesty'), requires Kevin's sign-off before enabling"
+    }
+  ]
+}

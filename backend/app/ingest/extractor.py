@@ -33,9 +33,13 @@ def _extract_zip(data: bytes, filename: str) -> RawReport:
         n for n in names
         if n.lower().startswith("images/") and n.lower().endswith((".png", ".jpg", ".jpeg", ".gif"))
     )
+    # Actual bytes, not just names -- Phase 2/3 (collateral_risk_engine.evaluate_photos)
+    # needs real pixel data. Same source list as image_filenames above.
+    images = {name: zf.read(name) for name in image_names}
     return RawReport(
         source_filename=filename,
         xml_bytes=zf.read(xml_names[0]),
         pdf_filename=pdf_names[0] if pdf_names else None,
         image_filenames=image_names,
+        images=images,
     )

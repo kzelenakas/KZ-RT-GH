@@ -1,0 +1,4 @@
+lxml>=5.0
+functions-framework>=3.5
+opencv-python-headless>=4.10
+numpy>=1.26

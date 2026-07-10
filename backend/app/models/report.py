@@ -10,6 +10,10 @@ class RawReport(BaseModel):
     xml_bytes: bytes
     pdf_filename: str | None = None
     image_filenames: list[str] = Field(default_factory=list)
+    # filename -> raw photo bytes, Images/ folder only. Phase 2/3
+    # (collateral_risk_engine.evaluate_photos) needs actual pixel data, not
+    # just names -- image_filenames alone (above) was sufficient for Phase 1.
+    images: dict[str, bytes] = Field(default_factory=dict)
 
 
 class NormalizedField(BaseModel):
